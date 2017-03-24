@@ -7,8 +7,8 @@
     <ProjectGuid>{A97B2940-6691-409D-A5DA-4406EE0A6DC8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Core</RootNamespace>
-    <AssemblyName>Core</AssemblyName>
+    <RootNamespace>PixelFarm.SaveAsPdf</RootNamespace>
+    <AssemblyName>PixelFarm.SaveAsPdf</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,7 +40,6 @@
     <Compile Include="0_PixelFarm\RectangleF.cs" />
     <Compile Include="Apps\FormattingResults.cs" />
     <Compile Include="Apps\PageSequenceResults.cs" />
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DataTypes\AutoLength.cs" />
     <Compile Include="DataTypes\ColorSpace.cs" />
     <Compile Include="DataTypes\ColorType.cs" />
