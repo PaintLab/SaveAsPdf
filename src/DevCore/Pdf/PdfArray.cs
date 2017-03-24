@@ -15,9 +15,9 @@ namespace Fonet.Pdf
         {
         }
 
-        public int Add(PdfObject value)
+        public void Add(PdfObject value)
         {
-            return elements.Add(value);
+            elements.Add(value);
         }
 
         public void Clear()

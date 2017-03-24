@@ -20,7 +20,7 @@ namespace Fonet.Pdf.Gdi.Font {
         /// <summary>
         ///     List of font tables to write.
         /// </summary>
-        private IDictionary tables;
+        private Hashtable tables;
 
         /// <summary>
         ///     Creates a new instance of the <see cref="FontFileWriter"/> class

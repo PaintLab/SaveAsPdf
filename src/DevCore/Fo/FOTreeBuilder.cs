@@ -59,7 +59,8 @@ namespace Fonet.Fo
         internal void AddElementMapping(string namespaceURI, Hashtable table)
         {
             this.fobjTable.Add(namespaceURI, table);
-            this.namespaces.Add(String.Intern(namespaceURI));
+            //this.namespaces.Add(String.Intern(namespaceURI));
+            this.namespaces.Add(namespaceURI);
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace Fonet.Fo
         internal void AddPropertyMapping(string namespaceURI, Hashtable list)
         {
             PropertyListBuilder plb;
-            plb = (PropertyListBuilder)this.propertylistTable[namespaceURI];
+            plb = (PropertyListBuilder)this.propertylistTable.GetValueOrNull(namespaceURI);
             if (plb == null)
             {
                 plb = new PropertyListBuilder();
@@ -115,7 +116,8 @@ namespace Fonet.Fo
                     this.unknownFOs.Add(fullName, "");
                     FonetDriver.ActiveDriver.FireFonetError("Unknown formatting object " + fullName);
                 }
-                if (namespaces.Contains(String.Intern(uri)))
+                //if (namespaces.Contains(String.Intern(uri)))
+                if (namespaces.Contains(uri))
                 {
                     fobjMaker = new Unknown.Maker();
                 }
@@ -219,7 +221,9 @@ namespace Fonet.Fo
                             EndElement();
                             break;
                         case XmlNodeType.Text:
-                            char[] chars = reader.ReadString().ToCharArray();
+
+                            char[] chars = reader.ReadContentAsString().ToCharArray();
+                            //char[] chars = reader.ReadString().ToCharArray();
                             if (currentFObj != null)
                             {
                                 currentFObj.AddCharacters(chars, 0, chars.Length);
@@ -295,8 +299,9 @@ namespace Fonet.Fo
         // only called above
         internal Attributes TrimArray()
         {
-            attArray.TrimToSize();
             return this;
+            //attArray.TrimToSize();
+            //return this;
         }
     }
 

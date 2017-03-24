@@ -23,7 +23,7 @@ namespace Fonet.Pdf.Gdi {
         /// <summary>
         ///     Collection of absolute filenames.
         /// </summary>
-        private IDictionary fonts = new Hashtable();
+        private Hashtable fonts = new Hashtable();
 
         /// <summary>
         ///     Adds <i>filename</i> to this private font collection.

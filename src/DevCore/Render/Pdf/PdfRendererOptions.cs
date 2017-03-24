@@ -102,8 +102,10 @@ namespace Fonet.Render.Pdf {
         /// </value>
         internal string Producer {
             get {
-                AssemblyName assemName = Assembly.GetExecutingAssembly().GetName();
-                return assemName.FullName + ", " + assemName.Version;
+
+                return "PixelFarm.SaveAsPdf";
+                //AssemblyName assemName = Assembly.GetExecutingAssembly().GetName();
+                //return assemName.FullName + ", " + assemName.Version;
             }
         }
 

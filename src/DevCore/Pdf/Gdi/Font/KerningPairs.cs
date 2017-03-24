@@ -6,7 +6,7 @@ namespace Fonet.Pdf.Gdi.Font {
         ///     Key - Kerning pair identifier
         ///     Value - Kerning amount
         /// </summary>
-        private IDictionary pairs;
+        private Hashtable pairs;
 
         /// <summary>
         ///     Creates an instance of KerningPairs allocating space for 

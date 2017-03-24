@@ -5,7 +5,7 @@ namespace Fonet.Pdf.Gdi {
     ///     The OUTLINETEXTMETRIC structure contains metrics describing 
     ///     a TrueType font. 
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
+    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
     internal struct OutlineTextMetric {
         public uint otmSize;
         public TextMetric otmTextMetrics;

@@ -6,7 +6,7 @@ namespace Fonet.Pdf.Gdi {
     ///     font.  All sizes are specified in logical units; that is, they depend 
     ///     on the current mapping mode of the display context. 
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
+    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
     internal struct TextMetric {
         public int tmHeight;
         public int tmAscent;

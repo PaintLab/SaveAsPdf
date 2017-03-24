@@ -9,12 +9,12 @@ namespace Fonet.Pdf
 
         public PdfDictionary()
         {
-        }
-
+        } 
         public PdfDictionary(PdfObjectId objectId)
             : base(objectId)
         {
         }
+        
 
         public void Add(PdfName key, PdfObject value)
         {
@@ -29,7 +29,7 @@ namespace Fonet.Pdf
 
             entries.Add(key, value);
         }
-
+       
         public void Clear()
         {
             entries.Clear();
@@ -105,7 +105,7 @@ namespace Fonet.Pdf
         protected internal override void Write(PdfWriter writer)
         {
             writer.WriteKeywordLine(Keyword.DictionaryBegin);
-            foreach (DictionaryEntry e in entries)
+            foreach (var e in entries)
             {
                 writer.Write((PdfName)e.Key);
                 writer.WriteSpace();
