@@ -169,6 +169,7 @@ namespace System.Collections
             foreach (object o in arr)
             {
                 convertedArr[i] = (T)o;
+                i++;
             }
             return convertedArr;
         }
