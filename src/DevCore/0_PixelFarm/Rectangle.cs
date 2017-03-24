@@ -1,4 +1,6 @@
-﻿//
+﻿//Apache2, 2017, WinterDev
+//Apache2, 2009, griffm, FO.NET
+//
 // System.Drawing.Rectangle.cs
 //
 // Author:

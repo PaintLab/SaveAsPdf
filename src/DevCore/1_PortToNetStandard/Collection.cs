@@ -1,4 +1,6 @@
-﻿//MIT, 2017, WinterDev
+﻿//Apache2, 2017, WinterDev
+//Apache2, 2009, griffm, FO.NET
+//MIT, 2017, WinterDev
 //temp implementation
 using System.Collections;
 using System.Collections.Generic;
