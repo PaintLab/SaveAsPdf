@@ -97,7 +97,7 @@ namespace Fonet.Render.Pdf.Fonts {
                 // The widths array for a font using the Unicode encoding is enormous.
                 // Instead of encoding the entire widths array, we generated a subset 
                 // based on the used glyphs only.
-                IList indicies = usedGlyphs.GetKeyList();
+                IList indicies = usedGlyphs.GetGetKeyList();
                 int[] subsetWidths = GetSubsetWidthsArray(indicies);
 
                 PdfWArray widthsArray = new PdfWArray((int) indicies[0]);
@@ -123,7 +123,7 @@ namespace Fonet.Render.Pdf.Fonts {
             Array.Clear(subsetWidths, 0, subsetWidths.Length);
 
             char firstChar = (char) metrics.FirstChar;
-            foreach (DictionaryEntry entry in usedGlyphs) {
+            foreach (var entry in usedGlyphs) {
                 char c = (char) entry.Value;
                 int glyphIndex = (int) entry.Key;
                 subsetWidths[glyphIndex - firstIndex] = widths[glyphIndex];

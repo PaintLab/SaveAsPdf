@@ -95,7 +95,7 @@ namespace Fonet.Layout
             return String.Format("{0},{1},{2}", family, style, weight);
         }
 
-        public IDictionary GetFonts()
+        public Hashtable GetFonts()
         {
             return fonts;
         }

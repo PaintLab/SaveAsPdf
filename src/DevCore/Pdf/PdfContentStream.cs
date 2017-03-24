@@ -10,6 +10,7 @@ namespace Fonet.Pdf
         protected MemoryStream stream;
         protected PdfWriter streamData;
 
+        static Encoding s_defaultEnc = Encoding.UTF8;
         public PdfContentStream(PdfObjectId objectId)
             : base(objectId)
         {
@@ -46,12 +47,12 @@ namespace Fonet.Pdf
         /// <param name="s"></param>
         public void Write(string s)
         {
-            streamData.Write(Encoding.Default.GetBytes(s));
+            streamData.Write(s_defaultEnc.GetBytes(s));
         }
 
         public void WriteLine(string s)
         {
-            streamData.WriteLine(Encoding.Default.GetBytes(s));
+            streamData.WriteLine(s_defaultEnc.GetBytes(s));
         }
 
         public void Write(int val)

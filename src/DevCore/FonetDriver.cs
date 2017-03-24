@@ -325,48 +325,51 @@ namespace Fonet
             }
         }
 
-        /// <summary>
-        ///     Executes the conversion reading the source tree from the supplied 
-        ///     XmlDocument, converting it to a format dictated by the renderer 
-        ///     and writing it to the supplied output stream.
-        /// </summary>
-        /// <param name="doc">
-        ///     An in-memory representation of an XML document (DOM).
-        /// </param>
-        /// <param name="outputStream">
-        ///     Any subclass of the Stream class.
-        /// </param>
-        /// <remarks>
-        ///     Any exceptions that occur during the render process are arranged 
-        ///     into three categories: information, warning and error.  You may 
-        ///     intercept any or all of theses exceptional states by registering 
-        ///     an event listener.  See <see cref="FonetDriver.OnError"/> for an 
-        ///     example of registering an event listener.  If there are no 
-        ///     registered listeners, the exceptions are dumped to standard out - 
-        ///     except for the error event which is wrapped in a 
-        ///     <see cref="SystemException"/>.
-        /// </remarks>
-        public virtual void Render(XmlDocument doc, Stream outputStream)
-        {
-            StringWriter sw = new StringWriter();
-            XmlTextWriter writer = new XmlTextWriter(sw);
-            doc.Save(writer);
-            writer.Close();
+        ///// <summary>
+        /////     Executes the conversion reading the source tree from the supplied 
+        /////     XmlDocument, converting it to a format dictated by the renderer 
+        /////     and writing it to the supplied output stream.
+        ///// </summary>
+        ///// <param name="doc">
+        /////     An in-memory representation of an XML document (DOM).
+        ///// </param>
+        ///// <param name="outputStream">
+        /////     Any subclass of the Stream class.
+        ///// </param>
+        ///// <remarks>
+        /////     Any exceptions that occur during the render process are arranged 
+        /////     into three categories: information, warning and error.  You may 
+        /////     intercept any or all of theses exceptional states by registering 
+        /////     an event listener.  See <see cref="FonetDriver.OnError"/> for an 
+        /////     example of registering an event listener.  If there are no 
+        /////     registered listeners, the exceptions are dumped to standard out - 
+        /////     except for the error event which is wrapped in a 
+        /////     <see cref="SystemException"/>.
+        ///// </remarks>
+        //public virtual void Render(XmlDocument doc, Stream outputStream)
+        //{
+        //    StringWriter sw = new StringWriter();
+        //    using (MemoryStream ms = new MemoryStream())
+        //    {
+        //        XmlWriter writer = System.Xml.XmlWriter.Create(ms);
+        //        doc.Save(writer);  //save to output strewam
+        //        string xmlOutputString = System.Text.Encoding.UTF8.GetString(ms.ToArray());
 
-            Render(new StringReader(sw.ToString()), outputStream);
-        }
+        //        Render(xmlOutputString, outputStream);
+        //    }
+        //}
 
-        /// <summary>
-        ///     Executes the conversion reading the source tree from the input 
-        ///     reader, converting it to a format dictated by the renderer and 
-        ///     writing it to the supplied output stream.
-        /// </summary>
-        /// <param name="inputReader">A character orientated stream</param>
-        /// <param name="outputStream">Any subclass of the Stream class</param>
-        public virtual void Render(TextReader inputReader, Stream outputStream)
-        {
-            Render(CreateXmlTextReader(inputReader), outputStream);
-        }
+        ///// <summary>
+        /////     Executes the conversion reading the source tree from the input 
+        /////     reader, converting it to a format dictated by the renderer and 
+        /////     writing it to the supplied output stream.
+        ///// </summary>
+        ///// <param name="inputReader">A character orientated stream</param>
+        ///// <param name="outputStream">Any subclass of the Stream class</param>
+        //public virtual void Render(TextReader inputReader, Stream outputStream)
+        //{
+        //    Render(CreateXmlTextReader(inputReader), outputStream);
+        //}
 
         /// <summary>
         ///     Executes the conversion reading the source tree from the file 
@@ -383,35 +386,39 @@ namespace Fonet
         /// <param name="outputFile">Path to a file</param>
         public virtual void Render(string inputFile, string outputFile)
         {
-            Render(CreateXmlTextReader(inputFile),
-                   new FileStream(outputFile, FileMode.Create, FileAccess.Write));
+            using (FileStream fs = new FileStream(inputFile, FileMode.Open))
+            {
+                XmlReader reader = XmlReader.Create(fs);
+                Render(reader, new FileStream(outputFile, FileMode.Create, FileAccess.Write));
+            }
         }
 
-        /// <summary>
-        ///     Executes the conversion reading the source tree from the file 
-        ///     <i>inputFile</i>, converting it to a format dictated by the 
-        ///     renderer and writing it to the supplied output stream.
-        /// </summary>
-        /// <param name="inputFile">Path to an XSL-FO file</param>
-        /// <param name="outputStream">
-        ///     Any subclass of the Stream class, e.g. FileStream
-        /// </param>
-        public virtual void Render(string inputFile, Stream outputStream)
-        {
-            Render(CreateXmlTextReader(inputFile), outputStream);
-        }
 
-        /// <summary>
-        ///     Executes the conversion reading the source tree from the input 
-        ///     stream, converting it to a format dictated by the render and 
-        ///     writing it to the supplied output stream.
-        /// </summary>
-        /// <param name="inputStream">Any subclass of the Stream class, e.g. FileStream</param>
-        /// <param name="outputStream">Any subclass of the Stream class, e.g. FileStream</param>
-        public virtual void Render(Stream inputStream, Stream outputStream)
-        {
-            Render(CreateXmlTextReader(inputStream), outputStream);
-        }
+        ///// <summary>
+        /////     Executes the conversion reading the source tree from the file 
+        /////     <i>inputFile</i>, converting it to a format dictated by the 
+        /////     renderer and writing it to the supplied output stream.
+        ///// </summary>
+        ///// <param name="inputFile">Path to an XSL-FO file</param>
+        ///// <param name="outputStream">
+        /////     Any subclass of the Stream class, e.g. FileStream
+        ///// </param>
+        //public virtual void Render(string inputFile, Stream outputStream)
+        //{
+        //    Render(CreateXmlTextReader(inputFile), outputStream);
+        //}
+
+        ///// <summary>
+        /////     Executes the conversion reading the source tree from the input 
+        /////     stream, converting it to a format dictated by the render and 
+        /////     writing it to the supplied output stream.
+        ///// </summary>
+        ///// <param name="inputStream">Any subclass of the Stream class, e.g. FileStream</param>
+        ///// <param name="outputStream">Any subclass of the Stream class, e.g. FileStream</param>
+        //public virtual void Render(Stream inputStream, Stream outputStream)
+        //{
+        //    Render(CreateXmlTextReader(inputStream), outputStream);
+        //}
 
         /// <summary>
         ///     Executes the conversion reading the source tree from the input 
@@ -530,46 +537,46 @@ namespace Fonet
             }
         }
 
-        /// <summary>
-        ///     Utility method that creates an <see cref="System.Xml.XmlTextReader"/>
-        ///     for the supplied file
-        /// </summary>
-        /// <remarks>
-        ///     The returned <see cref="System.Xml.XmlReader"/> interprets all whitespace
-        /// </remarks>
-        private XmlReader CreateXmlTextReader(string inputFile)
-        {
-            XmlTextReader reader = new XmlTextReader(inputFile);
+        ///// <summary>
+        /////     Utility method that creates an <see cref="System.Xml.XmlTextReader"/>
+        /////     for the supplied file
+        ///// </summary>
+        ///// <remarks>
+        /////     The returned <see cref="System.Xml.XmlReader"/> interprets all whitespace
+        ///// </remarks>
+        //private XmlReader CreateXmlTextReader(string inputFile)
+        //{
+        //    XmlTextReader reader = new XmlTextReader(inputFile);
 
-            return reader;
-        }
+        //    return reader;
+        //}
 
-        /// <summary>
-        ///     Utility method that creates an <see cref="System.Xml.XmlTextReader"/>
-        ///     for the supplied file
-        /// </summary>
-        /// <remarks>
-        ///     The returned <see cref="System.Xml.XmlReader"/> interprets all whitespace
-        /// </remarks>
-        private XmlReader CreateXmlTextReader(Stream inputStream)
-        {
-            XmlTextReader reader = new XmlTextReader(inputStream);
+        ///// <summary>
+        /////     Utility method that creates an <see cref="System.Xml.XmlTextReader"/>
+        /////     for the supplied file
+        ///// </summary>
+        ///// <remarks>
+        /////     The returned <see cref="System.Xml.XmlReader"/> interprets all whitespace
+        ///// </remarks>
+        //private XmlReader CreateXmlTextReader(Stream inputStream)
+        //{
+        //    XmlTextReader reader = new XmlTextReader(inputStream);
 
-            return reader;
-        }
+        //    return reader;
+        //}
 
-        /// <summary>
-        ///     Utility method that creates an <see cref="System.Xml.XmlTextReader"/>
-        ///     for the supplied file
-        /// </summary>
-        /// <remarks>
-        ///     The returned <see cref="System.Xml.XmlReader"/> interprets all whitespace
-        /// </remarks>
-        private XmlReader CreateXmlTextReader(TextReader inputReader)
-        {
-            XmlTextReader reader = new XmlTextReader(inputReader);
-
-            return reader;
-        }
+        ///// <summary>
+        /////     Utility method that creates an <see cref="System.Xml.XmlTextReader"/>
+        /////     for the supplied file
+        ///// </summary>
+        ///// <remarks>
+        /////     The returned <see cref="System.Xml.XmlReader"/> interprets all whitespace
+        ///// </remarks>
+        //private XmlReader CreateXmlTextReader(TextReader inputReader)
+        //{
+        //    XmlTextReader reader = new XmlTextReader(inputReader);
+        //    XmlReader reader= XmlReader.Create()
+        //    return reader;
+        //}
     }
 }

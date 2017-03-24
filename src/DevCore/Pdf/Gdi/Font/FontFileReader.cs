@@ -27,7 +27,7 @@ namespace Fonet.Pdf.Gdi.Font {
         ///     A dictionary of cached <see cref="FontTable"/> instances.  
         ///     The index is the table name.
         /// </summary>
-        private IDictionary tableCache = new Hashtable();
+        private Hashtable tableCache = new Hashtable();
 
         /// <summary>
         ///     Maps a glyph index to a subset index.

@@ -8,7 +8,7 @@ namespace Fonet.Pdf
     {
         private byte[] data;
 
-        private Encoding encoding = Encoding.Default;
+        private Encoding encoding = Encoding.UTF8;//?
 
         private PdfStringFormat format = PdfStringFormat.Literal;
 

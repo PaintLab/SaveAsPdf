@@ -77,7 +77,7 @@ namespace Fonet.Pdf
                         ranges.Add(entry);
                     }
                 }
-                return (BfEntry[])ranges.ToArray(typeof(BfEntry));
+                return ranges.ToArray<BfEntry>();
             }
         }
 
@@ -109,7 +109,7 @@ namespace Fonet.Pdf
                         chars.Add(entry);
                     }
                 }
-                return (BfEntry[])chars.ToArray(typeof(BfEntry));
+                return chars.ToArray<BfEntry>();
             }
         }
 
@@ -120,7 +120,11 @@ namespace Fonet.Pdf
         /// <returns></returns>
         public IEnumerator GetEnumerator()
         {
-            return ArrayList.ReadOnly(entries).GetEnumerator();
+            foreach (object o in entries)
+            {
+                yield return o;
+            }
+            //   return ArrayList.ReadOnly(entries).GetEnumerator();
         }
     }
 

@@ -30,7 +30,7 @@ namespace Fonet.Pdf
 
     public sealed class KeywordEntries
     {
-        private static readonly IDictionary Entries;
+        private static readonly Hashtable Entries;
 
         static KeywordEntries()
         {

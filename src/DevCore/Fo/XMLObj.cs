@@ -13,7 +13,7 @@ namespace Fonet.Fo
         protected XmlNode element;
 
         protected XmlDocument doc;
-
+        
         protected const string NS = "http://www.codeplex.com/fonet";
 
         public XMLObj(FObj parent, PropertyList propertyList, string tag)
