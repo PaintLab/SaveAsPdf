@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Fonet.Pdf.Gdi
-{   
+{
     //TODO: review port here
 
     internal sealed class LibWrapper
