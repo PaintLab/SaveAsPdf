@@ -394,73 +394,31 @@ namespace Fonet
                 Render(reader, new FileStream(outputFile, FileMode.Create, FileAccess.Write));
             }
         }
-        public virtual void Render(PixelFarm.Drawing.Pdf.MyPdfDocument doc, string outputFile)
-        {
-            FileStream outputStream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
-            try
+        public virtual void Render(
+            PixelFarm.Drawing.Pdf.MyPdfDocument doc,
+            Stream outputStream)
+        { 
+            // Constructs an area tree renderer and supplies the renderer options
+            PdfRenderer renderer = new PdfRenderer(outputStream);
+            if (renderOptions != null)
             {
-                // Constructs an area tree renderer and supplies the renderer options
-                PdfRenderer renderer = new PdfRenderer(outputStream);
-                if (renderOptions != null)
-                {
-                    renderer.Options = renderOptions;
-                }
-
-                // Create the stream-renderer.
-                StreamRenderer sr = new StreamRenderer(renderer);
-
-                // Create the tree builder and give it the stream renderer.
-                FOTreeBuilder tb = new FOTreeBuilder();
-                tb.SetStreamRenderer(sr);
-
-                // Setup the mapping between xsl:fo elements and our fo classes.
-                StandardElementMapping sem = new StandardElementMapping();
-                sem.AddToBuilder(tb);
-
-                //// Start processing the xml document.
-                tb.Parse(doc);
+                renderer.Options = renderOptions;
             }
-            finally
-            {
-                if (CloseOnExit)
-                {
-                    // Flush and close the output stream
-                    outputStream.Flush();
-                    outputStream.Close();
-                }
-            }
-            //using (FileStream fs = new FileStream(inputFile, FileMode.Open))
-            //{
-            //    XmlReader reader = XmlReader.Create(fs);
-            //    Render(reader, new FileStream(outputFile, FileMode.Create, FileAccess.Write));
-            //}
+
+            // Create the stream-renderer.
+            StreamRenderer sr = new StreamRenderer(renderer);
+
+            // Create the tree builder and give it the stream renderer.
+            FOTreeBuilder tb = new FOTreeBuilder();
+            tb.SetStreamRenderer(sr);
+
+            // Setup the mapping between xsl:fo elements and our fo classes.
+            StandardElementMapping sem = new StandardElementMapping();
+            sem.AddToBuilder(tb);
+            //// Start processing the xml document.
+            tb.Parse(doc); 
         }
 
-        ///// <summary>
-        /////     Executes the conversion reading the source tree from the file 
-        /////     <i>inputFile</i>, converting it to a format dictated by the 
-        /////     renderer and writing it to the supplied output stream.
-        ///// </summary>
-        ///// <param name="inputFile">Path to an XSL-FO file</param>
-        ///// <param name="outputStream">
-        /////     Any subclass of the Stream class, e.g. FileStream
-        ///// </param>
-        //public virtual void Render(string inputFile, Stream outputStream)
-        //{
-        //    Render(CreateXmlTextReader(inputFile), outputStream);
-        //}
-
-        ///// <summary>
-        /////     Executes the conversion reading the source tree from the input 
-        /////     stream, converting it to a format dictated by the render and 
-        /////     writing it to the supplied output stream.
-        ///// </summary>
-        ///// <param name="inputStream">Any subclass of the Stream class, e.g. FileStream</param>
-        ///// <param name="outputStream">Any subclass of the Stream class, e.g. FileStream</param>
-        //public virtual void Render(Stream inputStream, Stream outputStream)
-        //{
-        //    Render(CreateXmlTextReader(inputStream), outputStream);
-        //}
 
         /// <summary>
         ///     Executes the conversion reading the source tree from the input 

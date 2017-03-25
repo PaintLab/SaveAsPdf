@@ -12,8 +12,14 @@ namespace FonetExample
         static void Main(string[] args)
         {
             MyPdfDocument pdfdoc = new MyPdfDocument();
+
+            //1. create new page and append to doc
             MyPdfPage page = pdfdoc.CreatePage();
             pdfdoc.Pages.Add(page);
+            //2. set page property
+
+
+
             //
             MyPdfCanvas canvas = page.Canvas;
             canvas.DrawString("Hello World!, from PixelFarm", 20, 20);
@@ -24,7 +30,14 @@ namespace FonetExample
                 return null;
             };
 
-            driver.Render(pdfdoc, "hello.pdf");
+            string outputFilename = "hello.pdf";
+            using (FileStream outputStream = new FileStream(outputFilename, FileMode.Create, FileAccess.Write))
+            {
+                driver.Render(pdfdoc, outputStream);
+                outputStream.Flush();
+                outputStream.Close();
+            }
+
         }
     }
 }
