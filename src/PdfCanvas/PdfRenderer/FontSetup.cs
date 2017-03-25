@@ -193,7 +193,7 @@ namespace Fonet.Render.Pdf
         /// </summary>
         /// <param name="fontCreator">Object that creates PdfFont objects.</param>
         /// <param name="resources">Resources object to add fonts too.</param>
-        internal void AddToResources(PdfFontCreator fontCreator, PdfResources resources)
+        public void AddToResources(PdfFontCreator fontCreator, PdfResources resources)
         {
             Hashtable fonts = fontInfo.GetUsedFonts();
             foreach (string fontName in fonts.Keys)

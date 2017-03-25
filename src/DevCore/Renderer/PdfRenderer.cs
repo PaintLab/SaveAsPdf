@@ -18,6 +18,8 @@ namespace Fonet.Render.Pdf
 
     internal sealed class PdfRenderer
     {
+
+        public CorePdfRenderer _coreRenderer;
         /// <summary>
         ///     The current vertical position in millipoints from bottom.
         /// </summary>
@@ -198,6 +200,7 @@ namespace Fonet.Render.Pdf
         internal PdfRenderer(Stream stream)
         {
             this.pdfDoc = new PdfCreator(stream);
+            this._coreRenderer = new CorePdfRenderer(pdfDoc);
         }
 
         /// <summary>
@@ -426,11 +429,7 @@ namespace Fonet.Render.Pdf
                              PdfColor stroke)
         {
             CloseText();
-
-            currentStream.Write("ET\nq\n" + stroke.getColorSpaceOut(false)
-                + PdfNumber.doubleOut(x1 / 1000f) + " " + PdfNumber.doubleOut(y1 / 1000f) + " m "
-                + PdfNumber.doubleOut(x2 / 1000f) + " " + PdfNumber.doubleOut(y2 / 1000f) + " l "
-                + PdfNumber.doubleOut(th / 1000f) + " w S\n" + "Q\nBT\n");
+            currentStream.DrawLine(x1, y1, x2, y2, th, stroke);
         }
 
         /**
@@ -451,11 +450,8 @@ namespace Fonet.Render.Pdf
                              PdfColor stroke)
         {
             CloseText();
-            currentStream.Write("ET\nq\n" + stroke.getColorSpaceOut(false)
-                + SetRuleStylePattern(rs) + PdfNumber.doubleOut(x1 / 1000f) + " "
-                + PdfNumber.doubleOut(y1 / 1000f) + " m " + PdfNumber.doubleOut(x2 / 1000f) + " "
-                + PdfNumber.doubleOut(y2 / 1000f) + " l " + PdfNumber.doubleOut(th / 1000f) + " w S\n"
-                + "Q\nBT\n");
+            currentStream.DrawLine(x1, y1, x2, y2, th, rs, stroke);
+
         }
 
         /**
@@ -471,10 +467,7 @@ namespace Fonet.Render.Pdf
         private void AddRect(int x, int y, int w, int h, PdfColor stroke)
         {
             CloseText();
-            currentStream.Write("ET\nq\n" + stroke.getColorSpaceOut(false)
-                + PdfNumber.doubleOut(x / 1000f) + " " + PdfNumber.doubleOut(y / 1000f) + " "
-                + PdfNumber.doubleOut(w / 1000f) + " " + PdfNumber.doubleOut(h / 1000f) + " re s\n"
-                + "Q\nBT\n");
+            currentStream.DrawRect(x, y, w, h, stroke);
         }
 
         /**
@@ -488,14 +481,12 @@ namespace Fonet.Render.Pdf
         * @param stroke the stroke color/gradient
         */
 
-        private void AddRect(int x, int y, int w, int h, PdfColor stroke,
-                             PdfColor fill)
+        private void AddRect(int x, int y, int w, int h,
+                            PdfColor stroke,
+                            PdfColor fill)
         {
             CloseText();
-            currentStream.Write("ET\nq\n" + fill.getColorSpaceOut(true)
-                + stroke.getColorSpaceOut(false) + PdfNumber.doubleOut(x / 1000f)
-                + " " + PdfNumber.doubleOut(y / 1000f) + " " + PdfNumber.doubleOut(w / 1000f) + " "
-                + PdfNumber.doubleOut(h / 1000f) + " re b\n" + "Q\nBT\n");
+            currentStream.DrawAndFillRect(x, y, w, h, stroke, fill);
         }
 
         /**
@@ -512,10 +503,7 @@ namespace Fonet.Render.Pdf
                                    PdfColor fill)
         {
             CloseText();
-            currentStream.Write("ET\nq\n" + fill.getColorSpaceOut(true)
-                + PdfNumber.doubleOut(x / 1000f) + " " + PdfNumber.doubleOut(y / 1000f) + " "
-                + PdfNumber.doubleOut(w / 1000f) + " " + PdfNumber.doubleOut(h / 1000f) + " re f\n"
-                + "Q\nBT\n");
+            currentStream.FillRect(x, y, w, h, fill);
         }
 
         /**
@@ -537,12 +525,9 @@ namespace Fonet.Render.Pdf
 
             PdfXObject xobj = this.pdfDoc.AddImage(img);
             CloseText();
+            currentStream.FillImage(x, y, w, h, xobj);
 
-            currentStream.Write("ET\nq\n" + PdfNumber.doubleOut(((float)w) / 1000f) + " 0 0 "
-                + PdfNumber.doubleOut(((float)h) / 1000f) + " "
-                + PdfNumber.doubleOut(((float)x) / 1000f) + " "
-                + PdfNumber.doubleOut(((float)(y - h)) / 1000f) + " cm\n" + "/" + xobj.Name.Name
-                + " Do\nQ\nBT\n");
+
 
             this.currentXPosition += area.getContentWidth();
         }
@@ -588,9 +573,9 @@ namespace Fonet.Render.Pdf
             CloseText();
 
             // in general the content will not be text
-            currentStream.Write("ET\n");
+            currentStream.EndTextObject();
             // align and scale
-            currentStream.Write("q\n");
+            currentStream.SaveGraphicsState();
             switch (area.scalingMethod())
             {
                 case Scaling.UNIFORM:
@@ -612,8 +597,8 @@ namespace Fonet.Render.Pdf
             }
 
             area.getObject().render(this);
-            currentStream.Write("Q\n");
-            currentStream.Write("BT\n");
+            currentStream.RestoreGraphicsState();
+            currentStream.BeginTextObject();
             this.currentXPosition += area.getEffectiveWidth();
             // this.currentYPosition -= area.getEffectiveHeight();
         }
@@ -626,172 +611,171 @@ namespace Fonet.Render.Pdf
 
         public void RenderWordArea(WordArea area)
         {
-            // TODO: I don't understand why we are locking the private member
-            // _wordAreaPDF.  Maybe this string buffer was originally static? (MG)
-            lock (_wordAreaPDF)
+             
+            StringBuilder pdf = _wordAreaPDF;
+            pdf.Length = 0; //clear
+
+            GdiKerningPairs kerning = null;
+            bool kerningAvailable = false;
+
+            // If no options are supplied, by default we do not enable kerning
+            if (options != null && options.Kerning)
             {
-                StringBuilder pdf = _wordAreaPDF;
-                pdf.Length = 0;
-
-                GdiKerningPairs kerning = null;
-                bool kerningAvailable = false;
-
-                // If no options are supplied, by default we do not enable kerning
-                if (options != null && options.Kerning)
+                kerning = area.GetFontState().Kerning;
+                if (kerning != null && (kerning.Count > 0))
                 {
-                    kerning = area.GetFontState().Kerning;
-                    if (kerning != null && (kerning.Count > 0))
-                    {
-                        kerningAvailable = true;
-                    }
+                    kerningAvailable = true;
                 }
+            }
 
-                String name = area.GetFontState().FontName;
-                int size = area.GetFontState().FontSize;
+            String name = area.GetFontState().FontName;
+            int size = area.GetFontState().FontSize;
 
-                // This assumes that *all* CIDFonts use a /ToUnicode mapping
-                Font font = (Font)area.GetFontState().FontInfo.GetFontByName(name);
-                bool useMultiByte = font.MultiByteFont;
+            // This assumes that *all* CIDFonts use a /ToUnicode mapping
+            Font font = (Font)area.GetFontState().FontInfo.GetFontByName(name);
+            bool useMultiByte = font.MultiByteFont;
 
-                string startText = useMultiByte ? "<" : "(";
-                string endText = useMultiByte ? "> " : ") ";
+            string startText = useMultiByte ? "<" : "(";
+            string endText = useMultiByte ? "> " : ") ";
 
-                if ((!name.Equals(this.currentFontName)) || (size != this.currentFontSize))
-                {
-                    CloseText();
+            if ((!name.Equals(this.currentFontName)) ||
+                (size != this.currentFontSize))
+            {
+                CloseText();
 
-                    this.currentFontName = name;
-                    this.currentFontSize = size;
-                    pdf = pdf.Append("/" + name + " " +
-                        PdfNumber.doubleOut(size / 1000f) + " Tf\n");
-                }
+                this.currentFontName = name;
+                this.currentFontSize = size;
+                pdf = pdf.Append("/" + name + " " +
+                    PdfNumber.doubleOut(size / 1000f) + " Tf\n");
+            }
 
-                // Do letter spacing (must be outside of [...] TJ]
-                float letterspacing = ((float)area.GetFontState().LetterSpacing) / 1000f;
-                if (letterspacing != this.currentLetterSpacing)
-                {
-                    this.currentLetterSpacing = letterspacing;
-                    CloseText();
-                    pdf.Append(PdfNumber.doubleOut(letterspacing));
-                    pdf.Append(" Tc\n");
-                }
+            // Do letter spacing (must be outside of [...] TJ]
+            float letterspacing = ((float)area.GetFontState().LetterSpacing) / 1000f;
+            if (letterspacing != this.currentLetterSpacing)
+            {
+                this.currentLetterSpacing = letterspacing;
+                CloseText();
+                pdf.Append(PdfNumber.doubleOut(letterspacing));
+                pdf.Append(" Tc\n");
+            }
 
-                PdfColor areaColor = this.currentFill;
+            PdfColor areaColor = this.currentFill;
 
-                if (areaColor == null || areaColor.getRed() != (double)area.getRed()
-                    || areaColor.getGreen() != (double)area.getGreen()
-                    || areaColor.getBlue() != (double)area.getBlue())
-                {
-                    areaColor = new PdfColor((double)area.getRed(),
-                                             (double)area.getGreen(),
-                                             (double)area.getBlue());
-
-
-                    CloseText();
-                    this.currentFill = areaColor;
-                    pdf.Append(this.currentFill.getColorSpaceOut(true));
-                }
+            if (areaColor == null || areaColor.getRed() != (double)area.getRed()
+                || areaColor.getGreen() != (double)area.getGreen()
+                || areaColor.getBlue() != (double)area.getBlue())
+            {
+                areaColor = new PdfColor((double)area.getRed(),
+                                         (double)area.getGreen(),
+                                         (double)area.getBlue());
 
 
-                int rx = this.currentXPosition;
-                int bl = this.currentYPosition;
+                CloseText();
+                this.currentFill = areaColor;
+                pdf.Append(this.currentFill.getColorSpaceOut(true));
+            }
 
-                AddWordLines(area, rx, bl, size, areaColor);
 
-                if (!textOpen || bl != prevWordY)
+            int rx = this.currentXPosition;
+            int bl = this.currentYPosition;
+
+            AddWordLines(area, rx, bl, size, areaColor);
+
+            if (!textOpen || bl != prevWordY)
+            {
+                CloseText();
+
+                pdf.Append("1 0 0 1 " + PdfNumber.doubleOut(rx / 1000f) +
+                    " " + PdfNumber.doubleOut(bl / 1000f) + " Tm [" + startText);
+                prevWordY = bl;
+                textOpen = true;
+            }
+            else
+            {
+                // express the space between words in thousandths of an em
+                int space = prevWordX - rx + prevWordWidth;
+                float emDiff = (float)space / (float)currentFontSize * 1000f;
+                // this prevents a problem in Acrobat Reader where large
+                // numbers cause text to disappear or default to a limit
+                if (emDiff < -33000)
                 {
                     CloseText();
 
                     pdf.Append("1 0 0 1 " + PdfNumber.doubleOut(rx / 1000f) +
                         " " + PdfNumber.doubleOut(bl / 1000f) + " Tm [" + startText);
-                    prevWordY = bl;
                     textOpen = true;
                 }
                 else
                 {
-                    // express the space between words in thousandths of an em
-                    int space = prevWordX - rx + prevWordWidth;
-                    float emDiff = (float)space / (float)currentFontSize * 1000f;
-                    // this prevents a problem in Acrobat Reader where large
-                    // numbers cause text to disappear or default to a limit
-                    if (emDiff < -33000)
-                    {
-                        CloseText();
+                    pdf.Append(PdfNumber.doubleOut(emDiff));
+                    pdf.Append(" ");
+                    pdf.Append(startText);
+                }
+            }
+            prevWordWidth = area.getContentWidth();
+            prevWordX = rx;
 
-                        pdf.Append("1 0 0 1 " + PdfNumber.doubleOut(rx / 1000f) +
-                            " " + PdfNumber.doubleOut(bl / 1000f) + " Tm [" + startText);
-                        textOpen = true;
+            string s;
+            if (area.getPageNumberID() != null)
+            {
+                // This text is a page number, so resolve it
+                s = idReferences.getPageNumber(area.getPageNumberID());
+                if (s == null)
+                {
+                    s = String.Empty;
+                }
+            }
+            else
+            {
+                s = area.getText();
+            }
+
+            int wordLength = s.Length;
+
+            for (int index = 0; index < wordLength; index++)
+            {
+                ushort ch = area.GetFontState().MapCharacter(s[index]);
+
+                if (!useMultiByte)
+                {
+                    if (ch > 127)
+                    {
+                        pdf.Append("\\");
+                        pdf.Append(Convert.ToString((int)ch, 8));
+
                     }
                     else
                     {
-                        pdf.Append(PdfNumber.doubleOut(emDiff));
-                        pdf.Append(" ");
-                        pdf.Append(startText);
-                    }
-                }
-                prevWordWidth = area.getContentWidth();
-                prevWordX = rx;
-
-                string s;
-                if (area.getPageNumberID() != null)
-                {
-                    // This text is a page number, so resolve it
-                    s = idReferences.getPageNumber(area.getPageNumberID());
-                    if (s == null)
-                    {
-                        s = String.Empty;
+                        switch (ch)
+                        {
+                            case '(':
+                            case ')':
+                            case '\\':
+                                pdf.Append("\\");
+                                break;
+                        }
+                        pdf.Append((char)ch);
                     }
                 }
                 else
                 {
-                    s = area.getText();
+                    pdf.Append(GetUnicodeString(ch));
                 }
 
-                int wordLength = s.Length;
-                for (int index = 0; index < wordLength; index++)
+                if (kerningAvailable && (index + 1) < wordLength)
                 {
-                    ushort ch = area.GetFontState().MapCharacter(s[index]);
-
-                    if (!useMultiByte)
-                    {
-                        if (ch > 127)
-                        {
-                            pdf.Append("\\");
-                            pdf.Append(Convert.ToString((int)ch, 8));
-
-                        }
-                        else
-                        {
-                            switch (ch)
-                            {
-                                case '(':
-                                case ')':
-                                case '\\':
-                                    pdf.Append("\\");
-                                    break;
-                            }
-                            pdf.Append((char)ch);
-                        }
-                    }
-                    else
-                    {
-                        pdf.Append(GetUnicodeString(ch));
-                    }
-
-                    if (kerningAvailable && (index + 1) < wordLength)
-                    {
-                        ushort ch2 = area.GetFontState().MapCharacter(s[index + 1]);
-                        AddKerning(pdf, ch, ch2, kerning, startText, endText);
-                    }
-
+                    ushort ch2 = area.GetFontState().MapCharacter(s[index + 1]);
+                    AddKerning(pdf, ch, ch2, kerning, startText, endText);
                 }
-                pdf.Append(endText);
-
-                currentStream.Write(pdf.ToString());
-
-                this.currentXPosition += area.getContentWidth();
 
             }
+            pdf.Append(endText);
+
+            currentStream.Write(pdf.ToString());
+
+            this.currentXPosition += area.getContentWidth();
+
+
         }
 
         /**
@@ -827,7 +811,8 @@ namespace Fonet.Render.Pdf
         {
             if (textOpen)
             {
-                currentStream.Write("] TJ\n");
+                currentStream.CloseText();
+                
                 textOpen = false;
                 prevWordX = 0;
                 prevWordY = 0;
@@ -877,7 +862,7 @@ namespace Fonet.Render.Pdf
             this.currentFontSize = 0;
             this.currentLetterSpacing = Single.NaN;
 
-            currentStream.Write("BT\n");
+            currentStream.BeginTextObject();
 
             RenderBodyAreaContainer(body);
 
@@ -907,13 +892,13 @@ namespace Fonet.Render.Pdf
 
             float w = page.getWidth();
             float h = page.GetHeight();
-            currentStream.Write("ET\n");
+            currentStream.EndTextObject();
 
             var idList = new System.Collections.Generic.List<string>();
             foreach (string id in page.getIDList())
             {
                 idList.Add(id);
-            }             
+            }
 
             currentPage = this.pdfDoc.makePage(
                 this.pdfResources, currentStream,
@@ -958,7 +943,7 @@ namespace Fonet.Render.Pdf
         * defines a string containing dashArray and dashPhase for the rule style
         */
 
-        private String SetRuleStylePattern(int style)
+        static String SetRuleStylePattern(int style)
         {
             string rs = "";
             switch (style)
@@ -1180,12 +1165,7 @@ namespace Fonet.Render.Pdf
         {
             PdfXObject xobj = this.pdfDoc.AddImage(image);
             CloseText();
-
-            currentStream.Write("ET\nq\n" + PdfNumber.doubleOut(((float)w) / 1000f) + " 0 0 "
-                + PdfNumber.doubleOut(((float)h) / 1000f) + " "
-                + PdfNumber.doubleOut(((float)x) / 1000f) + " "
-                + PdfNumber.doubleOut(((float)(y - h)) / 1000f) + " cm\n" + "/" + xobj.Name.Name
-                + " Do\nQ\nBT\n");
+            currentStream.FillImage(x, y, w, h, xobj);
         }
 
         /// <summary>
@@ -1217,22 +1197,9 @@ namespace Fonet.Render.Pdf
             PdfXObject xobj = this.pdfDoc.AddImage(image);
             CloseText();
 
-            currentStream.Write("ET\nq\n" +
-                // clipping
-                PdfNumber.doubleOut(cx1) + " " + PdfNumber.doubleOut(cy1) + " m\n" +
-                PdfNumber.doubleOut(cx2) + " " + PdfNumber.doubleOut(cy1) + " l\n" +
-                PdfNumber.doubleOut(cx2) + " " + PdfNumber.doubleOut(cy2) + " l\n" +
-                PdfNumber.doubleOut(cx1) + " " + PdfNumber.doubleOut(cy2) + " l\n" +
-                "W\n" +
-                "n\n" +
-                // image matrix
-                PdfNumber.doubleOut(((float)imgW) / 1000f) + " 0 0 " +
-                PdfNumber.doubleOut(((float)imgH) / 1000f) + " " +
-                PdfNumber.doubleOut(((float)imgX) / 1000f) + " " +
-                PdfNumber.doubleOut(((float)imgY - imgH) / 1000f) + " cm\n" +
-                "s\n" +
-                // the image itself
-                "/" + xobj.Name.Name + " Do\nQ\nBT\n");
+            currentStream.ClipImage(
+                cx1, cy1, cx2, cy2,
+                imgX, imgY, imgW, imgH, xobj);
         }
 
 

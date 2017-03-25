@@ -4,7 +4,7 @@ using System;
 using System.Globalization;
 using System.Text;
 
-namespace Fonet.Render.Pdf
+namespace Fonet
 {
     public sealed class PdfNumber
     {

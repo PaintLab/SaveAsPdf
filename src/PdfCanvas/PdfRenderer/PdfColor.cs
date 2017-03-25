@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Text;
 using Fonet.DataTypes;
 
-namespace Fonet.Render.Pdf
+namespace Fonet
 {
-    internal sealed class PdfColor
+    public sealed class PdfColor
     {
         private double red = -1.0;
         private double green = -1.0;
