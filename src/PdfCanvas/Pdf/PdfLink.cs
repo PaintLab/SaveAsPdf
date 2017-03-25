@@ -2,7 +2,7 @@
 //Apache2, 2009, griffm, FO.NET
 using System.Diagnostics;
  
-using PixelFarm.Drawing;
+ 
 
 namespace Fonet.Pdf
 {

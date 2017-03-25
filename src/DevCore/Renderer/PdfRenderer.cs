@@ -611,28 +611,28 @@ namespace Fonet.Render.Pdf
 
         public void RenderWordArea(WordArea area)
         {
-             
+
             StringBuilder pdf = _wordAreaPDF;
             pdf.Length = 0; //clear
 
             GdiKerningPairs kerning = null;
             bool kerningAvailable = false;
-
+            FontState fontState = area.GetFontState();
             // If no options are supplied, by default we do not enable kerning
             if (options != null && options.Kerning)
             {
-                kerning = area.GetFontState().Kerning;
+                kerning = fontState.Kerning;
                 if (kerning != null && (kerning.Count > 0))
                 {
                     kerningAvailable = true;
                 }
             }
 
-            String name = area.GetFontState().FontName;
-            int size = area.GetFontState().FontSize;
+            String name = fontState.FontName;
+            int size = fontState.FontSize;
 
             // This assumes that *all* CIDFonts use a /ToUnicode mapping
-            Font font = (Font)area.GetFontState().FontInfo.GetFontByName(name);
+            Font font = (Font)fontState.FontInfo.GetFontByName(name);
             bool useMultiByte = font.MultiByteFont;
 
             string startText = useMultiByte ? "<" : "(";
@@ -650,17 +650,17 @@ namespace Fonet.Render.Pdf
             }
 
             // Do letter spacing (must be outside of [...] TJ]
-            float letterspacing = ((float)area.GetFontState().LetterSpacing) / 1000f;
+            float letterspacing = ((float)fontState.LetterSpacing) / 1000f;
             if (letterspacing != this.currentLetterSpacing)
             {
                 this.currentLetterSpacing = letterspacing;
-                CloseText();
+                CloseText(); //?
                 pdf.Append(PdfNumber.doubleOut(letterspacing));
                 pdf.Append(" Tc\n");
             }
 
+            //--------------------------------------------
             PdfColor areaColor = this.currentFill;
-
             if (areaColor == null || areaColor.getRed() != (double)area.getRed()
                 || areaColor.getGreen() != (double)area.getGreen()
                 || areaColor.getBlue() != (double)area.getBlue())
@@ -669,12 +669,11 @@ namespace Fonet.Render.Pdf
                                          (double)area.getGreen(),
                                          (double)area.getBlue());
 
-
-                CloseText();
+                CloseText(); //?
                 this.currentFill = areaColor;
                 pdf.Append(this.currentFill.getColorSpaceOut(true));
             }
-
+            //--------------------------------------------
 
             int rx = this.currentXPosition;
             int bl = this.currentYPosition;
@@ -734,6 +733,7 @@ namespace Fonet.Render.Pdf
 
             for (int index = 0; index < wordLength; index++)
             {
+                //get glyph index from current font?
                 ushort ch = area.GetFontState().MapCharacter(s[index]);
 
                 if (!useMultiByte)
@@ -812,7 +812,7 @@ namespace Fonet.Render.Pdf
             if (textOpen)
             {
                 currentStream.CloseText();
-                
+
                 textOpen = false;
                 prevWordX = 0;
                 prevWordY = 0;
@@ -832,9 +832,11 @@ namespace Fonet.Render.Pdf
 
         public void Render(Page page)
         {
-            this.idReferences = page.getIDReferences();
             this.pdfResources = this.pdfDoc.getResources();
+            //
+            this.idReferences = page.getIDReferences();            
             this.pdfDoc.setIDReferences(idReferences);
+            //
             this.RenderPage(page);
             this.pdfDoc.output();
         }
@@ -939,33 +941,7 @@ namespace Fonet.Render.Pdf
             this.currentFill = null;
         }
 
-        /**
-        * defines a string containing dashArray and dashPhase for the rule style
-        */
-
-        static String SetRuleStylePattern(int style)
-        {
-            string rs = "";
-            switch (style)
-            {
-                case RuleStyle.SOLID:
-                    rs = "[] 0 d ";
-                    break;
-                case RuleStyle.DASHED:
-                    rs = "[3 3] 0 d ";
-                    break;
-                case RuleStyle.DOTTED:
-                    rs = "[1 3] 0 d ";
-                    break;
-                case RuleStyle.DOUBLE:
-                    rs = "[] 0 d ";
-                    break;
-                default:
-                    rs = "[] 0 d ";
-                    break;
-            }
-            return rs;
-        }
+      
 
         private void DoFrame(Area area)
         {

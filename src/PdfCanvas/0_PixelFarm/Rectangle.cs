@@ -34,7 +34,7 @@
 //
 
 using System;
-namespace PixelFarm.Drawing
+namespace Fonet
 {
     public struct Rectangle
     {

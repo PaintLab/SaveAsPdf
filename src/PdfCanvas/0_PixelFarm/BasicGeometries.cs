@@ -1,6 +1,6 @@
-﻿ //MIT, 2014-2017, WinterDev
+﻿//MIT, 2014-2017, WinterDev
 
-namespace PixelFarm.Drawing
+namespace Fonet
 {
     public struct Point
     {
