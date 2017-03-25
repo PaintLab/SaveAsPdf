@@ -19,8 +19,6 @@ namespace FonetExample
             //2. set page property
 
 
-
-            //
             MyPdfCanvas canvas = page.Canvas;
             canvas.DrawString("Hello World!, from PixelFarm", 20, 20);
             //
@@ -30,7 +28,7 @@ namespace FonetExample
                 return null;
             };
 
-            string outputFilename = "hello.pdf";
+            string outputFilename = "bin\\output.pdf";
             using (FileStream outputStream = new FileStream(outputFilename, FileMode.Create, FileAccess.Write))
             {
                 driver.Render(pdfdoc, outputStream);
