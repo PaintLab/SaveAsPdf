@@ -6,7 +6,7 @@ using Fonet.DataTypes;
 
 namespace Fonet.Render.Pdf
 {
-    public sealed class PdfColor
+    internal sealed class PdfColor
     {
         private double red = -1.0;
         private double green = -1.0;

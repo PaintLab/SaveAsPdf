@@ -1,8 +1,8 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
-namespace Fonet.Fo.Properties
+namespace Fonet
 {
-    internal class RuleStyle
+    public class RuleStyle
     {
         public const int NONE = Constants.NONE;
 

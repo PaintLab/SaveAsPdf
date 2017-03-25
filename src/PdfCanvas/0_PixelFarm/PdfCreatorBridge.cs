@@ -19,6 +19,11 @@ namespace Fonet
         {
 
         }
+        public static void Msg(string str) { }
+        public static void Error(string str)
+        {
+            throw new NotSupportedException(str);
+        }
         public static FonetImage LoadImage(string href)
         {
             return s_loadImg(href);

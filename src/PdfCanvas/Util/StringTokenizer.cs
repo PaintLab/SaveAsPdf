@@ -5,7 +5,7 @@ namespace Fonet.Util
     using System;
     using System.Collections;
 
-    internal class StringTokenizer : IEnumerator
+    public class StringTokenizer : IEnumerator
     {
         private int currentPosition;
         private int newPosition;

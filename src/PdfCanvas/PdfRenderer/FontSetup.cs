@@ -17,7 +17,7 @@ namespace Fonet.Render.Pdf
     ///     Assigns the font (with metrics) to internal names like "F1" and
     ///     assigns family-style-weight triplets to the fonts.
     /// </remarks>
-    internal class FontSetup
+    public class FontSetup
     {
         /// <summary>
         ///     First 16 indices are used by base 14 and generic fonts
@@ -53,7 +53,7 @@ namespace Fonet.Render.Pdf
             {
                 if (IsBase14FontName(familyName))
                 {
-                    FonetDriver.ActiveDriver.FireFonetWarning(
+                    PdfCreatorBridge.Warning(
                         "Will ignore TrueType font '" + familyName + "' because a base 14 font with the same name already exists.");
 
                 }

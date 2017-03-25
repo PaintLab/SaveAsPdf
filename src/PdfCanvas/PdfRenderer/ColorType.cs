@@ -6,7 +6,7 @@ namespace Fonet.DataTypes
     using System.Globalization;
     using Fonet.Util;
 
-    internal class ColorType : ICloneable
+    public class ColorType : ICloneable
     {
         private float red;
         private float green;
@@ -53,8 +53,8 @@ namespace Fonet.DataTypes
                         red = 0;
                         green = 0;
                         blue = 0;
-                        FonetDriver.ActiveDriver.FireFonetError(
-                            "Unknown colour format. Must be #RGB or #RRGGBB");
+                        PdfCreatorBridge.Error(
+                             "Unknown colour format. Must be #RGB or #RRGGBB");
                     }
                 }
                 catch (Exception)
@@ -62,8 +62,8 @@ namespace Fonet.DataTypes
                     red = 0;
                     green = 0;
                     blue = 0;
-                    FonetDriver.ActiveDriver.FireFonetError(
-                        "Unknown colour format. Must be #RGB or #RRGGBB");
+                    PdfCreatorBridge.Error(
+                         "Unknown colour format. Must be #RGB or #RRGGBB");
                 }
             }
             else if (colorValue.StartsWith("rgb("))
@@ -124,8 +124,8 @@ namespace Fonet.DataTypes
                         this.Red = 0;
                         this.Green = 0;
                         this.Blue = 0;
-                        FonetDriver.ActiveDriver.FireFonetError(
-                            "Unknown colour format. Must be #RGB or #RRGGBB");
+                        PdfCreatorBridge.Error(
+                             "Unknown colour format. Must be #RGB or #RRGGBB");
                     }
                 }
 
@@ -133,7 +133,7 @@ namespace Fonet.DataTypes
             else if (colorValue.StartsWith("url("))
             {
                 // refers to a gradient
-                FonetDriver.ActiveDriver.FireFonetError(
+                PdfCreatorBridge.Error(
                     "unsupported color format");
 
             }
@@ -165,8 +165,8 @@ namespace Fonet.DataTypes
                         Red = 0;
                         Green = 0;
                         Blue = 0;
-                        FonetDriver.ActiveDriver.FireFonetWarning(
-                            "Unknown colour name: " + colorValue + ".  Defaulting to black.");
+                        PdfCreatorBridge.Warning(
+                           "Unknown colour name: " + colorValue + ".  Defaulting to black.");
                     }
                 }
             }
@@ -229,7 +229,9 @@ namespace Fonet.DataTypes
             return new ColorType(Red, Green, Blue);
         }
 
+
         private static readonly string[] names = {
+            //TODO: review color here
             "aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige",
             "bisque", "black", "blanchedalmond", "blue", "blueviolet", "brown",
             "burlywood", "cadetblue", "chartreuse", "chocolate", "coral",

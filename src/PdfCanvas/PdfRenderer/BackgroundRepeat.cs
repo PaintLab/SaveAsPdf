@@ -1,8 +1,8 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
-namespace Fonet.Fo.Properties
+namespace Fonet
 {
-    internal class BackgroundRepeat
+    public class BackgroundRepeat
     {
         public const int REPEAT = Constants.REPEAT;
 
