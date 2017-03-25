@@ -102,7 +102,7 @@ namespace Fonet.Fo
             string localName,
             Attributes attlist)
         {
-            FObj fobj;
+
 
             FObj.Maker fobjMaker = GetFObjMaker(uri, localName);
 
@@ -147,7 +147,7 @@ namespace Fonet.Fo
                 }
                 list = currentFObj.properties;
             }
-            fobj = fobjMaker.Make(currentFObj, list);
+            FObj fobj = fobjMaker.Make(currentFObj, list);
 
             if (rootFObj == null)
             {
