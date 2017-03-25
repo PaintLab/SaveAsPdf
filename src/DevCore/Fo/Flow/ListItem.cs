@@ -22,9 +22,9 @@ namespace Fonet.Fo.Flow
 
         public ListItem(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
-        {
-            this.name = "fo:list-item";
+        { 
         }
+        public override string ElementName { get { return "fo:list-item"; } }
 
         public override Status Layout(Area area)
         {

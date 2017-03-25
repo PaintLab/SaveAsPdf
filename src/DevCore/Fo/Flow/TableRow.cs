@@ -139,9 +139,9 @@ namespace Fonet.Fo.Flow
                     + parent.GetName());
             }
 
-            this.name = "fo:table-row";
+            
         }
-
+        public override string ElementName { get { return "fo:table-row"; } }
         public void SetColumns(ArrayList columns)
         {
             this.columns = columns;

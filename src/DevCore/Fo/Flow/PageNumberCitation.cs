@@ -28,9 +28,9 @@ namespace Fonet.Fo.Flow
         public PageNumberCitation(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:page-number-citation";
+          
         }
-
+        public override string ElementName { get { return "fo:page-number-citation"; } }
         public override Status Layout(Area area)
         {
             if (!(area is BlockArea))

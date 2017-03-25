@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         protected InitialPropertySet(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:initial-property-set";
+           
         }
-
+        public override string ElementName { get { return "fo:initial-property-set"; } }
         public override Status Layout(Area area)
         {
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();

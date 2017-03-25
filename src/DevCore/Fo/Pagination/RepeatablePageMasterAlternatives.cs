@@ -28,8 +28,7 @@ namespace Fonet.Fo.Pagination
         public RepeatablePageMasterAlternatives(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:repeatable-page-master-alternatives";
-
+     
             conditionalPageMasterRefs = new ArrayList();
 
             if (parent.GetName().Equals("fo:page-sequence-master"))
@@ -59,10 +58,9 @@ namespace Fonet.Fo.Pagination
                 {
                     throw new FonetException("Invalid number for 'maximum-repeats' property");
                 }
-            }
-
+            } 
         }
-
+        public override string ElementName { get { return "fo:repeatable-page-master-alternatives"; } }
         public string GetNextPageMaster(
             int currentPageNumber, bool thisIsFirstPage, bool isEmptyPage)
         {

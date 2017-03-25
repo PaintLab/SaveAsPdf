@@ -18,7 +18,7 @@ namespace Fonet.Fo.Flow
         public Marker(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:marker";
+           
 
             this.markerClassName =
                 this.properties.GetProperty("marker-class-name").GetString();
@@ -32,7 +32,7 @@ namespace Fonet.Fo.Flow
             {
             }
         }
-
+        public override string ElementName { get { return "fo:marker"; } }
         public override Status Layout(Area area)
         {
             this.registryArea = area;

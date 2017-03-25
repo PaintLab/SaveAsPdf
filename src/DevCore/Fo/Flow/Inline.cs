@@ -7,16 +7,16 @@ namespace Fonet.Fo.Flow
     internal class Inline : FObjMixed
     {
 
-        public new static FObjMaker<Inline> GetMaker()
+        public static FObjMaker<Inline> GetMaker()
         {
             return new FObjMaker<Inline>((parent, propertyList) => new Inline(parent, propertyList));
         }
 
-
+        public override string ElementName { get { return "fo:inline"; } }
         public Inline(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:inline";
+
             if (parent.GetName().Equals("fo:flow"))
             {
                 throw new FonetException("inline formatting objects cannot"

@@ -15,7 +15,7 @@ namespace Fonet.Fo
         protected XmlNode element;
 
         protected XmlDocument doc;
-        
+
         protected const string NS = "http://www.codeplex.com/fonet";
 
         public XMLObj(FObj parent, PropertyList propertyList, string tag)
@@ -68,7 +68,7 @@ namespace Fonet.Fo
         public override Status Layout(Area area)
         {
             FonetDriver.ActiveDriver.FireFonetError(
-                this.name + " outside foreign xml");
+                this.ElementName + " outside foreign xml");
 
             return new Status(Status.OK);
         }

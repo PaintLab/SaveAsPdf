@@ -17,7 +17,7 @@ namespace Fonet.Fo
             internal Maker(string t)
             {
                 tag = t;
-            } 
+            }
             public override XMLElement Make(FObj parent, PropertyList propertyList)
             {
                 return new XMLElement(parent, propertyList, tag);
@@ -34,7 +34,7 @@ namespace Fonet.Fo
         {
             Init();
         }
-
+        public override string ElementName { get { return this.tagName; } }
         public override Status Layout(Area area)
         {
             if (!(area is ForeignObjectArea))

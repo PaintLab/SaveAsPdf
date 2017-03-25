@@ -8,21 +8,16 @@ namespace Fonet.Fo.Flow
         public static FObjMaker<Wrapper> GetMaker()
         {
             return new FObjMaker<Wrapper>((parent, propertyList) => new Wrapper(parent, propertyList));
-        }
-
-        
-
+        } 
         public Wrapper(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
-        {
-            this.name = "fo:wrapper";
-        }
-
+        { 
+        } 
         protected internal override void AddCharacters(char[] data, int start, int length)
         {
             FOText ft = new FOText(data, start, length, this);
             children.Add(ft);
         }
-
+        public override string ElementName { get { return "fo:wrapper"; } }
     }
 }

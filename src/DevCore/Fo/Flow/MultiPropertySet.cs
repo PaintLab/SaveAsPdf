@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         protected MultiPropertySet(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:multi-property-set";
+           
         }
-
+        public override string ElementName { get { return "fo:multi-property-set"; } }
         public override Status Layout(Area area)
         {
             return base.Layout(area);

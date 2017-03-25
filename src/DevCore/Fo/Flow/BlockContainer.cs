@@ -28,10 +28,10 @@ namespace Fonet.Fo.Flow
         protected BlockContainer(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:block-container";
+           
             this.span = this.properties.GetProperty("span").GetEnum();
         }
-
+        public override string ElementName { get { return "fo:block-container"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerStart)

@@ -48,11 +48,8 @@ namespace Fonet.Fo.Pagination
             return "xsl-region-after";
         }
 
-        protected override string GetElementName()
-        {
-            return "fo:region-after";
-        }
-
+        
+        public override string ElementName { get { return "fo:region-after"; } }
         public override string GetRegionClass()
         {
             return REGION_CLASS;

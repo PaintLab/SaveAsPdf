@@ -8,7 +8,7 @@ namespace Fonet.Fo.Flow
         {
             return new FObjMaker<TableFooter>((parent, propertyList) => new TableFooter(parent, propertyList));
         }
-       
+
         public override int GetYPosition()
         {
             return areaContainer.GetCurrentYPosition() - spaceBefore;
@@ -18,11 +18,11 @@ namespace Fonet.Fo.Flow
         {
             areaContainer.setYPosition(value + 2 * spaceBefore);
         }
- 
+
         public TableFooter(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:table-footer";
         }
+        public override string ElementName { get { return "fo:table-footer"; } }
     }
 }

@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         protected Float(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:float";
+    
         }
-
+        public override string ElementName { get { return "fo:float"; } }
         public override Status Layout(Area area)
         {
             return base.Layout(area);

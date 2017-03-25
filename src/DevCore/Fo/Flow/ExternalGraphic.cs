@@ -24,9 +24,9 @@ namespace Fonet.Fo.Flow
 
         public ExternalGraphic(FObj parent, PropertyList propertyList) : base(parent, propertyList)
         {
-            this.name = "fo:external-graphic";
+            
         }
-
+        public override string ElementName { get { return "fo:external-graphic"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerStart)
@@ -207,9 +207,7 @@ namespace Fonet.Fo.Flow
             }
 
             return new Status(Status.OK);
-        }
-
-        
+        } 
         public static FObjMaker<ExternalGraphic> GetMaker()
         {
             return new FObjMaker<ExternalGraphic>((parent, propertyList) => new ExternalGraphic(parent, propertyList));

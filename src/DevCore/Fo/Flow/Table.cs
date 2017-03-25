@@ -58,9 +58,9 @@ namespace Fonet.Fo.Flow
         public Table(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:table";
+            
         }
-
+        public override string ElementName { get { return "fo:table"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerBreakAfter)

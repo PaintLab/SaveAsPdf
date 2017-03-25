@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         public Leader(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:leader";
+           
         }
-
+        public override string ElementName { get { return "fo:leader"; } }
         public override Status Layout(Area area)
         {
             BlockArea blockArea;

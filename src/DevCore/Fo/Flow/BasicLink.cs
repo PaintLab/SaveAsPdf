@@ -17,9 +17,9 @@ namespace Fonet.Fo.Flow
         public BasicLink(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:basic-link";
+            
         }
-
+        public override string ElementName { get { return "fo:basic-link"; } }
         public override Status Layout(Area area)
         {
             string destination;

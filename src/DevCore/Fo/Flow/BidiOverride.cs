@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         protected BidiOverride(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:bidi-override";
+            
         }
-
+        public override string ElementName { get { return "fo:bidi-override"; } }
         public override Status Layout(Area area)
         {
             AuralProps mAurProps = propMgr.GetAuralProps();

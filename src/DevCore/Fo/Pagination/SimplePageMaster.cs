@@ -1,5 +1,6 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
+using System;
 using System.Collections;
 using Fonet.Layout;
 
@@ -26,8 +27,7 @@ namespace Fonet.Fo.Pagination
         protected SimplePageMaster(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:simple-page-master";
-
+           
             if (parent.GetName().Equals("fo:layout-master-set"))
             {
                 this.layoutMasterSet = (LayoutMasterSet)parent;
@@ -50,6 +50,7 @@ namespace Fonet.Fo.Pagination
             }
             _regions = new Hashtable();
         }
+        public override string ElementName { get { return "fo:simple-page-master"; } }
 
         protected internal override void End()
         {

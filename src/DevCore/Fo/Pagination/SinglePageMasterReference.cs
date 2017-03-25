@@ -42,11 +42,8 @@ namespace Fonet.Fo.Pagination
         {
             this.state = FIRST;
         }
-
-        protected override string GetElementName()
-        {
-            return "fo:single-page-master-reference";
-        }
+        public override string ElementName { get { return "fo:single-page-master-reference"; } }
+       
 
     }
 }

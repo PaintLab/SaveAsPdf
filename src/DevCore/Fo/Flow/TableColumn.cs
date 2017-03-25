@@ -25,9 +25,9 @@ namespace Fonet.Fo.Flow
         public TableColumn(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:table-column";
+           
         }
-
+        public override string ElementName { get { return "fo:table-column"; } }
         public Length GetColumnWidthAsLength()
         {
             return columnWidthPropVal;

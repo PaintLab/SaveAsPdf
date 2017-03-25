@@ -24,7 +24,7 @@ namespace Fonet.Fo.Pagination
         public ConditionalPageMasterReference(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = GetElementName();
+            
             if (GetProperty("master-reference") != null)
             {
                 SetMasterName(GetProperty("master-reference").GetString());
@@ -132,11 +132,8 @@ namespace Fonet.Fo.Pagination
         {
             return this.blankOrNotBlank;
         }
-
-        protected internal string GetElementName()
-        {
-            return "fo:conditional-page-master-reference";
-        }
+          
+        public override string ElementName { get { return "fo:conditional-page-master-reference"; } }
 
         protected internal void validateParent(FObj parent)
         {

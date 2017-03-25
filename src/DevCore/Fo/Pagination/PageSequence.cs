@@ -37,11 +37,11 @@ namespace Fonet.Fo.Pagination
         private SubSequenceSpecifier currentSubsequence;
         private int currentSubsequenceNumber = -1;
         private string currentPageMasterName;
-
+        public override string ElementName { get { return "fo:page-sequence"; } }
         protected PageSequence(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:page-sequence";
+          
 
             if (parent.GetName().Equals("fo:root"))
             {

@@ -1,5 +1,6 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
+using System;
 using Fonet.Layout;
 
 namespace Fonet.Fo.Pagination
@@ -70,11 +71,8 @@ namespace Fonet.Fo.Pagination
         {
             return "xsl-region-end";
         }
-
-        protected override string GetElementName()
-        {
-            return "fo:region-end";
-        }
+        public override string ElementName { get { return "fo:region-end"; } }
+       
 
         public override string GetRegionClass()
         {

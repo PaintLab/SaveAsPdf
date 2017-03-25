@@ -7,14 +7,12 @@ namespace Fonet.Fo.Flow
         public static FObjMaker<TableBody> GetMaker()
         {
             return new FObjMaker<TableBody>((parent, propertyList) => new TableBody(parent, propertyList));
-        }
-         
-
+        } 
         public TableBody(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:table-body";
+           
         }
-
+        public override string ElementName { get { return "fo:table-body"; } }
     }
 }

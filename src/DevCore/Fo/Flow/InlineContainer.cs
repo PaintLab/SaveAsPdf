@@ -15,12 +15,13 @@ namespace Fonet.Fo.Flow
         protected InlineContainer(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:inline-container";
+             
 
             BorderAndPadding bap = propMgr.GetBorderAndPadding();
             BackgroundProps bProps = propMgr.GetBackgroundProps();
             MarginInlineProps mProps = propMgr.GetMarginInlineProps();
             RelativePositionProps mRelProps = propMgr.GetRelativePositionProps();
         }
+        public override string ElementName { get { return "fo:inline-container"; } }
     }
 }

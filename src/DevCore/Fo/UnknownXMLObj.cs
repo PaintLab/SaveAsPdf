@@ -1,5 +1,6 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
+using System;
 using Fonet.Layout;
 
 namespace Fonet.Fo
@@ -35,16 +36,21 @@ namespace Fonet.Fo
             : base(parent, propertyList, tag)
         {
             this.nmspace = space;
-            if (!"".Equals(space))
+        }
+        public override string ElementName
+        {
+            get
             {
-                this.name = this.nmspace + ":" + tag;
-            }
-            else
-            {
-                this.name = "(none):" + tag;
+                if (string.IsNullOrEmpty(nmspace))
+                {
+                    return "(none):" + tagName;
+                }
+                else
+                {
+                    return this.nmspace + ":" + tagName;
+                }
             }
         }
-
         public override string GetNameSpace()
         {
             return this.nmspace;

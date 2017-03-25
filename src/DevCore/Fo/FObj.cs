@@ -14,6 +14,7 @@ namespace Fonet.Fo
         internal abstract class MakerBase
         {
             public abstract FObj InnerMake(FObj parent, PropertyList propertyList);
+
         }
         internal abstract class Maker<T> : MakerBase
             where T : FObj
@@ -36,13 +37,15 @@ namespace Fonet.Fo
             {
                 return _creatorDel(parent, propertyList);
             }
+
+          
+
         }
 
         public PropertyList properties;
 
         protected PropertyManager propMgr;
-
-        protected string name;
+        public abstract string ElementName { get; }
 
         private Hashtable markerClassNames;
 
@@ -51,11 +54,10 @@ namespace Fonet.Fo
         {
             this.properties = propertyList;
             propertyList.FObj = this;
-            this.propMgr = MakePropertyManager(propertyList);
-            this.name = "default FO";
+            this.propMgr = MakePropertyManager(propertyList); 
             SetWritingMode();
         }
-
+        
         protected PropertyManager MakePropertyManager(PropertyList propertyList)
         {
             return new PropertyManager(propertyList);
@@ -73,7 +75,7 @@ namespace Fonet.Fo
 
         public string GetName()
         {
-            return name;
+            return ElementName;
         }
 
         protected internal virtual void Start()

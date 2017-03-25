@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         protected MultiCase(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:multi-case";
+           
         }
-
+        public override string ElementName { get { return "fo:multi-case"; } }
         public override Status Layout(Area area)
         {
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();

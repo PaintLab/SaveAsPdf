@@ -2,6 +2,7 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Fo.Flow
 {
+    using System;
     using Fonet.Layout;
 
     internal class MultiToggle : ToBeImplementedElement
@@ -11,12 +12,13 @@ namespace Fonet.Fo.Flow
             return new FObjMaker<MultiToggle>((parent, propertyList) => new MultiToggle(parent, propertyList));
         }
 
-         
+
         protected MultiToggle(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:multi-toggle";
+           
         }
+        public override string ElementName { get { return "fo:multi-toggle"; } }
 
         public override Status Layout(Area area)
         {

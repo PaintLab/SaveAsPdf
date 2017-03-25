@@ -33,10 +33,9 @@ namespace Fonet.Fo.Flow
 
         public InstreamForeignObject(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
-        {
-            this.name = "fo:instream-foreign-object";
+        { 
         }
-
+        public override string ElementName { get { return "fo:instream-foreign-object"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerBreakAfter)

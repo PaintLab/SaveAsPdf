@@ -14,9 +14,9 @@ namespace Fonet.Fo
         protected Unknown(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "unknown";
+            
         }
-
+        public override string ElementName { get { return "unknown"; } }
         public override Status Layout(Area area)
         {
             return new Status(Status.OK);

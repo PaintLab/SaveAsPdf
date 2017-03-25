@@ -35,10 +35,10 @@ namespace Fonet.Fo.Flow
         public TableCell(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:table-cell";
+            
             DoSetup();
         }
-
+        public override string ElementName { get { return "fo:table-cell"; } }
         public void SetStartOffset(int offset)
         {
             startOffset = offset;

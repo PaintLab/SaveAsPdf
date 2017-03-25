@@ -49,13 +49,8 @@ namespace Fonet.Fo.Pagination
         protected override string GetDefaultRegionName()
         {
             return "xsl-region-before";
-        }
-
-        protected override string GetElementName()
-        {
-            return "fo:region-before";
-        }
-
+        } 
+        public override string ElementName { get { return "fo:region-before"; } }
         public override string GetRegionClass()
         {
             return REGION_CLASS;

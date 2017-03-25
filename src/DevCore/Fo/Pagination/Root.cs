@@ -2,6 +2,7 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Fo.Pagination
 {
+    using System;
     using System.Collections;
 
     internal class Root : FObj
@@ -22,14 +23,17 @@ namespace Fonet.Fo.Pagination
         protected internal Root(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:root";
+              
             pageSequences = new ArrayList();
             if (parent != null)
             {
                 throw new FonetException("root must be root element");
             }
         }
-
+        public override string ElementName
+        {
+            get { return "fo:root"; }
+        }
         protected internal int getRunningPageNumberCounter()
         {
             return this.runningPageNumberCounter;

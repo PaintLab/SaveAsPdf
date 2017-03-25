@@ -29,10 +29,10 @@ namespace Fonet.Fo.Flow
         public FootnoteBody(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:footnote-body";
+             
             this.areaClass = AreaClass.setAreaClass(AreaClass.XSL_FOOTNOTE);
         }
-
+        public override string ElementName { get { return "fo:footnote-body"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerStart)

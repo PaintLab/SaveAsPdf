@@ -29,10 +29,10 @@ namespace Fonet.Fo.Flow
         private string id;
         private int span;
         private bool anythingLaidOut = false;
-
+        public override string ElementName { get { return "fo:block"; } }
         public Block(FObj parent, PropertyList propertyList) : base(parent, propertyList)
         {
-            this.name = "fo:block";
+             
 
             switch (parent.GetName())
             {

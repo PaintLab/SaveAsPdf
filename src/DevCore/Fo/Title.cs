@@ -17,9 +17,9 @@ namespace Fonet.Fo
         protected Title(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:title";
+             
         }
-
+        public override string ElementName { get { return "fo:title"; } }
         public override Status Layout(Area area)
         {
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();

@@ -11,7 +11,7 @@ namespace Fonet.Fo.Flow
             return new FObjMaker<ListBlock>((parent, propertyList) => new ListBlock(parent, propertyList));
         }
 
-         
+
 
         private int align;
         private int alignLast;
@@ -24,9 +24,9 @@ namespace Fonet.Fo.Flow
         public ListBlock(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:list-block";
+             
         }
-
+        public override string ElementName { get { return "fo:list-block"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerStart)

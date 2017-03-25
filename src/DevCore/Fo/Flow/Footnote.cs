@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         public Footnote(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:footnote";
+            
         }
-
+        public override string ElementName { get { return "fo:footnote"; } }
         public override Status Layout(Area area)
         {
             FONode inline = null;

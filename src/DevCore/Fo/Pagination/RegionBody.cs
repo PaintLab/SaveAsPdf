@@ -73,12 +73,8 @@ namespace Fonet.Fo.Pagination
         {
             return "xsl-region-body";
         }
-
-        protected override string GetElementName()
-        {
-            return "fo:region-body";
-        }
-
+         
+        public override string ElementName { get { return "fo:region-body"; } }
         public override string GetRegionClass()
         {
             return REGION_CLASS;

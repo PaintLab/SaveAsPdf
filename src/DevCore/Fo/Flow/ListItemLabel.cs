@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         public ListItemLabel(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:list-item-label";
+       
         }
-
+        public override string ElementName { get { return "fo:list-item-label"; } }
         public override Status Layout(Area area)
         {
             int numChildren = this.children.Count;

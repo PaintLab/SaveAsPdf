@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         public ListItemBody(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:list-item-body";
+             
         }
-
+        public override string ElementName { get { return "fo:list-item-body"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerStart)

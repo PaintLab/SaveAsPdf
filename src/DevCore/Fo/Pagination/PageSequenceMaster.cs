@@ -10,7 +10,7 @@ namespace Fonet.Fo.Pagination
         {
             return new FObjMaker<PageSequenceMaster>((parent, propertyList) => new PageSequenceMaster(parent, propertyList));
         }
- 
+
 
         private LayoutMasterSet layoutMasterSet;
 
@@ -19,8 +19,6 @@ namespace Fonet.Fo.Pagination
         protected PageSequenceMaster(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:page-sequence-master";
-
             subSequenceSpecifiers = new ArrayList();
 
             if (parent.GetName().Equals("fo:layout-master-set"))
@@ -45,6 +43,7 @@ namespace Fonet.Fo.Pagination
             }
         }
 
+        public override string ElementName { get { return "fo:page-sequence-master"; } }
         protected internal void AddSubsequenceSpecifier(SubSequenceSpecifier pageMasterReference)
         {
             subSequenceSpecifiers.Add(pageMasterReference);

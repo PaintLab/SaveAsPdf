@@ -20,8 +20,9 @@ namespace Fonet.Fo
         protected ColorProfile(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:color-profile";
+ 
         }
+        public override string ElementName { get { return "fo:color-profile"; } }
 
     }
 }

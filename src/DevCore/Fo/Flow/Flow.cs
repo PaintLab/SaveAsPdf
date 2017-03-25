@@ -24,7 +24,7 @@ namespace Fonet.Fo.Flow
         protected Flow(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = GetElementName();
+            
 
             if (parent.GetName().Equals("fo:page-sequence"))
             {
@@ -40,14 +40,14 @@ namespace Fonet.Fo.Flow
 
             if (pageSequence.IsFlowSet)
             {
-                if (this.name.Equals("fo:flow"))
+                if (this.ElementName.Equals("fo:flow"))
                 {
                     throw new FonetException("Only a single fo:flow permitted"
                         + " per fo:page-sequence");
                 }
                 else
                 {
-                    throw new FonetException(this.name
+                    throw new FonetException(this.ElementName
                         + " not allowed after fo:flow");
                 }
             }
@@ -59,7 +59,7 @@ namespace Fonet.Fo.Flow
             if (name == null || name.Equals(""))
             {
                 FonetDriver.ActiveDriver.FireFonetWarning(
-                    "A 'flow-name' is required for " + GetElementName() + ".");
+                    "A 'flow-name' is required for " + ElementName + ".");
                 _flowName = "xsl-region-body";
             }
             else
@@ -177,11 +177,9 @@ namespace Fonet.Fo.Flow
         {
             return this.contentWidth;
         }
+        public override string ElementName { get { return "fo:flow"; } }
 
-        protected virtual string GetElementName()
-        {
-            return "fo:flow";
-        }
+         
 
         public Status getStatus()
         {

@@ -11,7 +11,7 @@ namespace Fonet.Fo.Pagination
         public PageMasterReference(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = GetElementName();
+
             if (GetProperty("master-reference") != null)
             {
                 SetMasterName(GetProperty("master-reference").GetString());
@@ -39,7 +39,7 @@ namespace Fonet.Fo.Pagination
                                                  bool thisIsFirstPage,
                                                  bool isEmptyPage);
 
-        protected abstract string GetElementName();
+
 
         protected void validateParent(FObj parent)
         {
@@ -50,7 +50,7 @@ namespace Fonet.Fo.Pagination
                 if (MasterName == null)
                 {
                     FonetDriver.ActiveDriver.FireFonetWarning(
-                        GetElementName() + " does not have a master-reference and so is being ignored");
+                        ElementName + " does not have a master-reference and so is being ignored");
                 }
                 else
                 {
@@ -59,7 +59,7 @@ namespace Fonet.Fo.Pagination
             }
             else
             {
-                throw new FonetException(GetElementName() + " must be"
+                throw new FonetException(ElementName + " must be"
                     + "child of fo:page-sequence-master, not "
                     + parent.GetName());
             }

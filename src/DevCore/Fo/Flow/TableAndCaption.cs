@@ -15,9 +15,9 @@ namespace Fonet.Fo.Flow
         protected TableAndCaption(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:table-and-caption";
+            
         }
-
+        public override string ElementName { get { return "fo:table-and-caption"; } }
         public override Status Layout(Area area)
         {
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();

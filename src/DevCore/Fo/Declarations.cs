@@ -12,7 +12,8 @@ namespace Fonet.Fo
         protected Declarations(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:declarations";
+            
         }
+        public override string ElementName { get { return "fo:declarations"; } }
     }
 }

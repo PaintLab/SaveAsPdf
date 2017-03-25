@@ -25,7 +25,7 @@ namespace Fonet.Fo.Flow
         public RetrieveMarker(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:retrieve-marker";
+            
 
             this.retrieveClassName =
                 this.properties.GetProperty("retrieve-class-name").GetString();
@@ -34,7 +34,7 @@ namespace Fonet.Fo.Flow
             this.retrieveBoundary =
                 this.properties.GetProperty("retrieve-boundary").GetEnum();
         }
-
+        public override string ElementName { get { return "fo:retrieve-marker"; } }
         public override Status Layout(Area area)
         {
             if (marker == MarkerStart)

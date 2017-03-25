@@ -21,11 +21,11 @@ namespace Fonet.Fo.Flow
         public Character(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:character";
+           
         }
+        public override string ElementName { get { return "fo:character"; } }
 
-        
-       
+
 
         public override Status Layout(Area area)
         {
