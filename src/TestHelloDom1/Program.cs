@@ -16,7 +16,7 @@ namespace FonetExample
             pdfdoc.Pages.Add(page);
             //
             MyPdfCanvas canvas = page.Canvas;
-            canvas.DrawString("Hello PixelFarm", 20, 20);
+            canvas.DrawString("Hello World!, from PixelFarm", 20, 20);
             //
             FonetDriver driver = FonetDriver.Make();
             driver.ImageHandler += str =>
