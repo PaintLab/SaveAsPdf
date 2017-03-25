@@ -12,7 +12,7 @@ namespace Fonet.Pdf
     ///     Creates all the necessary PDF objects required to represent 
     ///     a font object in a PDF document.
     /// </summary>
-    internal sealed class PdfFontCreator
+    public sealed class PdfFontCreator
     {
         /// <summary>
         ///     Generates object id's.

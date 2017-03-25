@@ -6,7 +6,7 @@ namespace Fonet.Render.Pdf.Fonts
     ///     Collection of font properties such as face name and whether the 
     ///     a font is bold and/or italic.
     /// </summary>
-    internal sealed class FontProperties
+    public sealed class FontProperties
     {
         private string faceName;
         private bool bold;

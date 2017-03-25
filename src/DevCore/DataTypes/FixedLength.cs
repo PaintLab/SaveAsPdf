@@ -4,7 +4,7 @@ namespace Fonet.DataTypes
 {
     using Fonet.Fo.Expr;
 
-    internal class FixedLength : Length
+    public class FixedLength : Length
     {
         public FixedLength(double numRelUnits, int iCurFontSize)
         {

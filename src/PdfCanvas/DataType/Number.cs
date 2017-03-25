@@ -2,7 +2,7 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.DataTypes
 {
-    internal class Number
+    public class Number
     {
         private decimal value;
 

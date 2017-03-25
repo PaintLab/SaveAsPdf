@@ -7,11 +7,12 @@ using Fonet.Pdf.Gdi;
 
 namespace Fonet.Render.Pdf.Fonts
 {
+
     /// <summary>
     ///     A proxy object that delegates all operations to a concrete 
     ///     subclass of the Font class.
     /// </summary>
-    internal class ProxyFont : Font, IFontDescriptor
+    public class ProxyFont : Font, IFontDescriptor
     {
         /// <summary>
         ///     Flag that indicates whether the underlying font has been loaded.
@@ -86,8 +87,9 @@ namespace Fonet.Render.Pdf.Fonts
             IFontDescriptor descriptor = realFont.Descriptor;
             if (!descriptor.IsEmbeddable)
             {
-                FonetDriver.ActiveDriver.FireFonetWarning(
-                    String.Format("Unable to embed font '{0}' because the license states embedding is not allowed.  Will default to Helvetica.", realFont.FontName));
+                PdfCreatorBridge.Warning(
+                    String.Format("Unable to embed font '{0}' because the license states embedding is not allowed.  Will default to Helvetica.",
+                    realFont.FontName));
 
                 replaceFont = true;
             }
@@ -95,8 +97,9 @@ namespace Fonet.Render.Pdf.Fonts
             // TODO: Do not permit subsetting if license does not allow it
             if (realFont is Type2CIDSubsetFont && !descriptor.IsSubsettable)
             {
-                FonetDriver.ActiveDriver.FireFonetWarning(
-                    String.Format("Unable to subset font '{0}' because the license states subsetting is not allowed..  Will default to Helvetica.", realFont.FontName));
+                PdfCreatorBridge.Warning(
+                   String.Format("Unable to subset font '{0}' because the license states subsetting is not allowed..  Will default to Helvetica.",
+                   realFont.FontName));
 
                 replaceFont = true;
             }

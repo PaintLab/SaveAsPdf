@@ -9,7 +9,7 @@ namespace Fonet.Render.Pdf.Fonts
     /// <summary>
     ///     Base class for the standard 14 fonts as defined in the PDF spec.
     /// </summary>
-    internal abstract class Base14Font : Font
+    public abstract class Base14Font : Font
     {
         public static readonly Font Courier = new Courier();
         public static readonly Font CourierBold = new CourierBold();

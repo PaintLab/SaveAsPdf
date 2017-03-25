@@ -23,12 +23,12 @@ namespace Fonet.Fo.Flow
         private int span;
         private AreaContainer areaContainer;
 
-        
+
 
         protected BlockContainer(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-           
+
             this.span = this.properties.GetProperty("span").GetEnum();
         }
         public override string ElementName { get { return "fo:block-container"; } }
@@ -52,7 +52,7 @@ namespace Fonet.Fo.Flow
                 span = this.properties.GetProperty("span").GetEnum();
 
                 string id = this.properties.GetProperty("id").GetString();
-                area.getIDReferences().InitializeID(id, area);
+                area.GetMyRefs().InitializeID(id, area);
             }
 
             AreaContainer container = (AreaContainer)area;

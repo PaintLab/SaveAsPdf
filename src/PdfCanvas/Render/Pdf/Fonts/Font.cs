@@ -8,7 +8,7 @@ namespace Fonet.Render.Pdf.Fonts
     /// <summary>
     ///     Base class for PDF font classes
     /// </summary>
-    internal abstract class Font : IFontMetric
+    public abstract class Font : IFontMetric
     {
         /// <summary>
         ///     Get the encoding of the font.

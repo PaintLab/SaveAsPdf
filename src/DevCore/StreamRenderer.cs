@@ -51,7 +51,7 @@ namespace Fonet
         ///     and pages. This is used by the AreaTree as a single map of 
         ///     all IDs.
         /// </summary>
-        private IDReferences idReferences = new IDReferences();
+        private MyIDRefs idReferences = new MyIDRefs();
 
         /// <summary>
         ///     The list of markers.

@@ -909,10 +909,16 @@ namespace Fonet.Render.Pdf
             float h = page.GetHeight();
             currentStream.Write("ET\n");
 
+            var idList = new System.Collections.Generic.List<string>();
+            foreach (string id in page.getIDList())
+            {
+                idList.Add(id);
+            }             
+
             currentPage = this.pdfDoc.makePage(
                 this.pdfResources, currentStream,
                 Convert.ToInt32(Math.Round(w / 1000)),
-                Convert.ToInt32(Math.Round(h / 1000)), page);
+                Convert.ToInt32(Math.Round(h / 1000)), idList.ToArray());
 
             if (page.hasLinks() || currentAnnotList != null)
             {
@@ -927,12 +933,13 @@ namespace Fonet.Render.Pdf
                 {
                     linkSet.align();
                     String dest = linkSet.getDest();
-                    int linkType = linkSet.getLinkType();
+                    LinkKind linkType = linkSet.getLinkType();
                     ArrayList rsets = linkSet.getRects();
                     foreach (LinkedRectangle lrect in rsets)
                     {
-                        currentAnnotList.Add(this.pdfDoc.makeLink(lrect.getRectangle(),
-                                                                  dest, linkType).GetReference());
+                        currentAnnotList.Add(
+                            this.pdfDoc.makeLink(lrect.getRectangle(),
+                            dest, linkType).GetReference());
                     }
                 }
                 currentAnnotList = null;

@@ -23,7 +23,8 @@ namespace Fonet.Fo.Flow
         public override Status Layout(Area area)
         {
             string destination;
-            int linkType;
+            Fonet.Pdf.LinkKind linkType;
+             
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();
             AuralProps mAurProps = propMgr.GetAuralProps();
             BorderAndPadding bap = propMgr.GetBorderAndPadding();
@@ -34,12 +35,12 @@ namespace Fonet.Fo.Flow
             if (!(destination =
                 this.properties.GetProperty("internal-destination").GetString()).Equals(""))
             {
-                linkType = LinkSet.INTERNAL;
+                linkType = Pdf.LinkKind.Internal;
             }
             else if (!(destination =
                 this.properties.GetProperty("external-destination").GetString()).Equals(""))
             {
-                linkType = LinkSet.EXTERNAL;
+                linkType = Pdf.LinkKind.External;
             }
             else
             {
@@ -49,7 +50,9 @@ namespace Fonet.Fo.Flow
             if (this.marker == MarkerStart)
             {
                 string id = this.properties.GetProperty("id").GetString();
-                area.getIDReferences().InitializeID(id, area);
+                MyIDRefs refs = (MyIDRefs)area.getIDReferences();
+
+                refs.InitializeID(id, area);
                 this.marker = 0;
             }
 

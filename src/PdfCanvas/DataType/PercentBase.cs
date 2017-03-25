@@ -2,7 +2,7 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.DataTypes
 {
-    internal interface IPercentBase
+    public interface IPercentBase
     {
         int GetDimension();
 

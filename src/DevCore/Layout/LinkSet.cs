@@ -4,8 +4,9 @@ namespace Fonet.Layout
 {
     using PixelFarm.Drawing;
     using System.Collections;
-   
+
     using Fonet.Layout.Inline;
+
 
     internal class LinkSet
     {
@@ -16,13 +17,12 @@ namespace Fonet.Layout
         private int maxY = 0;
         protected int startIndent = 0;
         protected int endIndent = 0;
-        private int linkType;
+        private Pdf.LinkKind linkType;
         private Area area;
-        public const int INTERNAL = 0;
-        public const int EXTERNAL = 1;
+
         private int contentRectangleWidth = 0;
 
-        public LinkSet(string destination, Area area, int linkType)
+        public LinkSet(string destination, Area area, Pdf.LinkKind linkType)
         {
             this.destination = destination;
             this.area = area;
@@ -134,7 +134,7 @@ namespace Fonet.Layout
             return area;
         }
 
-        public int getLinkType()
+        public Pdf.LinkKind getLinkType()
         {
             return linkType;
         }

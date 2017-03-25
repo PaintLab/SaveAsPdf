@@ -4,7 +4,7 @@ using Fonet.Fo.Expr;
 
 namespace Fonet.DataTypes
 {
-    internal class TableColLength : Length
+    public class TableColLength : Length
     {
         private double tcolUnits;
 

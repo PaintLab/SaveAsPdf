@@ -4,7 +4,7 @@ namespace Fonet.DataTypes
 {
     using Fonet.Pdf;
 
-    internal class IDNode
+    public class IDNode
     {
         private string idValue;
 

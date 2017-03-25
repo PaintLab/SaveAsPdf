@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Fonet.Render.Pdf
 {
-    internal sealed class PdfNumber
+    public sealed class PdfNumber
     {
         private PdfNumber() { }
 
-        internal static string doubleOut(double doubleDown)
+        public static string doubleOut(double doubleDown)
         {
             StringBuilder p = new StringBuilder();
             if (doubleDown < 0)
@@ -53,7 +53,7 @@ namespace Fonet.Render.Pdf
             return (p.ToString());
         }
 
-        internal static string doubleOut(double doubleDown, int dec)
+        public static string doubleOut(double doubleDown, int dec)
         {
             StringBuilder p = new StringBuilder();
             if (doubleDown < 0)

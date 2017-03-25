@@ -29,7 +29,7 @@ namespace Fonet.Fo.Flow
 
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();
             string id = this.properties.GetProperty("id").GetString();
-            area.getIDReferences().InitializeID(id, area);
+            area.GetMyRefs().InitializeID(id, area);
 
             Block block = (Block)children[0];
 

@@ -5,7 +5,7 @@ namespace Fonet.Layout
     /// <summary>
     ///     Interface for font metric classes
     /// </summary>
-    internal interface IFontMetric
+    public interface IFontMetric
     {
         /// <summary>
         ///     Specifies the maximum distance characters in this font extend 

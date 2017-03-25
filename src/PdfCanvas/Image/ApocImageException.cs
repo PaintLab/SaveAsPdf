@@ -4,7 +4,7 @@ namespace Fonet.Image
 {
     using System;
 
-    internal class FonetImageException : Exception
+    public class FonetImageException : Exception
     {
         public FonetImageException()
         {

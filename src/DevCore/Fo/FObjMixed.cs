@@ -48,7 +48,7 @@ namespace Fonet.Fo
                     {
                         if (area.getIDReferences() != null)
                         {
-                            area.getIDReferences().ConfigureID(id, area);
+                            area.GetMyRefs().ConfigureID(id, area);
                         }
                     }
                 }

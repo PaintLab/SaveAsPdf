@@ -68,7 +68,7 @@ namespace Fonet.Fo.Flow
                 this.properties.GetProperty("leader-alignment").GetEnum();
 
             string id = this.properties.GetProperty("id").GetString();
-            blockArea.getIDReferences().InitializeID(id, blockArea);
+            blockArea.GetMyRefs().InitializeID(id, blockArea);
 
             int succeeded = AddLeader(blockArea,
                                       propMgr.GetFontState(area.getFontInfo()),

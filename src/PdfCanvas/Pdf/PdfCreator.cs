@@ -3,18 +3,24 @@
 namespace Fonet.Pdf
 {
     using PixelFarm.Drawing;
-    using System;   
+    using System;
     using System.Collections;
-     
+
     using System.IO;
     using Fonet.DataTypes;
     using Fonet.Image;
-    using Fonet.Layout;
+
     using Fonet.Pdf.Filter;
     using Fonet.Pdf.Security;
     using Fonet.Render.Pdf;
 
-    internal sealed class PdfCreator
+    public enum LinkKind
+    {
+        Internal = 0,
+        External = 1
+    }
+
+    public sealed class PdfCreator
     {
         private PdfDocument doc;
 
@@ -132,17 +138,18 @@ namespace Fonet.Pdf
             return xObject;
         }
 
+
         public PdfPage makePage(PdfResources resources, PdfContentStream contents,
-                                int pagewidth, int pageheight, Page currentPage)
+                                int pagewidth, int pageheight, string[] currentPageIdList)
         {
             PdfPage page = new PdfPage(
                 resources, contents,
                 pagewidth, pageheight,
                 doc.NextObjectId());
 
-            if (currentPage != null)
+            if (currentPageIdList != null)
             {
-                foreach (string id in currentPage.getIDList())
+                foreach (string id in currentPageIdList)
                 {
                     idReferences.setInternalGoToPageReference(id, page.GetReference());
                 }
@@ -157,12 +164,12 @@ namespace Fonet.Pdf
             return page;
         }
 
-        public PdfLink makeLink(Rectangle rect, string destination, int linkType)
+        public PdfLink makeLink(Rectangle rect, string destination, LinkKind linkType)
         {
             PdfLink link = new PdfLink(doc.NextObjectId(), rect);
             this.objects.Add(link);
 
-            if (linkType == LinkSet.EXTERNAL)
+            if (linkType == LinkKind.External)
             {
                 if (destination.EndsWith(".pdf"))
                 { // FileSpec
@@ -186,7 +193,6 @@ namespace Fonet.Pdf
             }
             return link;
         }
-
         private PdfObjectReference getGoToReference(string destination)
         {
             PdfGoTo goTo;

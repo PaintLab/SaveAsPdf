@@ -301,7 +301,11 @@ namespace Fonet.Layout
         {
             return idReferences;
         }
-
+        public MyIDRefs GetMyRefs()
+        {
+            //TODO: review here Again
+            return (MyIDRefs)idReferences;
+        }
         public FObj getfoCreator()
         {
             return this.foCreator;

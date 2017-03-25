@@ -70,7 +70,7 @@ namespace Fonet.Fo.Flow
             this.columnWidth = columnWidthPropVal.MValue();
 
             string id = this.properties.GetProperty("id").GetString();
-            area.getIDReferences().InitializeID(id, area);
+            area.GetMyRefs().InitializeID(id, area);
 
             setup = true;
         }

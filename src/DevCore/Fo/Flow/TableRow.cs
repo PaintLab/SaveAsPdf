@@ -229,7 +229,9 @@ namespace Fonet.Fo.Flow
 
             if (marker == 0)
             {
-                area.getIDReferences().ConfigureID(id, area);
+                MyIDRefs refs = (MyIDRefs)area.getIDReferences();
+                refs.ConfigureID(id, area);
+                //area.getIDReferences().ConfigureID(id, area);
             }
 
             int spaceLeft = area.spaceLeft();

@@ -56,7 +56,7 @@ namespace Fonet.Fo.Flow
                 this.marker = 0;
 
                 string id = this.properties.GetProperty("id").GetString();
-                area.getIDReferences().InitializeID(id, area);
+                area.GetMyRefs().InitializeID(id, area);
             }
 
             string p = area.getPage().getFormattedNumber();

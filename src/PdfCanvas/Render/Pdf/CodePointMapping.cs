@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Fonet.Render.Pdf
 {
-    internal class CodePointMapping
+    public class CodePointMapping
     {
         private static Hashtable mappings = new Hashtable();
 

@@ -11,7 +11,7 @@ namespace Fonet.Image
     /// <summary>
     /// Creates FonetImage instances.
     /// </summary>
-    internal class FonetImageFactory
+    public class FonetImageFactory
     {
 
         //internal static FonetImage MakeFromResource(string key)
@@ -34,56 +34,8 @@ namespace Fonet.Image
         /// <exception cref="FonetImageException"></exception>
         public static FonetImage Make(string href)
         {
-            // If an image handler has been registered on the driver, then
-            // give it a chance to handle the loading of image data.
-            if (FonetDriver.ActiveDriver.ImageHandler != null)
-            {
-                return FonetDriver.ActiveDriver.ImageHandler(href);
-                //byte[] data = FonetDriver.ActiveDriver.ImageHandler(href);
-                //if (data != null)
-                //{
-                //    return new FonetImage(href, data);
-                //}
-            }
-            throw new NotSupportedException();
-            //Uri absoluteURL = null;
-            //UriSpecificationParser up = new UriSpecificationParser(href);
-            //string path = up.Uri;
+            return PdfCreatorBridge.LoadImage(href);
 
-            //try
-            //{
-            //    absoluteURL = new Uri(path);
-            //}
-            //catch
-            //{
-            //    // If the href contains only a path then file is assumed
-            //    if (File.Exists(path))
-            //    {
-            //        absoluteURL = new Uri("file://" + Path.Combine(Directory.GetCurrentDirectory(), path));
-
-            //    }
-            //    else
-            //    {
-            //        // Examine base directory which is specified by the user via the 
-            //        // FonetDriver.BaseDirectory property
-            //        string baseDir = FonetDriver.ActiveDriver.BaseDirectory.FullName;
-
-            //        string baseDirPath = Path.Combine(baseDir, path);
-            //        if (File.Exists(baseDirPath))
-            //        {
-            //            absoluteURL = new Uri("file://" + Path.Combine(Directory.GetCurrentDirectory(), baseDirPath));
-
-            //        }
-            //        else
-            //        {
-            //            throw new FonetImageException("Unable to retrieve graphic from " + path);
-            //        }
-            //    }
-            //}
-
-            //return new FonetImage(
-            //    absoluteURL.AbsoluteUri,
-            //    ExtractImageData(absoluteURL));
         }
 
         //private static Stream GetImageStream(Uri uri)
