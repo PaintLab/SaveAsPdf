@@ -6,18 +6,12 @@ namespace Fonet.Fo.Pagination
 
     internal class ConditionalPageMasterReference : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<ConditionalPageMasterReference> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new ConditionalPageMasterReference(parent, propertyList);
-            }
+            return new FObjMaker<ConditionalPageMasterReference>((parent, propertyList) => new ConditionalPageMasterReference(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         private RepeatablePageMasterAlternatives repeatablePageMasterAlternatives;
 

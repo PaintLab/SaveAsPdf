@@ -10,19 +10,11 @@ namespace Fonet.Fo.Pagination
 {
     internal class PageSequence : FObj
     {
-        new internal class Maker : FObj.Maker
+        
+        public static FObjMaker<PageSequence> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new PageSequence(parent, propertyList);
-            }
+            return new FObjMaker<PageSequence>((parent, propertyList) => new PageSequence(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
-
         private const int EXPLICIT = 0;
         private const int AUTO = 1;
         private const int AUTO_EVEN = 2;

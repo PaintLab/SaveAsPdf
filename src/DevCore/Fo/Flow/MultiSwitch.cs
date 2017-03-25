@@ -6,17 +6,10 @@ namespace Fonet.Fo.Flow
 
     internal class MultiSwitch : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new MultiSwitch(parent, propertyList);
-            }
-        }
 
-        new public static FObj.Maker GetMaker()
+        public static FObjMaker<MultiSwitch> GetMaker()
         {
-            return new Maker();
+            return new FObjMaker<MultiSwitch>((parent, propertyList) => new MultiSwitch(parent, propertyList));
         }
 
         protected MultiSwitch(FObj parent, PropertyList propertyList)

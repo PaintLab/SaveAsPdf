@@ -6,19 +6,12 @@ namespace Fonet.Fo.Flow
 
     internal class MultiToggle : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<MultiToggle> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new MultiToggle(parent, propertyList);
-            }
+            return new FObjMaker<MultiToggle>((parent, propertyList) => new MultiToggle(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
-
+         
         protected MultiToggle(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {

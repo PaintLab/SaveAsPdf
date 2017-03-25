@@ -6,18 +6,11 @@ namespace Fonet.Fo.Flow
 
     internal class MultiPropertySet : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<MultiPropertySet> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new MultiPropertySet(parent, propertyList);
-            }
+            return new FObjMaker<MultiPropertySet>((parent, propertyList) => new MultiPropertySet(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         protected MultiPropertySet(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)

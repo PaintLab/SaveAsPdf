@@ -85,12 +85,12 @@ namespace Fonet.Fo
             }
         }
 
-        private FObj.Maker GetFObjMaker(string uri, string localName)
+        private FObj.MakerBase GetFObjMaker(string uri, string localName)
         {
             Hashtable table = (Hashtable)fobjTable[uri];
             if (table != null)
             {
-                return (FObj.Maker)table[localName];
+                return (FObj.MakerBase)table[localName];
             }
             else
             {
@@ -99,7 +99,7 @@ namespace Fonet.Fo
         }
         private T CreateAndAppend<T>(
            FObj parent,
-           FObj.Maker maker,
+           FObj.Maker<T> maker,
            string uri,
            string localName,
            Attributes attlist)
@@ -112,7 +112,7 @@ namespace Fonet.Fo
             {
                 list = currentListBuilder.MakeList(uri, localName, attlist, currentFObj);
             }
-            T result = (T)maker.Make(parent, list);
+            T result = maker.Make(parent, list);
             if (parent != null)
             {
                 parent.AddChild(result);
@@ -126,7 +126,7 @@ namespace Fonet.Fo
         {
 
 
-            FObj.Maker fobjMaker = GetFObjMaker(uri, localName);
+            FObj.MakerBase fobjMaker = GetFObjMaker(uri, localName);
 
             PropertyListBuilder currentListBuilder =
                 (PropertyListBuilder)this.propertylistTable[uri];
@@ -143,11 +143,11 @@ namespace Fonet.Fo
                 //if (namespaces.Contains(String.Intern(uri)))
                 if (namespaces.Contains(uri))
                 {
-                    fobjMaker = new Unknown.Maker();
+                    fobjMaker = Unknown.GetMaker();
                 }
                 else
                 {
-                    fobjMaker = new UnknownXMLObj.Maker(uri, localName);
+                    fobjMaker = UnknownXMLObj.GetMaker(uri, localName);
                     foreignXML = true;
                 }
             }
@@ -169,7 +169,8 @@ namespace Fonet.Fo
                 }
                 list = currentFObj.properties;
             }
-            FObj fobj = fobjMaker.Make(currentFObj, list);
+            //
+            FObj fobj = fobjMaker.InnerMake(currentFObj, list);
 
             if (rootFObj == null)
             {
@@ -236,18 +237,18 @@ namespace Fonet.Fo
         {
             //TODO: use generic here
 
-            FObj.Maker root_maker = Root.GetMaker();
+            var root_maker = Root.GetMaker();
             //
-            FObj.Maker layout_master_set_maker = LayoutMasterSet.GetMaker();
-            FObj.Maker simplpe_page_master = SimplePageMaster.GetMaker();
-            FObj.Maker region_body = RegionBody.GetMaker();
-            FObj.Maker region_before = RegionBefore.GetMaker();
-            FObj.Maker region_after = RegionAfter.GetMaker();
+            var layout_master_set_maker = LayoutMasterSet.GetMaker();
+            var simplpe_page_master = SimplePageMaster.GetMaker();
+            var region_body = RegionBody.GetMaker();
+            var region_before = RegionBefore.GetMaker();
+            var region_after = RegionAfter.GetMaker();
 
             //
-            FObj.Maker pageSeq_maker = PageSequence.GetMaker();
-            FObj.Maker flow_maker = Flow.Flow.GetMaker();
-            FObj.Maker block_maker = Flow.Block.GetMaker();
+            var pageSeq_maker = PageSequence.GetMaker();
+            var flow_maker = Flow.Flow.GetMaker();
+            var block_maker = Flow.Block.GetMaker();
 
 
             string nsuri = "http://www.w3.org/1999/XSL/Format";
@@ -318,7 +319,7 @@ namespace Fonet.Fo
                     //
                     char[] charBuff = txt.ToCharArray();
                     block_obj.AddCharacters(charBuff, 0, charBuff.Length);
-                } 
+                }
 
                 streamRenderer.Render(page_seq);
             }

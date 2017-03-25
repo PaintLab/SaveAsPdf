@@ -7,19 +7,11 @@ namespace Fonet.Fo.Flow
 
     internal class TableCell : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<TableCell> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new TableCell(parent, propertyList);
-            }
+            return new FObjMaker<TableCell>((parent, propertyList) => new TableCell(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
-
+         
         private string id;
         private int numColumnsSpanned;
         private int numRowsSpanned;

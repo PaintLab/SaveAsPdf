@@ -7,7 +7,13 @@ namespace Fonet.Fo.Flow
     using Fonet.Layout;
 
     internal class Character : FObj
-    {
+    {   
+        public static FObjMaker<Character> GetMaker()
+        {
+            return new FObjMaker<Character>((parent, propertyList) => new Character(parent, propertyList));
+        }
+
+
         public const int OK = 0;
 
         public const int DOESNOT_FIT = 1;
@@ -18,18 +24,8 @@ namespace Fonet.Fo.Flow
             this.name = "fo:character";
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
-
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Character(parent, propertyList);
-            }
-        }
+        
+       
 
         public override Status Layout(Area area)
         {

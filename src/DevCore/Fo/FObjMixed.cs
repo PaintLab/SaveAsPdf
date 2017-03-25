@@ -4,23 +4,10 @@ using Fonet.Layout;
 
 namespace Fonet.Fo
 {
-    internal class FObjMixed : FObj
+    internal abstract class FObjMixed : FObj
     {
         protected TextState ts;
-
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new FObjMixed(parent, propertyList);
-            }
-
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+       
 
         protected FObjMixed(FObj parent, PropertyList propertyList)
             : base(parent, propertyList) { }

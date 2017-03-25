@@ -6,18 +6,12 @@ namespace Fonet.Fo.Flow
 
     internal class Inline : FObjMixed
     {
-        new internal class Maker : FObj.Maker
+
+        public new static FObjMaker<Inline> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Inline(parent, propertyList);
-            }
+            return new FObjMaker<Inline>((parent, propertyList) => new Inline(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
 
         public Inline(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)

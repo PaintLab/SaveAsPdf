@@ -7,19 +7,35 @@ using Fonet.Layout;
 
 namespace Fonet.Fo
 {
-    internal class FObj : FONode
+    delegate T FObjCreator<T>(FObj parent, PropertyList propertyList);
+
+    abstract class FObj : FONode
     {
-        internal class Maker
+        internal abstract class MakerBase
         {
-            public virtual FObj Make(FObj parent, PropertyList propertyList)
+            public abstract FObj InnerMake(FObj parent, PropertyList propertyList);
+        }
+        internal abstract class Maker<T> : MakerBase
+            where T : FObj
+        {
+            public abstract T Make(FObj parent, PropertyList propertyList);
+            public sealed override FObj InnerMake(FObj parent, PropertyList propertyList)
             {
-                return new FObj(parent, propertyList);
+                return Make(parent, propertyList);
             }
         }
-
-        public static Maker GetMaker()
+        internal class FObjMaker<T> : Maker<T>
+            where T : FObj
         {
-            return new Maker();
+            FObjCreator<T> _creatorDel;
+            public FObjMaker(FObjCreator<T> creatorDel)
+            {
+                this._creatorDel = creatorDel;
+            }
+            public override T Make(FObj parent, PropertyList propertyList)
+            {
+                return _creatorDel(parent, propertyList);
+            }
         }
 
         public PropertyList properties;

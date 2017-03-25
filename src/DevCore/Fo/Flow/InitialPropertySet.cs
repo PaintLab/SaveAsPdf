@@ -6,18 +6,11 @@ namespace Fonet.Fo.Flow
 
     internal class InitialPropertySet : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<InitialPropertySet> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new InitialPropertySet(parent, propertyList);
-            }
+            return new FObjMaker<InitialPropertySet>((parent, propertyList) => new InitialPropertySet(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         protected InitialPropertySet(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)

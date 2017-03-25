@@ -4,17 +4,10 @@ namespace Fonet.Fo.Pagination
 {
     internal class SinglePageMasterReference : PageMasterReference, SubSequenceSpecifier
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new SinglePageMasterReference(parent, propertyList);
-            }
-        }
 
-        new public static FObj.Maker GetMaker()
+        public static FObjMaker<SinglePageMasterReference> GetMaker()
         {
-            return new SinglePageMasterReference.Maker();
+            return new FObjMaker<SinglePageMasterReference>((parent, propertyList) => new SinglePageMasterReference(parent, propertyList));
         }
 
         private const int FIRST = 0;

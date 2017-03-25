@@ -209,17 +209,11 @@ namespace Fonet.Fo.Flow
             return new Status(Status.OK);
         }
 
-        new public static FObj.Maker GetMaker()
+        
+        public static FObjMaker<ExternalGraphic> GetMaker()
         {
-            return new Maker();
+            return new FObjMaker<ExternalGraphic>((parent, propertyList) => new ExternalGraphic(parent, propertyList));
         }
 
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new ExternalGraphic(parent, propertyList);
-            }
-        }
     }
 }

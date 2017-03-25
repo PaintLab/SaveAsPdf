@@ -7,18 +7,11 @@ namespace Fonet.Fo.Pagination
 {
     internal class RegionAfter : Region
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<RegionAfter> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new RegionAfter(parent, propertyList);
-            }
+            return new FObjMaker<RegionAfter>((parent, propertyList) => new RegionAfter(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         public const string REGION_CLASS = "after";
 

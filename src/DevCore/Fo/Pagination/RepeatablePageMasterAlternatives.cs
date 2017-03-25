@@ -9,18 +9,13 @@ namespace Fonet.Fo.Pagination
     {
         private const int INFINITE = -1;
 
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<RepeatablePageMasterAlternatives> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new RepeatablePageMasterAlternatives(parent, propertyList);
-            }
+            return new FObjMaker<RepeatablePageMasterAlternatives>((parent, propertyList) => new RepeatablePageMasterAlternatives(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+
+
 
         private PageSequenceMaster pageSequenceMaster;
 

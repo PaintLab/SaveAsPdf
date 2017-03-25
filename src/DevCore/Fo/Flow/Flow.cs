@@ -8,18 +8,12 @@ namespace Fonet.Fo.Flow
 
     internal class Flow : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<Flow> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Flow(parent, propertyList);
-            }
+            return new FObjMaker<Flow>((parent, propertyList) => new Flow(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         private PageSequence pageSequence;
         private ArrayList markerSnapshot;

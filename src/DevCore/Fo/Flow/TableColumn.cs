@@ -16,18 +16,11 @@ namespace Fonet.Fo.Flow
         private bool setup = false;
         private AreaContainer areaContainer;
 
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<TableColumn> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new TableColumn(parent, propertyList);
-            }
+            return new FObjMaker<TableColumn>((parent, propertyList) => new TableColumn(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         public TableColumn(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)

@@ -8,18 +8,11 @@ namespace Fonet.Fo.Flow
 
     internal class PageNumberCitation : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<PageNumberCitation> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new PageNumberCitation(parent, propertyList);
-            }
+            return new FObjMaker<PageNumberCitation>((parent, propertyList) => new PageNumberCitation(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         private float red;
         private float green;

@@ -8,7 +8,7 @@ namespace Fonet.Fo
     {
         private string nmspace;
 
-        new internal class Maker : FObj.Maker
+        class Maker : FObj.Maker<UnknownXMLObj>
         {
             private string space;
             private string tag;
@@ -19,14 +19,14 @@ namespace Fonet.Fo
                 tag = t;
             }
 
-            public override FObj Make(FObj parent,
+            public override UnknownXMLObj Make(FObj parent,
                                       PropertyList propertyList)
             {
                 return new UnknownXMLObj(parent, propertyList, space, tag);
             }
         }
 
-        public static FObj.Maker GetMaker(string space, string tag)
+        public static FObj.Maker<UnknownXMLObj> GetMaker(string space, string tag)
         {
             return new Maker(space, tag);
         }

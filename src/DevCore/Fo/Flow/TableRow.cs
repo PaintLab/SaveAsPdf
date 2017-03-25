@@ -9,17 +9,9 @@ namespace Fonet.Fo.Flow
 
     internal class TableRow : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<TableRow> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new TableRow(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
+            return new FObjMaker<TableRow>((parent, propertyList) => new TableRow(parent, propertyList));
         }
 
         private bool setup = false;

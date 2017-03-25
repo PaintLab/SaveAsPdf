@@ -6,17 +6,10 @@ namespace Fonet.Fo.Flow
 
     internal class BidiOverride : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+       
+        public static FObjMaker<BidiOverride> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new BidiOverride(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
+            return new FObjMaker<BidiOverride>((parent, propertyList) => new BidiOverride(parent, propertyList));
         }
 
         protected BidiOverride(FObj parent, PropertyList propertyList)

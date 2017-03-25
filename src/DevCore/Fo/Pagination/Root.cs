@@ -6,18 +6,12 @@ namespace Fonet.Fo.Pagination
 
     internal class Root : FObj
     {
-        new internal class Maker : FObj.Maker
+
+        public static FObjMaker<Root> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Root(parent, propertyList);
-            }
+            return new FObjMaker<Root>((parent, propertyList) => new Root(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
 
         private LayoutMasterSet layoutMasterSet;
 

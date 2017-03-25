@@ -10,22 +10,21 @@ namespace Fonet.Fo
     {
         private string nmspace = String.Empty;
 
-        new internal class Maker : FObj.Maker
+        class Maker : FObj.Maker<XMLElement>
         {
             private string tag;
 
             internal Maker(string t)
             {
                 tag = t;
-            }
-
-            public override FObj Make(FObj parent, PropertyList propertyList)
+            } 
+            public override XMLElement Make(FObj parent, PropertyList propertyList)
             {
                 return new XMLElement(parent, propertyList, tag);
             }
         }
 
-        public static FObj.Maker GetMaker(string tag)
+        public static FObj.Maker<XMLElement> GetMaker(string tag)
         {
             return new Maker(tag);
         }

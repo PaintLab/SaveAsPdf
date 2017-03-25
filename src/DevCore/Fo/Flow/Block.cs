@@ -6,18 +6,11 @@ namespace Fonet.Fo.Flow
 
     internal class Block : FObjMixed
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<Block> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Block(parent, propertyList);
-            }
+            return new FObjMaker<Block>((parent, propertyList) => new Block(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         private int align;
         private int alignLast;

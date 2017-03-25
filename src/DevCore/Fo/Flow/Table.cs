@@ -10,19 +10,11 @@ namespace Fonet.Fo.Flow
 
     internal class Table : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<Table> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Table(parent, propertyList);
-            }
+            return new FObjMaker<Table>((parent, propertyList) => new Table(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
-
+         
         private const int MINCOLWIDTH = 10000;
 
         private int breakBefore;

@@ -16,19 +16,11 @@ namespace Fonet.Fo.Flow
         private int retrieveBoundary;
 
         private Marker bestMarker;
-
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<RetrieveMarker> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new RetrieveMarker(parent, propertyList);
-            }
+            return new FObjMaker<RetrieveMarker>((parent, propertyList) => new RetrieveMarker(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+        
 
         public RetrieveMarker(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)

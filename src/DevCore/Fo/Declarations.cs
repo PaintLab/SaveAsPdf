@@ -4,17 +4,9 @@ namespace Fonet.Fo
 {
     internal class Declarations : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<Declarations> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Declarations(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Declarations.Maker();
+            return new FObjMaker<Declarations>((parent, propertyList) => new Declarations(parent, propertyList));
         }
 
         protected Declarations(FObj parent, PropertyList propertyList)

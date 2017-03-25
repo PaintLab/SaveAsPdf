@@ -7,18 +7,12 @@ namespace Fonet.Fo.Flow
 
     internal class StaticContent : Flow
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<StaticContent> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new StaticContent(parent, propertyList);
-            }
+            return new FObjMaker<StaticContent>((parent, propertyList) => new StaticContent(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         protected StaticContent(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)

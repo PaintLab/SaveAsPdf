@@ -6,19 +6,12 @@ namespace Fonet.Fo.Flow
 
     internal class InlineContainer : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<InlineContainer> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new InlineContainer(parent, propertyList);
-            }
+            return new FObjMaker<InlineContainer>((parent, propertyList) => new InlineContainer(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
-
+         
         protected InlineContainer(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {

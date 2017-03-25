@@ -7,17 +7,10 @@ namespace Fonet.Fo.Pagination
 {
     internal class SimplePageMaster : FObj
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new SimplePageMaster(parent, propertyList);
-            }
-        }
 
-        new public static FObj.Maker GetMaker()
+        public static FObjMaker<SimplePageMaster> GetMaker()
         {
-            return new Maker();
+            return new FObjMaker<SimplePageMaster>((parent, propertyList) => new SimplePageMaster(parent, propertyList));
         }
 
         private Hashtable _regions;

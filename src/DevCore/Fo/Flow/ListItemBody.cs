@@ -6,18 +6,11 @@ namespace Fonet.Fo.Flow
 
     internal class ListItemBody : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<ListItemBody> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new ListItemBody(parent, propertyList);
-            }
+            return new FObjMaker<ListItemBody>((parent, propertyList) => new ListItemBody(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         public ListItemBody(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
