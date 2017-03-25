@@ -17,7 +17,7 @@ namespace Fonet.Fo.Flow
             : base(parent, propertyList)
         {
 
-            if (parent.GetName().Equals("fo:flow"))
+            if (parent.ElementName.Equals("fo:flow"))
             {
                 throw new FonetException("inline formatting objects cannot"
                     + " be directly under flow");

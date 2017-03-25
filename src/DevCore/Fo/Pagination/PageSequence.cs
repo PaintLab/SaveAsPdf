@@ -10,7 +10,7 @@ namespace Fonet.Fo.Pagination
 {
     internal class PageSequence : FObj
     {
-        
+
         public static FObjMaker<PageSequence> GetMaker()
         {
             return new FObjMaker<PageSequence>((parent, propertyList) => new PageSequence(parent, propertyList));
@@ -41,16 +41,16 @@ namespace Fonet.Fo.Pagination
         protected PageSequence(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-          
 
-            if (parent.GetName().Equals("fo:root"))
+
+            if (parent.ElementName.Equals("fo:root"))
             {
                 this.root = (Root)parent;
             }
             else
             {
                 throw new FonetException("page-sequence must be child of root, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
 
             layoutMasterSet = root.getLayoutMasterSet();
@@ -317,10 +317,10 @@ namespace Fonet.Fo.Pagination
             }
             else
             {
-                FonetDriver.ActiveDriver.FireFonetError(region.GetName()
+                FonetDriver.ActiveDriver.FireFonetError(region.ElementName
                     + " only supports static-content flows currently. "
                     + "Cannot use flow named '"
-                    + flow.GetFlowName() + "'");
+                    + flow.ElementName + "'");
             }
         }
 

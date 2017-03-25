@@ -36,7 +36,7 @@ namespace Fonet.Fo.Pagination
                 }
             }
 
-            if (parent.GetName().Equals("fo:simple-page-master"))
+            if (parent.ElementName.Equals("fo:simple-page-master"))
             {
                 _layoutMaster = (SimplePageMaster)parent;
                 getPageMaster().addRegion(this);
@@ -45,7 +45,7 @@ namespace Fonet.Fo.Pagination
             {
                 throw new FonetException(ElementName + " must be child "
                     + "of simple-page-master, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
         }
 

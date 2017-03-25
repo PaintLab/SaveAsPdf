@@ -43,7 +43,7 @@ namespace Fonet.Fo.Pagination
 
         protected void validateParent(FObj parent)
         {
-            if (parent.GetName().Equals("fo:page-sequence-master"))
+            if (parent.ElementName.Equals("fo:page-sequence-master"))
             {
                 _pageSequenceMaster = (PageSequenceMaster)parent;
 
@@ -61,7 +61,7 @@ namespace Fonet.Fo.Pagination
             {
                 throw new FonetException(ElementName + " must be"
                     + "child of fo:page-sequence-master, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
         }
 

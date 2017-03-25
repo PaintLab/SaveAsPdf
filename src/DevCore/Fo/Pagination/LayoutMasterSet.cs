@@ -24,7 +24,7 @@ namespace Fonet.Fo.Pagination
         { 
             this.simplePageMasters = new Hashtable();
             this.pageSequenceMasters = new Hashtable(); 
-            if (parent.GetName().Equals("fo:root"))
+            if (parent.ElementName.Equals("fo:root"))
             {
                 this.root = (Root)parent;
                 root.setLayoutMasterSet(this);
@@ -32,7 +32,7 @@ namespace Fonet.Fo.Pagination
             else
             {
                 throw new FonetException("fo:layout-master-set must be child of fo:root, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
             allRegions = new Hashtable(); 
         }

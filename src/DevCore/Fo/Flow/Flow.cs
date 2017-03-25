@@ -13,7 +13,7 @@ namespace Fonet.Fo.Flow
             return new FObjMaker<Flow>((parent, propertyList) => new Flow(parent, propertyList));
         }
 
-         
+
 
         private PageSequence pageSequence;
         private ArrayList markerSnapshot;
@@ -24,9 +24,7 @@ namespace Fonet.Fo.Flow
         protected Flow(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            
-
-            if (parent.GetName().Equals("fo:page-sequence"))
+            if (parent.ElementName.Equals("fo:page-sequence"))
             {
                 this.pageSequence = (PageSequence)parent;
             }
@@ -34,7 +32,7 @@ namespace Fonet.Fo.Flow
             {
                 throw new FonetException("flow must be child of "
                     + "page-sequence, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
             SetFlowName(GetProperty("flow-name").GetString());
 
@@ -179,7 +177,7 @@ namespace Fonet.Fo.Flow
         }
         public override string ElementName { get { return "fo:flow"; } }
 
-         
+
 
         public Status getStatus()
         {

@@ -38,7 +38,7 @@ namespace Fonet.Fo
                 return _creatorDel(parent, propertyList);
             }
 
-          
+
 
         }
 
@@ -54,10 +54,10 @@ namespace Fonet.Fo
         {
             this.properties = propertyList;
             propertyList.FObj = this;
-            this.propMgr = MakePropertyManager(propertyList); 
+            this.propMgr = MakePropertyManager(propertyList);
             SetWritingMode();
         }
-        
+
         protected PropertyManager MakePropertyManager(PropertyList propertyList)
         {
             return new PropertyManager(propertyList);
@@ -73,10 +73,6 @@ namespace Fonet.Fo
             return new Status(Status.OK);
         }
 
-        public string GetName()
-        {
-            return ElementName;
-        }
 
         protected internal virtual void Start()
         {
@@ -145,7 +141,7 @@ namespace Fonet.Fo
                     if (!child.MayPrecedeMarker())
                     {
                         throw new FonetException(
-                            String.Format("A fo:marker must be an initial child of '{0}'", GetName()));
+                            String.Format("A fo:marker must be an initial child of '{0}'", this.ElementName));
                     }
                 }
             }

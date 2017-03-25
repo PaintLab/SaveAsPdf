@@ -136,7 +136,7 @@ namespace Fonet.Fo.Flow
             {
                 throw new FonetException("A table row must be child of fo:table-body,"
                     + " fo:table-header or fo:table-footer, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
 
             

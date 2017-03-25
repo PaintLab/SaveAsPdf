@@ -10,7 +10,7 @@ namespace Fonet.Fo.Flow
         {
             return new FObjMaker<Block>((parent, propertyList) => new Block(parent, propertyList));
         }
-         
+
 
         private int align;
         private int alignLast;
@@ -30,11 +30,12 @@ namespace Fonet.Fo.Flow
         private int span;
         private bool anythingLaidOut = false;
         public override string ElementName { get { return "fo:block"; } }
+        //
         public Block(FObj parent, PropertyList propertyList) : base(parent, propertyList)
         {
-             
 
-            switch (parent.GetName())
+
+            switch (parent.ElementName)
             {
                 case "fo:basic-link":
                 case "fo:block":
@@ -57,7 +58,7 @@ namespace Fonet.Fo.Flow
                     throw new FonetException(
                         "fo:block must be child of " +
                             "fo:basic-link, fo:block, fo:block-container, fo:float, fo:flow, fo:footnote-body, fo:inline, fo:inline-container, fo:list-item-body, fo:list-item-label, fo:marker, fo:multi-case, fo:static-content, fo:table-caption, fo:table-cell or fo:wrapper " +
-                            "not " + parent.GetName());
+                            "not " + parent.ElementName);
             }
             this.span = this.properties.GetProperty("span").GetEnum();
             ts = propMgr.getTextDecoration(parent);

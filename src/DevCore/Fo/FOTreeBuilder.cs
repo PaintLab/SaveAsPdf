@@ -175,9 +175,9 @@ namespace Fonet.Fo
             if (rootFObj == null)
             {
                 rootFObj = fobj;
-                if (!fobj.GetName().Equals("fo:root"))
+                if (!fobj.ElementName.Equals("fo:root"))
                 {
-                    throw new FonetException("Root element must" + " be root, not " + fobj.GetName());
+                    throw new FonetException("Root element must" + " be root, not " + fobj.ElementName);
                 }
             }
             else if (!(fobj is PageSequence))
@@ -251,11 +251,10 @@ namespace Fonet.Fo
             var block_maker = Flow.Block.GetMaker();
 
 
-            string nsuri = "http://www.w3.org/1999/XSL/Format";
-
+            string nsuri = "http://www.w3.org/1999/XSL/Format"; 
 
             streamRenderer.StartRenderer();
-            PropertyList props = new PropertyList(null, "", "");
+            
             //1. root
             Root rootObj = CreateAndAppend<Root>(null,
                 root_maker,
@@ -263,11 +262,11 @@ namespace Fonet.Fo
                 "root",
                 CreateAttributes());
             //2.  
-            LayoutMasterSet masterSet = CreateAndAppend<LayoutMasterSet>(rootObj, layout_master_set_maker, nsuri,
+            LayoutMasterSet masterSet = CreateAndAppend(rootObj, layout_master_set_maker, nsuri,
                 "layout-master-set",
                 CreateAttributes());
             {
-                SimplePageMaster simpleMaster = CreateAndAppend<SimplePageMaster>(
+                SimplePageMaster simpleMaster = CreateAndAppend(
                     masterSet, simplpe_page_master, nsuri,
                     "simple-page-master",
                     CreateAttributes(
@@ -278,11 +277,11 @@ namespace Fonet.Fo
                     new AttrKeyValue("margin-left", "2.5cm"),
                     new AttrKeyValue("margin-right", "2.5cm")
                     ));
-                RegionBody rgnBody = CreateAndAppend<RegionBody>(simpleMaster, region_body, nsuri, "region-body",
+                RegionBody rgnBody = CreateAndAppend(simpleMaster, region_body, nsuri, "region-body",
                     CreateAttributes(new AttrKeyValue("margin-top", "3cm")));
-                RegionBefore rgnBefore = CreateAndAppend<RegionBefore>(simpleMaster, region_before, nsuri, "region-before",
+                RegionBefore rgnBefore = CreateAndAppend(simpleMaster, region_before, nsuri, "region-before",
                     CreateAttributes(new AttrKeyValue("extent", "3cm")));
-                RegionAfter rgnAfter = CreateAndAppend<RegionAfter>(simpleMaster, region_after, nsuri, "region-after",
+                RegionAfter rgnAfter = CreateAndAppend(simpleMaster, region_after, nsuri, "region-after",
                     CreateAttributes(new AttrKeyValue("extent", "1.5cm")));
                 simpleMaster.End();
             }
@@ -294,13 +293,13 @@ namespace Fonet.Fo
                 PixelFarm.Drawing.Pdf.MyPdfPage p = pages[i];
                 PixelFarm.Drawing.Pdf.MyPdfCanvas canvas = p.Canvas;
 
-                PageSequence page_seq = CreateAndAppend<PageSequence>(rootObj, pageSeq_maker, nsuri, "page-sequence",
+                PageSequence page_seq = CreateAndAppend(rootObj, pageSeq_maker, nsuri, "page-sequence",
                         CreateAttributes(new AttrKeyValue("master-reference", "simple")));
 
-                Flow.Flow flow_obj = CreateAndAppend<Flow.Flow>(page_seq, flow_maker, nsuri, "flow",
+                Flow.Flow flow_obj = CreateAndAppend(page_seq, flow_maker, nsuri, "flow",
                     CreateAttributes(new AttrKeyValue("flow-name", "xsl-region-body")));
 
-                Flow.Block block_obj = CreateAndAppend<Flow.Block>(
+                Flow.Block block_obj = CreateAndAppend(
                     flow_obj, block_maker, nsuri, "block",
                      CreateAttributes(new AttrKeyValue("font-size", "18pt"),
                         new AttrKeyValue("color", "black"),

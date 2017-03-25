@@ -21,7 +21,7 @@ namespace Fonet.Fo.Pagination
         {
             subSequenceSpecifiers = new ArrayList();
 
-            if (parent.GetName().Equals("fo:layout-master-set"))
+            if (parent.ElementName.Equals("fo:layout-master-set"))
             {
                 this.layoutMasterSet = (LayoutMasterSet)parent;
                 string pm = this.properties.GetProperty("master-name").GetString();
@@ -39,7 +39,7 @@ namespace Fonet.Fo.Pagination
             {
                 throw new FonetException("fo:page-sequence-master must be child "
                     + "of fo:layout-master-set, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
         }
 
