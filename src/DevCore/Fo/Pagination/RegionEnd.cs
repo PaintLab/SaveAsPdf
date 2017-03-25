@@ -1,23 +1,18 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
+using System;
 using Fonet.Layout;
 
 namespace Fonet.Fo.Pagination
 {
     internal class RegionEnd : Region
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new RegionEnd(parent, propertyList);
-            }
-        }
 
-        new public static FObj.Maker GetMaker()
+        public static FObjMaker<RegionEnd> GetMaker()
         {
-            return new Maker();
+            return new FObjMaker<RegionEnd>((parent, propertyList) => new RegionEnd(parent, propertyList));
         }
+         
 
         public const string REGION_CLASS = "end";
 
@@ -76,11 +71,8 @@ namespace Fonet.Fo.Pagination
         {
             return "xsl-region-end";
         }
-
-        protected override string GetElementName()
-        {
-            return "fo:region-end";
-        }
+        public override string ElementName { get { return "fo:region-end"; } }
+       
 
         public override string GetRegionClass()
         {

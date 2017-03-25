@@ -7,26 +7,19 @@ namespace Fonet.Fo
 {
     internal class Title : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Title(parent, propertyList);
-            }
 
+        public static FObjMaker<Title> GetMaker()
+        {
+            return new FObjMaker<Title>((parent, propertyList) => new Title(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
 
         protected Title(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:title";
+             
         }
-
+        public override string ElementName { get { return "fo:title"; } }
         public override Status Layout(Area area)
         {
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();

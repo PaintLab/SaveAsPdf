@@ -9,17 +9,9 @@ namespace Fonet.Fo.Flow
 
     internal class TableRow : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<TableRow> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new TableRow(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
+            return new FObjMaker<TableRow>((parent, propertyList) => new TableRow(parent, propertyList));
         }
 
         private bool setup = false;
@@ -144,12 +136,12 @@ namespace Fonet.Fo.Flow
             {
                 throw new FonetException("A table row must be child of fo:table-body,"
                     + " fo:table-header or fo:table-footer, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
 
-            this.name = "fo:table-row";
+            
         }
-
+        public override string ElementName { get { return "fo:table-row"; } }
         public void SetColumns(ArrayList columns)
         {
             this.columns = columns;

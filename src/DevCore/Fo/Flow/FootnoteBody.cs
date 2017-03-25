@@ -6,6 +6,11 @@ namespace Fonet.Fo.Flow
 
     internal class FootnoteBody : FObj
     {
+        public static FObjMaker<FootnoteBody> GetMaker()
+        {
+            return new FObjMaker<FootnoteBody>((parent, propertyList) => new FootnoteBody(parent, propertyList));
+        }
+
         private int align = 0;
 
         private int alignLast = 0;
@@ -18,26 +23,16 @@ namespace Fonet.Fo.Flow
 
         private int textIndent = 0;
 
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new FootnoteBody(parent, propertyList);
-            }
-        }
+         
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
 
         public FootnoteBody(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:footnote-body";
+             
             this.areaClass = AreaClass.setAreaClass(AreaClass.XSL_FOOTNOTE);
         }
-
+        public override string ElementName { get { return "fo:footnote-body"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerStart)

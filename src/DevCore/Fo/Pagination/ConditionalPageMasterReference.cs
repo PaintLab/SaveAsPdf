@@ -6,18 +6,12 @@ namespace Fonet.Fo.Pagination
 
     internal class ConditionalPageMasterReference : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<ConditionalPageMasterReference> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new ConditionalPageMasterReference(parent, propertyList);
-            }
+            return new FObjMaker<ConditionalPageMasterReference>((parent, propertyList) => new ConditionalPageMasterReference(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         private RepeatablePageMasterAlternatives repeatablePageMasterAlternatives;
 
@@ -30,7 +24,7 @@ namespace Fonet.Fo.Pagination
         public ConditionalPageMasterReference(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = GetElementName();
+            
             if (GetProperty("master-reference") != null)
             {
                 SetMasterName(GetProperty("master-reference").GetString());
@@ -138,15 +132,12 @@ namespace Fonet.Fo.Pagination
         {
             return this.blankOrNotBlank;
         }
-
-        protected internal string GetElementName()
-        {
-            return "fo:conditional-page-master-reference";
-        }
+          
+        public override string ElementName { get { return "fo:conditional-page-master-reference"; } }
 
         protected internal void validateParent(FObj parent)
         {
-            if (parent.GetName().Equals("fo:repeatable-page-master-alternatives"))
+            if (parent.ElementName.Equals("fo:repeatable-page-master-alternatives"))
             {
                 this.repeatablePageMasterAlternatives =
                     (RepeatablePageMasterAlternatives)parent;
@@ -166,7 +157,7 @@ namespace Fonet.Fo.Pagination
             {
                 throw new FonetException("fo:conditional-page-master-reference must be child "
                     + "of fo:repeatable-page-master-alternatives, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
         }
     }

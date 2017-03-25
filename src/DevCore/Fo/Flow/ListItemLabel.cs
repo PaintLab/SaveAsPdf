@@ -6,25 +6,18 @@ namespace Fonet.Fo.Flow
 
     internal class ListItemLabel : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<ListItemLabel> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new ListItemLabel(parent, propertyList);
-            }
+            return new FObjMaker<ListItemLabel>((parent, propertyList) => new ListItemLabel(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         public ListItemLabel(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:list-item-label";
+       
         }
-
+        public override string ElementName { get { return "fo:list-item-label"; } }
         public override Status Layout(Area area)
         {
             int numChildren = this.children.Count;

@@ -8,18 +8,12 @@ namespace Fonet.Fo.Flow
 
     internal class Flow : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<Flow> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Flow(parent, propertyList);
-            }
+            return new FObjMaker<Flow>((parent, propertyList) => new Flow(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+
 
         private PageSequence pageSequence;
         private ArrayList markerSnapshot;
@@ -30,9 +24,7 @@ namespace Fonet.Fo.Flow
         protected Flow(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = GetElementName();
-
-            if (parent.GetName().Equals("fo:page-sequence"))
+            if (parent.ElementName.Equals("fo:page-sequence"))
             {
                 this.pageSequence = (PageSequence)parent;
             }
@@ -40,20 +32,20 @@ namespace Fonet.Fo.Flow
             {
                 throw new FonetException("flow must be child of "
                     + "page-sequence, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
             SetFlowName(GetProperty("flow-name").GetString());
 
             if (pageSequence.IsFlowSet)
             {
-                if (this.name.Equals("fo:flow"))
+                if (this.ElementName.Equals("fo:flow"))
                 {
                     throw new FonetException("Only a single fo:flow permitted"
                         + " per fo:page-sequence");
                 }
                 else
                 {
-                    throw new FonetException(this.name
+                    throw new FonetException(this.ElementName
                         + " not allowed after fo:flow");
                 }
             }
@@ -65,7 +57,7 @@ namespace Fonet.Fo.Flow
             if (name == null || name.Equals(""))
             {
                 FonetDriver.ActiveDriver.FireFonetWarning(
-                    "A 'flow-name' is required for " + GetElementName() + ".");
+                    "A 'flow-name' is required for " + ElementName + ".");
                 _flowName = "xsl-region-body";
             }
             else
@@ -183,11 +175,9 @@ namespace Fonet.Fo.Flow
         {
             return this.contentWidth;
         }
+        public override string ElementName { get { return "fo:flow"; } }
 
-        protected virtual string GetElementName()
-        {
-            return "fo:flow";
-        }
+
 
         public Status getStatus()
         {

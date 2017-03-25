@@ -16,24 +16,16 @@ namespace Fonet.Fo.Flow
         private int retrieveBoundary;
 
         private Marker bestMarker;
-
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<RetrieveMarker> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new RetrieveMarker(parent, propertyList);
-            }
+            return new FObjMaker<RetrieveMarker>((parent, propertyList) => new RetrieveMarker(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+        
 
         public RetrieveMarker(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:retrieve-marker";
+            
 
             this.retrieveClassName =
                 this.properties.GetProperty("retrieve-class-name").GetString();
@@ -42,7 +34,7 @@ namespace Fonet.Fo.Flow
             this.retrieveBoundary =
                 this.properties.GetProperty("retrieve-boundary").GetEnum();
         }
-
+        public override string ElementName { get { return "fo:retrieve-marker"; } }
         public override Status Layout(Area area)
         {
             if (marker == MarkerStart)

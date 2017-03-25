@@ -2,6 +2,7 @@
 //Apache2, 2009, griffm, FO.NET
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Xml;
 using Fonet.Fo.Pagination;
 
@@ -84,27 +85,48 @@ namespace Fonet.Fo
             }
         }
 
-        private FObj.Maker GetFObjMaker(string uri, string localName)
+        private FObj.MakerBase GetFObjMaker(string uri, string localName)
         {
             Hashtable table = (Hashtable)fobjTable[uri];
             if (table != null)
             {
-                return (FObj.Maker)table[localName];
+                return (FObj.MakerBase)table[localName];
             }
             else
             {
                 return null;
             }
         }
-
+        private T CreateAndAppend<T>(
+           FObj parent,
+           FObj.Maker<T> maker,
+           string uri,
+           string localName,
+           Attributes attlist)
+            where T : FObj
+        {
+            PropertyListBuilder currentListBuilder =
+                (PropertyListBuilder)this.propertylistTable[uri];
+            PropertyList list = null;
+            if (currentListBuilder != null)
+            {
+                list = currentListBuilder.MakeList(uri, localName, attlist, currentFObj);
+            }
+            T result = maker.Make(parent, list);
+            if (parent != null)
+            {
+                parent.AddChild(result);
+            }
+            return result;
+        }
         private void StartElement(
             string uri,
             string localName,
             Attributes attlist)
         {
-            FObj fobj;
 
-            FObj.Maker fobjMaker = GetFObjMaker(uri, localName);
+
+            FObj.MakerBase fobjMaker = GetFObjMaker(uri, localName);
 
             PropertyListBuilder currentListBuilder =
                 (PropertyListBuilder)this.propertylistTable[uri];
@@ -121,11 +143,11 @@ namespace Fonet.Fo
                 //if (namespaces.Contains(String.Intern(uri)))
                 if (namespaces.Contains(uri))
                 {
-                    fobjMaker = new Unknown.Maker();
+                    fobjMaker = Unknown.GetMaker();
                 }
                 else
                 {
-                    fobjMaker = new UnknownXMLObj.Maker(uri, localName);
+                    fobjMaker = UnknownXMLObj.GetMaker(uri, localName);
                     foreignXML = true;
                 }
             }
@@ -147,14 +169,15 @@ namespace Fonet.Fo
                 }
                 list = currentFObj.properties;
             }
-            fobj = fobjMaker.Make(currentFObj, list);
+            //
+            FObj fobj = fobjMaker.InnerMake(currentFObj, list);
 
             if (rootFObj == null)
             {
                 rootFObj = fobj;
-                if (!fobj.GetName().Equals("fo:root"))
+                if (!fobj.ElementName.Equals("fo:root"))
                 {
-                    throw new FonetException("Root element must" + " be root, not " + fobj.GetName());
+                    throw new FonetException("Root element must" + " be root, not " + fobj.ElementName);
                 }
             }
             else if (!(fobj is PageSequence))
@@ -183,7 +206,126 @@ namespace Fonet.Fo
                 currentFObj = currentFObj.getParent();
             }
         }
+        struct AttrKeyValue
+        {
+            public readonly string name;
+            public readonly string value;
+            public AttrKeyValue(string name, string value)
+            {
+                this.name = name;
+                this.value = value;
+            }
+        }
 
+        static Attributes CreateAttributes(params AttrKeyValue[] keyValues)
+        {
+            Attributes attrs = new Attributes();
+            int j = keyValues.Length;
+            ArrayList attrArr = attrs.attArray;
+            for (int i = 0; i < j; ++i)
+            {
+                AttrKeyValue kv = keyValues[i];
+                SaxAttribute saxAttr = new SaxAttribute();
+                saxAttr.Name = kv.name;
+                saxAttr.NamespaceURI = "";
+                saxAttr.Value = kv.value;
+                attrArr.Add(saxAttr);
+            }
+            return attrs;
+        }
+        internal void Parse(PixelFarm.Drawing.Pdf.MyPdfDocument doc)
+        {
+            //TEST CODE ONLY ***
+
+            var root_maker = Root.GetMaker();
+            //
+            var layout_master_set_maker = LayoutMasterSet.GetMaker();
+            var simplpe_page_master = SimplePageMaster.GetMaker();
+            var region_body = RegionBody.GetMaker();
+            var region_before = RegionBefore.GetMaker();
+            var region_after = RegionAfter.GetMaker();
+
+            //
+            var pageSeq_maker = PageSequence.GetMaker();
+            var flow_maker = Flow.Flow.GetMaker();
+            var block_maker = Flow.Block.GetMaker();
+
+
+            string nsuri = "http://www.w3.org/1999/XSL/Format";
+
+            streamRenderer.StartRenderer();
+
+            //1. root
+            Root rootObj = CreateAndAppend<Root>(null,
+                root_maker,
+                nsuri,
+                "root",
+                CreateAttributes());
+            //2.  
+            LayoutMasterSet masterSet = CreateAndAppend(rootObj, layout_master_set_maker, nsuri,
+                "layout-master-set",
+                CreateAttributes());
+            {
+                SimplePageMaster simpleMaster = CreateAndAppend(
+                    masterSet, simplpe_page_master, nsuri,
+                    "simple-page-master",
+                    CreateAttributes(
+                    new AttrKeyValue("master-name", "simple"),
+                    new AttrKeyValue("page-height", "29.7cm"),
+                    new AttrKeyValue("margin-top", "1cm"),
+                    new AttrKeyValue("margin-bottom", "2cm"),
+                    new AttrKeyValue("margin-left", "2.5cm"),
+                    new AttrKeyValue("margin-right", "2.5cm")
+                    ));
+                RegionBody rgnBody = CreateAndAppend(simpleMaster, region_body, nsuri, "region-body",
+                    CreateAttributes(new AttrKeyValue("margin-top", "3cm")));
+                RegionBefore rgnBefore = CreateAndAppend(simpleMaster, region_before, nsuri, "region-before",
+                    CreateAttributes(new AttrKeyValue("extent", "3cm")));
+                RegionAfter rgnAfter = CreateAndAppend(simpleMaster, region_after, nsuri, "region-after",
+                    CreateAttributes(new AttrKeyValue("extent", "1.5cm")));
+                simpleMaster.End();
+            }
+
+            List<PixelFarm.Drawing.Pdf.MyPdfPage> pages = doc.Pages;
+            int page_count = pages.Count;
+            for (int i = 0; i < page_count; ++i)
+            {
+                PixelFarm.Drawing.Pdf.MyPdfPage p = pages[i];
+                PixelFarm.Drawing.Pdf.MyPdfCanvas canvas = p.Canvas;
+
+                PageSequence page_seq = CreateAndAppend(rootObj, pageSeq_maker, nsuri, "page-sequence",
+                        CreateAttributes(new AttrKeyValue("master-reference", "simple")));
+
+                Flow.Flow flow_obj = CreateAndAppend(page_seq, flow_maker, nsuri, "flow",
+                    CreateAttributes(new AttrKeyValue("flow-name", "xsl-region-body")));
+
+                Flow.Block block_obj = CreateAndAppend(
+                    flow_obj, block_maker, nsuri, "block",
+                     CreateAttributes(new AttrKeyValue("font-size", "18pt"),
+                        new AttrKeyValue("color", "black"),
+                        new AttrKeyValue("text-align", "center")
+                     ));
+
+                //very simple
+                List<PixelFarm.Drawing.Pdf.MyPdfTextBlock> textElems = canvas.TextElems;
+                //first sample ,
+
+                int elem_count = textElems.Count;
+                for (int n = 0; n < elem_count; ++n)
+                {
+                    PixelFarm.Drawing.Pdf.MyPdfTextBlock textBlock = textElems[n];
+                    string txt = textBlock.Text;
+                    //
+                    char[] charBuff = txt.ToCharArray();
+                    block_obj.AddCharacters(charBuff, 0, charBuff.Length);
+                }
+
+                streamRenderer.Render(page_seq);
+            }
+            FonetDriver.ActiveDriver.FireFonetInfo("Parsing of document complete, stopping renderer");
+            streamRenderer.StopRenderer();
+
+        }
         internal void Parse(XmlReader reader)
         {
             int buflen = 500;
@@ -213,6 +355,7 @@ namespace Fonet.Fo
                                 }
                             }
                             reader.MoveToElement();
+
                             StartElement(reader.NamespaceURI, reader.LocalName, atts.TrimArray());
                             if (reader.IsEmptyElement)
                             {

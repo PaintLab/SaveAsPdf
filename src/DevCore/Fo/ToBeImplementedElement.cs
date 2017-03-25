@@ -4,7 +4,7 @@ using Fonet.Layout;
 
 namespace Fonet.Fo
 {
-    internal class ToBeImplementedElement : FObj
+    internal abstract class ToBeImplementedElement : FObj
     {
         protected ToBeImplementedElement(FObj parent, PropertyList propertyList)
             : base(parent, propertyList) { }

@@ -9,18 +9,13 @@ namespace Fonet.Fo.Pagination
     {
         private const int INFINITE = -1;
 
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<RepeatablePageMasterAlternatives> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new RepeatablePageMasterAlternatives(parent, propertyList);
-            }
+            return new FObjMaker<RepeatablePageMasterAlternatives>((parent, propertyList) => new RepeatablePageMasterAlternatives(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+
+
 
         private PageSequenceMaster pageSequenceMaster;
 
@@ -33,11 +28,10 @@ namespace Fonet.Fo.Pagination
         public RepeatablePageMasterAlternatives(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:repeatable-page-master-alternatives";
-
+     
             conditionalPageMasterRefs = new ArrayList();
 
-            if (parent.GetName().Equals("fo:page-sequence-master"))
+            if (parent.ElementName.Equals("fo:page-sequence-master"))
             {
                 this.pageSequenceMaster = (PageSequenceMaster)parent;
                 this.pageSequenceMaster.AddSubsequenceSpecifier(this);
@@ -46,7 +40,7 @@ namespace Fonet.Fo.Pagination
             {
                 throw new FonetException("fo:repeatable-page-master-alternatives"
                     + "must be child of fo:page-sequence-master, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
 
             string mr = GetProperty("maximum-repeats").GetString();
@@ -64,10 +58,9 @@ namespace Fonet.Fo.Pagination
                 {
                     throw new FonetException("Invalid number for 'maximum-repeats' property");
                 }
-            }
-
+            } 
         }
-
+        public override string ElementName { get { return "fo:repeatable-page-master-alternatives"; } }
         public string GetNextPageMaster(
             int currentPageNumber, bool thisIsFirstPage, bool isEmptyPage)
         {

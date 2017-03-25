@@ -394,33 +394,31 @@ namespace Fonet
                 Render(reader, new FileStream(outputFile, FileMode.Create, FileAccess.Write));
             }
         }
+        public virtual void Render(
+            PixelFarm.Drawing.Pdf.MyPdfDocument doc,
+            Stream outputStream)
+        { 
+            // Constructs an area tree renderer and supplies the renderer options
+            PdfRenderer renderer = new PdfRenderer(outputStream);
+            if (renderOptions != null)
+            {
+                renderer.Options = renderOptions;
+            }
 
+            // Create the stream-renderer.
+            StreamRenderer sr = new StreamRenderer(renderer);
 
-        ///// <summary>
-        /////     Executes the conversion reading the source tree from the file 
-        /////     <i>inputFile</i>, converting it to a format dictated by the 
-        /////     renderer and writing it to the supplied output stream.
-        ///// </summary>
-        ///// <param name="inputFile">Path to an XSL-FO file</param>
-        ///// <param name="outputStream">
-        /////     Any subclass of the Stream class, e.g. FileStream
-        ///// </param>
-        //public virtual void Render(string inputFile, Stream outputStream)
-        //{
-        //    Render(CreateXmlTextReader(inputFile), outputStream);
-        //}
+            // Create the tree builder and give it the stream renderer.
+            FOTreeBuilder tb = new FOTreeBuilder();
+            tb.SetStreamRenderer(sr);
 
-        ///// <summary>
-        /////     Executes the conversion reading the source tree from the input 
-        /////     stream, converting it to a format dictated by the render and 
-        /////     writing it to the supplied output stream.
-        ///// </summary>
-        ///// <param name="inputStream">Any subclass of the Stream class, e.g. FileStream</param>
-        ///// <param name="outputStream">Any subclass of the Stream class, e.g. FileStream</param>
-        //public virtual void Render(Stream inputStream, Stream outputStream)
-        //{
-        //    Render(CreateXmlTextReader(inputStream), outputStream);
-        //}
+            // Setup the mapping between xsl:fo elements and our fo classes.
+            StandardElementMapping sem = new StandardElementMapping();
+            sem.AddToBuilder(tb);
+            //// Start processing the xml document.
+            tb.Parse(doc); 
+        }
+
 
         /// <summary>
         ///     Executes the conversion reading the source tree from the input 

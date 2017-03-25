@@ -8,18 +8,11 @@ namespace Fonet.Fo.Flow
 
     internal class InstreamForeignObject : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<InstreamForeignObject> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new InstreamForeignObject(parent, propertyList);
-            }
+            return new FObjMaker<InstreamForeignObject>((parent, propertyList) => new InstreamForeignObject(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         private int breakBefore;
         private int breakAfter;
@@ -40,10 +33,9 @@ namespace Fonet.Fo.Flow
 
         public InstreamForeignObject(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
-        {
-            this.name = "fo:instream-foreign-object";
+        { 
         }
-
+        public override string ElementName { get { return "fo:instream-foreign-object"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerBreakAfter)

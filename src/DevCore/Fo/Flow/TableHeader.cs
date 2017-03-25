@@ -4,24 +4,14 @@ namespace Fonet.Fo.Flow
 {
     internal class TableHeader : AbstractTableBody
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<TableHeader> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new TableHeader(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new TableHeader.Maker();
-        }
-
+            return new FObjMaker<TableHeader>((parent, propertyList) => new TableHeader(parent, propertyList));
+        } 
         public TableHeader(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:table-header";
         }
-
+        public override string ElementName { get { return "fo:table-header"; } }
     }
 }

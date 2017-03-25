@@ -7,25 +7,19 @@ namespace Fonet.Fo.Flow
 
     internal class BasicLink : Inline
     {
-        new internal class Maker : FObj.Maker
+
+        public new static FObjMaker<BasicLink> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new BasicLink(parent, propertyList);
-            }
+            return new FObjMaker<BasicLink>((parent, propertyList) => new BasicLink(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
 
         public BasicLink(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:basic-link";
+            
         }
-
+        public override string ElementName { get { return "fo:basic-link"; } }
         public override Status Layout(Area area)
         {
             string destination;

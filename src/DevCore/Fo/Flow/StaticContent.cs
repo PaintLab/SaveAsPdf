@@ -7,17 +7,9 @@ namespace Fonet.Fo.Flow
 
     internal class StaticContent : Flow
     {
-        new internal class Maker : FObj.Maker
+        public new static FObjMaker<StaticContent> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new StaticContent(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
+            return new FObjMaker<StaticContent>((parent, propertyList) => new StaticContent(parent, propertyList));
         }
 
         protected StaticContent(FObj parent, PropertyList propertyList)
@@ -88,18 +80,14 @@ namespace Fonet.Fo.Flow
             ResetMarker();
             return new Status(Status.OK);
         }
-
-        protected override string GetElementName()
-        {
-            return "fo:static-content";
-        }
-
+ 
+        public override string ElementName { get { return "fo:static-content"; } }
         protected override void SetFlowName(string name)
         {
             if (name == null || name.Equals(""))
             {
                 throw new FonetException("A 'flow-name' is required for "
-                    + GetElementName() + ".");
+                    + ElementName + ".");
             }
             else
             {

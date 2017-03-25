@@ -7,19 +7,11 @@ namespace Fonet.Fo.Pagination
     internal class RepeatablePageMasterReference :
         PageMasterReference, SubSequenceSpecifier
     {
-        private const int INFINITE = -1;
+        private const int INFINITE = -1; 
 
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<RepeatablePageMasterReference> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new RepeatablePageMasterReference(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
+            return new FObjMaker<RepeatablePageMasterReference>((parent, propertyList) => new RepeatablePageMasterReference(parent, propertyList));
         }
 
         private int maximumRepeats;
@@ -81,12 +73,8 @@ namespace Fonet.Fo.Pagination
         {
             return this.maximumRepeats;
         }
-
-        protected override string GetElementName()
-        {
-            return "fo:repeatable-page-master-reference";
-        }
-
+         
+        public override string ElementName { get { return "fo:repeatable-page-master-reference"; } }
         public override void Reset()
         {
             this.numberConsumed = 0;
