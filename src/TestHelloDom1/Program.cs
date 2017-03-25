@@ -3,7 +3,7 @@
 
 using System.IO;
 using Fonet;
-
+using PixelFarm.Drawing.Pdf;
 namespace FonetExample
 {
     //hello dom sample
@@ -11,12 +11,20 @@ namespace FonetExample
     {
         static void Main(string[] args)
         {
+            MyPdfDocument pdfdoc = new MyPdfDocument();
+            MyPdfPage page = pdfdoc.CreatePage();
+            pdfdoc.Pages.Add(page);
+            //
+            MyPdfCanvas canvas = page.Canvas;
+            canvas.DrawString("Hello PixelFarm", 20, 20);
+            //
             FonetDriver driver = FonetDriver.Make();
             driver.ImageHandler += str =>
             {
                 return null;
             };
-            driver.Render("hello.fo", "hello.pdf");
+
+            driver.Render(pdfdoc, "hello.pdf");
         }
     }
 }

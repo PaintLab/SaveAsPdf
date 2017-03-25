@@ -394,7 +394,47 @@ namespace Fonet
                 Render(reader, new FileStream(outputFile, FileMode.Create, FileAccess.Write));
             }
         }
+        public virtual void Render(PixelFarm.Drawing.Pdf.MyPdfDocument doc, string outputFile)
+        {
+            FileStream outputStream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
+            try
+            {
+                // Constructs an area tree renderer and supplies the renderer options
+                PdfRenderer renderer = new PdfRenderer(outputStream);
+                if (renderOptions != null)
+                {
+                    renderer.Options = renderOptions;
+                }
 
+                // Create the stream-renderer.
+                StreamRenderer sr = new StreamRenderer(renderer);
+
+                // Create the tree builder and give it the stream renderer.
+                FOTreeBuilder tb = new FOTreeBuilder();
+                tb.SetStreamRenderer(sr);
+
+                // Setup the mapping between xsl:fo elements and our fo classes.
+                StandardElementMapping sem = new StandardElementMapping();
+                sem.AddToBuilder(tb);
+
+                //// Start processing the xml document.
+                tb.Parse(doc);
+            }
+            finally
+            {
+                if (CloseOnExit)
+                {
+                    // Flush and close the output stream
+                    outputStream.Flush();
+                    outputStream.Close();
+                }
+            }
+            //using (FileStream fs = new FileStream(inputFile, FileMode.Open))
+            //{
+            //    XmlReader reader = XmlReader.Create(fs);
+            //    Render(reader, new FileStream(outputFile, FileMode.Create, FileAccess.Write));
+            //}
+        }
 
         ///// <summary>
         /////     Executes the conversion reading the source tree from the file 
