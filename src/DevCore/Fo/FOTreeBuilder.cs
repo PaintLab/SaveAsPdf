@@ -235,7 +235,7 @@ namespace Fonet.Fo
         }
         internal void Parse(PixelFarm.Drawing.Pdf.MyPdfDocument doc)
         {
-            //TODO: use generic here
+            //TEST CODE ONLY ***
 
             var root_maker = Root.GetMaker();
             //
@@ -251,10 +251,10 @@ namespace Fonet.Fo
             var block_maker = Flow.Block.GetMaker();
 
 
-            string nsuri = "http://www.w3.org/1999/XSL/Format"; 
+            string nsuri = "http://www.w3.org/1999/XSL/Format";
 
             streamRenderer.StartRenderer();
-            
+
             //1. root
             Root rootObj = CreateAndAppend<Root>(null,
                 root_maker,

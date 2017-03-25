@@ -16,9 +16,7 @@ namespace FonetExample
             //1. create new page and append to doc
             MyPdfPage page = pdfdoc.CreatePage();
             pdfdoc.Pages.Add(page);
-            //2. set page property
-
-
+            //2. set page property 
             MyPdfCanvas canvas = page.Canvas;
             canvas.DrawString("Hello World!, from PixelFarm", 20, 20);
             //
