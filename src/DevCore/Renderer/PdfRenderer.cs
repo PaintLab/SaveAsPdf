@@ -661,10 +661,12 @@ namespace Fonet.Render.Pdf
 
             //--------------------------------------------
             PdfColor areaColor = this.currentFill;
+
             if (areaColor == null || areaColor.getRed() != (double)area.getRed()
                 || areaColor.getGreen() != (double)area.getGreen()
                 || areaColor.getBlue() != (double)area.getBlue())
             {
+                //change area color
                 areaColor = new PdfColor((double)area.getRed(),
                                          (double)area.getGreen(),
                                          (double)area.getBlue());
@@ -677,13 +679,26 @@ namespace Fonet.Render.Pdf
 
             int rx = this.currentXPosition;
             int bl = this.currentYPosition;
-
-            AddWordLines(area, rx, bl, size, areaColor);
+            int areaContentW = area.getContentWidth();
+            if (area.getUnderlined())
+            {
+                AddUnderLine(rx, bl, areaContentW, size, areaColor);
+            }
+            if (area.getOverlined())
+            {
+                AddOverLine(rx, bl, areaContentW, size, fontState.Ascender, areaColor);
+            }
+            if (area.getLineThrough())
+            {
+                AddLineThrough(rx, bl, areaContentW, size, fontState.Ascender, areaColor);
+            }
+            //--------------------------------------------
 
             if (!textOpen || bl != prevWordY)
             {
                 CloseText();
 
+                //set text matrix
                 pdf.Append("1 0 0 1 " + PdfNumber.doubleOut(rx / 1000f) +
                     " " + PdfNumber.doubleOut(bl / 1000f) + " Tm [" + startText);
                 prevWordY = bl;
@@ -711,23 +726,16 @@ namespace Fonet.Render.Pdf
                     pdf.Append(startText);
                 }
             }
-            prevWordWidth = area.getContentWidth();
+            prevWordWidth = areaContentW;
             prevWordX = rx;
 
-            string s;
-            if (area.getPageNumberID() != null)
+            string s = area.GetTextContent();
+            if (area is PageNumberInlineArea)
             {
-                // This text is a page number, so resolve it
-                s = idReferences.getPageNumber(area.getPageNumberID());
-                if (s == null)
-                {
-                    s = String.Empty;
-                }
+                //need to resolve to page number 
+                s = idReferences.getPageNumber(s);
             }
-            else
-            {
-                s = area.getText();
-            }
+
 
             int wordLength = s.Length;
 
@@ -834,7 +842,7 @@ namespace Fonet.Render.Pdf
         {
             this.pdfResources = this.pdfDoc.getResources();
             //
-            this.idReferences = page.getIDReferences();            
+            this.idReferences = page.getIDReferences();
             this.pdfDoc.setIDReferences(idReferences);
             //
             this.RenderPage(page);
@@ -941,7 +949,7 @@ namespace Fonet.Render.Pdf
             this.currentFill = null;
         }
 
-      
+
 
         private void DoFrame(Area area)
         {
@@ -1191,42 +1199,42 @@ namespace Fonet.Render.Pdf
             this.currentYPosition -= d;
         }
 
-        private void AddWordLines(WordArea area, int rx, int bl, int size,
-                                  PdfColor theAreaColor)
+
+        void AddUnderLine(int x, int y, int w, int lineH,
+                           PdfColor theAreaColor)
         {
-            if (area.getUnderlined())
-            {
-                int yPos = bl - size / 10;
-                AddLine(rx, yPos, rx + area.getContentWidth(), yPos, size / 14,
-                        theAreaColor);
-                // save position for underlining a following InlineSpace
-                prevUnderlineXEndPos = rx + area.getContentWidth();
-                prevUnderlineYEndPos = yPos;
-                prevUnderlineSize = size / 14;
-                prevUnderlineColor = theAreaColor;
-            }
-
-            if (area.getOverlined())
-            {
-                int yPos = bl + area.GetFontState().Ascender + size / 10;
-                AddLine(rx, yPos, rx + area.getContentWidth(), yPos, size / 14,
-                        theAreaColor);
-                prevOverlineXEndPos = rx + area.getContentWidth();
-                prevOverlineYEndPos = yPos;
-                prevOverlineSize = size / 14;
-                prevOverlineColor = theAreaColor;
-            }
-
-            if (area.getLineThrough())
-            {
-                int yPos = bl + area.GetFontState().Ascender * 3 / 8;
-                AddLine(rx, yPos, rx + area.getContentWidth(), yPos, size / 14,
-                        theAreaColor);
-                prevLineThroughXEndPos = rx + area.getContentWidth();
-                prevLineThroughYEndPos = yPos;
-                prevLineThroughSize = size / 14;
-                prevLineThroughColor = theAreaColor;
-            }
+            int yPos = y - lineH / 10;
+            AddLine(x, yPos, x + w, yPos, lineH / 14,
+                    theAreaColor);
+            // save position for underlining a following InlineSpace
+            prevUnderlineXEndPos = x + w;
+            prevUnderlineYEndPos = yPos;
+            prevUnderlineSize = lineH / 14;
+            prevUnderlineColor = theAreaColor;
+        }
+        void AddOverLine(int x, int y, int w, int lineH,
+                        int fontAscender,
+                        PdfColor theAreaColor)
+        {
+            int yPos = y + fontAscender + lineH / 10;
+            AddLine(x, yPos, x + w, yPos, lineH / 14,
+                    theAreaColor);
+            prevOverlineXEndPos = x + w;
+            prevOverlineYEndPos = yPos;
+            prevOverlineSize = lineH / 14;
+            prevOverlineColor = theAreaColor;
+        }
+        void AddLineThrough(int x, int y, int w, int lineH,
+                        int fontAscender,
+                        PdfColor theAreaColor)
+        {
+            int yPos = y + fontAscender * 3 / 8;
+            AddLine(x, yPos, x + w, yPos, lineH / 14,
+                    theAreaColor);
+            prevLineThroughXEndPos = x + w;
+            prevLineThroughYEndPos = yPos;
+            prevLineThroughSize = lineH / 14;
+            prevLineThroughColor = theAreaColor;
         }
 
         /**
