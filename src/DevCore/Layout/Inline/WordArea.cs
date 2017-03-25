@@ -4,6 +4,7 @@ using Fonet.Render.Pdf;
 
 namespace Fonet.Layout.Inline
 {
+    
     internal class WordArea : InlineArea
     {
         private string text;
@@ -22,10 +23,11 @@ namespace Fonet.Layout.Inline
             renderer.RenderWordArea(this);
         }
 
-        public string getText()
+        public virtual string GetTextContent()
         {
-            return this.text;
+            return text;
         }
+
 
     }
 }

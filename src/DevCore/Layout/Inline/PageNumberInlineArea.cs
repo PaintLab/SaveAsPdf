@@ -2,14 +2,19 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Layout.Inline
 {
-    internal class PageNumberInlineArea : WordArea
+    class PageNumberInlineArea : WordArea
     {
+        string _pageNumberId;
         public PageNumberInlineArea(
             FontState fontState, float red, float green,
             float blue, string refid, int width)
             : base(fontState, red, green, blue, "?", width)
         {
-            this.pageNumberId = refid;
+            _pageNumberId = refid;
+        }
+        public override string GetTextContent()
+        {
+            return _pageNumberId;
         }
 
     }
