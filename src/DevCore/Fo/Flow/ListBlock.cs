@@ -6,18 +6,12 @@ namespace Fonet.Fo.Flow
 
     internal class ListBlock : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<ListBlock> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new ListBlock(parent, propertyList);
-            }
+            return new FObjMaker<ListBlock>((parent, propertyList) => new ListBlock(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+
 
         private int align;
         private int alignLast;
@@ -30,9 +24,9 @@ namespace Fonet.Fo.Flow
         public ListBlock(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:list-block";
+             
         }
-
+        public override string ElementName { get { return "fo:list-block"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerStart)

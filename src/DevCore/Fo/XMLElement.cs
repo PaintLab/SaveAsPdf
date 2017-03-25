@@ -10,7 +10,7 @@ namespace Fonet.Fo
     {
         private string nmspace = String.Empty;
 
-        new internal class Maker : FObj.Maker
+        class Maker : FObj.Maker<XMLElement>
         {
             private string tag;
 
@@ -18,14 +18,13 @@ namespace Fonet.Fo
             {
                 tag = t;
             }
-
-            public override FObj Make(FObj parent, PropertyList propertyList)
+            public override XMLElement Make(FObj parent, PropertyList propertyList)
             {
                 return new XMLElement(parent, propertyList, tag);
             }
         }
 
-        public static FObj.Maker GetMaker(string tag)
+        public static FObj.Maker<XMLElement> GetMaker(string tag)
         {
             return new Maker(tag);
         }
@@ -35,7 +34,7 @@ namespace Fonet.Fo
         {
             Init();
         }
-
+        public override string ElementName { get { return this.tagName; } }
         public override Status Layout(Area area)
         {
             if (!(area is ForeignObjectArea))

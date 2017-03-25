@@ -10,19 +10,11 @@ namespace Fonet.Fo.Pagination
 {
     internal class PageSequence : FObj
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new PageSequence(parent, propertyList);
-            }
-        }
 
-        new public static FObj.Maker GetMaker()
+        public static FObjMaker<PageSequence> GetMaker()
         {
-            return new Maker();
+            return new FObjMaker<PageSequence>((parent, propertyList) => new PageSequence(parent, propertyList));
         }
-
         private const int EXPLICIT = 0;
         private const int AUTO = 1;
         private const int AUTO_EVEN = 2;
@@ -45,20 +37,20 @@ namespace Fonet.Fo.Pagination
         private SubSequenceSpecifier currentSubsequence;
         private int currentSubsequenceNumber = -1;
         private string currentPageMasterName;
-
+        public override string ElementName { get { return "fo:page-sequence"; } }
         protected PageSequence(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:page-sequence";
 
-            if (parent.GetName().Equals("fo:root"))
+
+            if (parent.ElementName.Equals("fo:root"))
             {
                 this.root = (Root)parent;
             }
             else
             {
                 throw new FonetException("page-sequence must be child of root, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
 
             layoutMasterSet = root.getLayoutMasterSet();
@@ -325,10 +317,10 @@ namespace Fonet.Fo.Pagination
             }
             else
             {
-                FonetDriver.ActiveDriver.FireFonetError(region.GetName()
+                FonetDriver.ActiveDriver.FireFonetError(region.ElementName
                     + " only supports static-content flows currently. "
                     + "Cannot use flow named '"
-                    + flow.GetFlowName() + "'");
+                    + flow.ElementName + "'");
             }
         }
 

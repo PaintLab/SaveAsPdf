@@ -7,25 +7,17 @@ namespace Fonet.Fo.Flow
 
     internal class Leader : FObjMixed
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<Leader> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Leader(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+            return new FObjMaker<Leader>((parent, propertyList) => new Leader(parent, propertyList));
+        } 
 
         public Leader(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:leader";
+           
         }
-
+        public override string ElementName { get { return "fo:leader"; } }
         public override Status Layout(Area area)
         {
             BlockArea blockArea;

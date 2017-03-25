@@ -7,6 +7,12 @@ namespace Fonet.Fo.Flow
 
     internal class BlockContainer : FObj
     {
+        public static FObjMaker<BlockContainer> GetMaker()
+        {
+            return new FObjMaker<BlockContainer>((parent, propertyList) => new BlockContainer(parent, propertyList));
+        }
+
+
         private int position;
         private int top;
         private int bottom;
@@ -17,26 +23,15 @@ namespace Fonet.Fo.Flow
         private int span;
         private AreaContainer areaContainer;
 
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new BlockContainer(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+        
 
         protected BlockContainer(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:block-container";
+           
             this.span = this.properties.GetProperty("span").GetEnum();
         }
-
+        public override string ElementName { get { return "fo:block-container"; } }
         public override Status Layout(Area area)
         {
             if (this.marker == MarkerStart)

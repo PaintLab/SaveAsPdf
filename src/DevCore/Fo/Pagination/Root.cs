@@ -2,22 +2,17 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Fo.Pagination
 {
+    using System;
     using System.Collections;
 
     internal class Root : FObj
     {
-        new internal class Maker : FObj.Maker
+
+        public static FObjMaker<Root> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Root(parent, propertyList);
-            }
+            return new FObjMaker<Root>((parent, propertyList) => new Root(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
 
         private LayoutMasterSet layoutMasterSet;
 
@@ -28,14 +23,17 @@ namespace Fonet.Fo.Pagination
         protected internal Root(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:root";
+              
             pageSequences = new ArrayList();
             if (parent != null)
             {
                 throw new FonetException("root must be root element");
             }
         }
-
+        public override string ElementName
+        {
+            get { return "fo:root"; }
+        }
         protected internal int getRunningPageNumberCounter()
         {
             return this.runningPageNumberCounter;

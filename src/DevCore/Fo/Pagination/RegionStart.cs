@@ -6,17 +6,10 @@ namespace Fonet.Fo.Pagination
 {
     internal class RegionStart : Region
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new RegionStart(parent, propertyList);
-            }
-        }
 
-        new public static FObj.Maker GetMaker()
+        public static FObjMaker<RegionStart> GetMaker()
         {
-            return new Maker();
+            return new FObjMaker<RegionStart>((parent, propertyList) => new RegionStart(parent, propertyList));
         }
 
         public const string REGION_CLASS = "start";
@@ -72,13 +65,8 @@ namespace Fonet.Fo.Pagination
         protected override string GetDefaultRegionName()
         {
             return "xsl-region-start";
-        }
-
-        protected override string GetElementName()
-        {
-            return "fo:region-start";
-        }
-
+        } 
+        public override string ElementName { get { return "fo:region-start"; } }
         public override string GetRegionClass()
         {
             return REGION_CLASS;

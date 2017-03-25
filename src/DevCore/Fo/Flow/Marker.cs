@@ -6,31 +6,19 @@ namespace Fonet.Fo.Flow
 
     internal class Marker : FObjMixed
     {
-        private string markerClassName;
-
-        private Area registryArea;
-
-        private bool isFirst;
-
-        private bool isLast;
-
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<Marker> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Marker(parent, propertyList);
-            }
-        }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+            return new FObjMaker<Marker>((parent, propertyList) => new Marker(parent, propertyList));
+        } 
+        private string markerClassName; 
+        private Area registryArea; 
+        private bool isFirst; 
+        private bool isLast; 
 
         public Marker(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:marker";
+           
 
             this.markerClassName =
                 this.properties.GetProperty("marker-class-name").GetString();
@@ -44,7 +32,7 @@ namespace Fonet.Fo.Flow
             {
             }
         }
-
+        public override string ElementName { get { return "fo:marker"; } }
         public override Status Layout(Area area)
         {
             this.registryArea = area;

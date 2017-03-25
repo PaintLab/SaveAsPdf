@@ -7,25 +7,17 @@ namespace Fonet.Fo.Flow
 
     internal class Footnote : FObj
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Footnote(parent, propertyList);
-            }
-        }
 
-        new public static FObj.Maker GetMaker()
+        public static FObjMaker<Footnote> GetMaker()
         {
-            return new Maker();
+            return new FObjMaker<Footnote>((parent, propertyList) => new Footnote(parent, propertyList));
         }
-
         public Footnote(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:footnote";
+            
         }
-
+        public override string ElementName { get { return "fo:footnote"; } }
         public override Status Layout(Area area)
         {
             FONode inline = null;

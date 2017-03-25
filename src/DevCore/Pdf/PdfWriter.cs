@@ -150,10 +150,10 @@ namespace Fonet.Pdf
         
         void dbugLineCheck()
         {
-            if (dbugWriteLineCount == 4)
-            {
+            //if (dbugWriteLineCount == 4)
+            //{
 
-            }
+            //}
 
         }
 #endif

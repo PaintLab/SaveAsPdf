@@ -2,22 +2,16 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Fo.Pagination
 {
+    using System;
     using System.Collections;
 
     internal class LayoutMasterSet : FObj
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<LayoutMasterSet> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new LayoutMasterSet(parent, propertyList);
-            }
+            return new FObjMaker<LayoutMasterSet>((parent, propertyList) => new LayoutMasterSet(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+     
 
         private Hashtable simplePageMasters;
         private Hashtable pageSequenceMasters;
@@ -27,12 +21,10 @@ namespace Fonet.Fo.Pagination
 
         protected internal LayoutMasterSet(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
-        {
-            this.name = "fo:layout-master-set";
+        { 
             this.simplePageMasters = new Hashtable();
-            this.pageSequenceMasters = new Hashtable();
-
-            if (parent.GetName().Equals("fo:root"))
+            this.pageSequenceMasters = new Hashtable(); 
+            if (parent.ElementName.Equals("fo:root"))
             {
                 this.root = (Root)parent;
                 root.setLayoutMasterSet(this);
@@ -40,12 +32,11 @@ namespace Fonet.Fo.Pagination
             else
             {
                 throw new FonetException("fo:layout-master-set must be child of fo:root, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
-            allRegions = new Hashtable();
-
+            allRegions = new Hashtable(); 
         }
-
+        public override string ElementName { get { return "fo:layout-master-set"; } }
         protected internal void addSimplePageMaster(SimplePageMaster simplePageMaster)
         {
             if (existsName(simplePageMaster.GetMasterName()))

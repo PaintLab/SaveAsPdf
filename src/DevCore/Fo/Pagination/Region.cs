@@ -14,7 +14,7 @@ namespace Fonet.Fo.Pagination
         protected Region(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = GetElementName();
+
 
             if (null == this.properties.GetProperty(PROP_REGION_NAME))
             {
@@ -31,21 +31,21 @@ namespace Fonet.Fo.Pagination
                     && !getRegionName().Equals(GetDefaultRegionName()))
                 {
                     throw new FonetException(PROP_REGION_NAME + " '" + _regionName
-                        + "' for " + this.name
+                        + "' for " + this.ElementName
                         + " not permitted.");
                 }
             }
 
-            if (parent.GetName().Equals("fo:simple-page-master"))
+            if (parent.ElementName.Equals("fo:simple-page-master"))
             {
                 _layoutMaster = (SimplePageMaster)parent;
                 getPageMaster().addRegion(this);
             }
             else
             {
-                throw new FonetException(GetElementName() + " must be child "
+                throw new FonetException(ElementName + " must be child "
                     + "of simple-page-master, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Fonet.Fo.Pagination
 
         protected abstract string GetDefaultRegionName();
 
-        protected abstract string GetElementName();
+
 
         public abstract string GetRegionClass();
 

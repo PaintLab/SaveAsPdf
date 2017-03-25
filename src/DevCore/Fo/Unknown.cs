@@ -6,25 +6,17 @@ namespace Fonet.Fo
 {
     internal class Unknown : FObj
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Unknown(parent, propertyList);
-            }
-        }
 
-        new public static FObj.Maker GetMaker()
+        public static FObjMaker<Unknown> GetMaker()
         {
-            return new Maker();
-        }
-
+            return new FObjMaker<Unknown>((parent, propertyList) => new Unknown(parent, propertyList));
+        } 
         protected Unknown(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "unknown";
+            
         }
-
+        public override string ElementName { get { return "unknown"; } }
         public override Status Layout(Area area)
         {
             return new Status(Status.OK);

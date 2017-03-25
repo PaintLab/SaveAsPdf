@@ -1,5 +1,6 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
+using System;
 using Fonet.Layout;
 
 namespace Fonet.Fo
@@ -8,7 +9,7 @@ namespace Fonet.Fo
     {
         private string nmspace;
 
-        new internal class Maker : FObj.Maker
+        class Maker : FObj.Maker<UnknownXMLObj>
         {
             private string space;
             private string tag;
@@ -19,14 +20,14 @@ namespace Fonet.Fo
                 tag = t;
             }
 
-            public override FObj Make(FObj parent,
+            public override UnknownXMLObj Make(FObj parent,
                                       PropertyList propertyList)
             {
                 return new UnknownXMLObj(parent, propertyList, space, tag);
             }
         }
 
-        public static FObj.Maker GetMaker(string space, string tag)
+        public static FObj.Maker<UnknownXMLObj> GetMaker(string space, string tag)
         {
             return new Maker(space, tag);
         }
@@ -35,16 +36,21 @@ namespace Fonet.Fo
             : base(parent, propertyList, tag)
         {
             this.nmspace = space;
-            if (!"".Equals(space))
+        }
+        public override string ElementName
+        {
+            get
             {
-                this.name = this.nmspace + ":" + tag;
-            }
-            else
-            {
-                this.name = "(none):" + tag;
+                if (string.IsNullOrEmpty(nmspace))
+                {
+                    return "(none):" + tagName;
+                }
+                else
+                {
+                    return this.nmspace + ":" + tagName;
+                }
             }
         }
-
         public override string GetNameSpace()
         {
             return this.nmspace;

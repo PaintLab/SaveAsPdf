@@ -7,18 +7,13 @@ namespace Fonet.Fo.Pagination
 {
     internal class RegionBefore : Region
     {
-        new internal class Maker : FObj.Maker
+        
+
+        public static FObjMaker<RegionBefore> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new RegionBefore(parent, propertyList);
-            }
+            return new FObjMaker<RegionBefore>((parent, propertyList) => new RegionBefore(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
 
         public const string REGION_CLASS = "before";
 
@@ -54,13 +49,8 @@ namespace Fonet.Fo.Pagination
         protected override string GetDefaultRegionName()
         {
             return "xsl-region-before";
-        }
-
-        protected override string GetElementName()
-        {
-            return "fo:region-before";
-        }
-
+        } 
+        public override string ElementName { get { return "fo:region-before"; } }
         public override string GetRegionClass()
         {
             return REGION_CLASS;

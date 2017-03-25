@@ -6,18 +6,11 @@ namespace Fonet.Fo.Flow
 
     internal class Block : FObjMixed
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<Block> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new Block(parent, propertyList);
-            }
+            return new FObjMaker<Block>((parent, propertyList) => new Block(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
 
         private int align;
         private int alignLast;
@@ -36,12 +29,13 @@ namespace Fonet.Fo.Flow
         private string id;
         private int span;
         private bool anythingLaidOut = false;
-
+        public override string ElementName { get { return "fo:block"; } }
+        //
         public Block(FObj parent, PropertyList propertyList) : base(parent, propertyList)
         {
-            this.name = "fo:block";
 
-            switch (parent.GetName())
+
+            switch (parent.ElementName)
             {
                 case "fo:basic-link":
                 case "fo:block":
@@ -64,7 +58,7 @@ namespace Fonet.Fo.Flow
                     throw new FonetException(
                         "fo:block must be child of " +
                             "fo:basic-link, fo:block, fo:block-container, fo:float, fo:flow, fo:footnote-body, fo:inline, fo:inline-container, fo:list-item-body, fo:list-item-label, fo:marker, fo:multi-case, fo:static-content, fo:table-caption, fo:table-cell or fo:wrapper " +
-                            "not " + parent.GetName());
+                            "not " + parent.ElementName);
             }
             this.span = this.properties.GetProperty("span").GetEnum();
             ts = propMgr.getTextDecoration(parent);

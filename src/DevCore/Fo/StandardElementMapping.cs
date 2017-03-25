@@ -1,6 +1,8 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
+
 using System.Collections;
+using System.Collections.Generic;
 using Fonet.Fo.Flow;
 using Fonet.Fo.Pagination;
 using Fonet.Fo.Properties;
@@ -12,10 +14,12 @@ namespace Fonet.Fo
         public const string URI = "http://www.w3.org/1999/XSL/Format";
 
         private static Hashtable foObjs;
+        static Dictionary<string, FObj.MakerBase> s_fObjMakers;
 
         static StandardElementMapping()
         {
             foObjs = new Hashtable();
+            s_fObjMakers = new Dictionary<string, FObj.MakerBase>();
 
             // Declarations and Pagination and Layout Formatting Objects
             foObjs.Add("root", Root.GetMaker());

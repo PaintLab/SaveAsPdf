@@ -6,25 +6,18 @@ namespace Fonet.Fo.Flow
 
     internal class TableAndCaption : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<TableAndCaption> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new TableAndCaption(parent, propertyList);
-            }
+            return new FObjMaker<TableAndCaption>((parent, propertyList) => new TableAndCaption(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
+         
 
         protected TableAndCaption(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:table-and-caption";
+            
         }
-
+        public override string ElementName { get { return "fo:table-and-caption"; } }
         public override Status Layout(Area area)
         {
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();

@@ -6,25 +6,18 @@ namespace Fonet.Fo.Flow
 
     internal class MultiCase : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<MultiCase> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new MultiCase(parent, propertyList);
-            }
+            return new FObjMaker<MultiCase>((parent, propertyList) => new MultiCase(parent, propertyList));
         }
 
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
 
         protected MultiCase(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:multi-case";
+           
         }
-
+        public override string ElementName { get { return "fo:multi-case"; } }
         public override Status Layout(Area area)
         {
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();

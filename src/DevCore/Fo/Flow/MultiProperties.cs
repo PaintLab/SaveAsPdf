@@ -6,25 +6,17 @@ namespace Fonet.Fo.Flow
 
     internal class MultiProperties : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+        public static FObjMaker<MultiProperties> GetMaker()
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new MultiProperties(parent, propertyList);
-            }
+            return new FObjMaker<MultiProperties>((parent, propertyList) => new MultiProperties(parent, propertyList));
         }
-
-        new public static FObj.Maker GetMaker()
-        {
-            return new Maker();
-        }
-
+         
         protected MultiProperties(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:multi-properties";
+            
         }
-
+        public override string ElementName { get { return "fo:multi-properties"; } }
         public override Status Layout(Area area)
         {
             AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();

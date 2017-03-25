@@ -1,5 +1,6 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
+using System;
 using System.Collections;
 using Fonet.Layout;
 
@@ -7,17 +8,10 @@ namespace Fonet.Fo.Pagination
 {
     internal class SimplePageMaster : FObj
     {
-        new internal class Maker : FObj.Maker
-        {
-            public override FObj Make(FObj parent, PropertyList propertyList)
-            {
-                return new SimplePageMaster(parent, propertyList);
-            }
-        }
 
-        new public static FObj.Maker GetMaker()
+        public static FObjMaker<SimplePageMaster> GetMaker()
         {
-            return new Maker();
+            return new FObjMaker<SimplePageMaster>((parent, propertyList) => new SimplePageMaster(parent, propertyList));
         }
 
         private Hashtable _regions;
@@ -33,9 +27,8 @@ namespace Fonet.Fo.Pagination
         protected SimplePageMaster(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:simple-page-master";
 
-            if (parent.GetName().Equals("fo:layout-master-set"))
+            if (parent.ElementName.Equals("fo:layout-master-set"))
             {
                 this.layoutMasterSet = (LayoutMasterSet)parent;
                 masterName = this.properties.GetProperty("master-name").GetString();
@@ -53,10 +46,11 @@ namespace Fonet.Fo.Pagination
             {
                 throw new FonetException("fo:simple-page-master must be child "
                     + "of fo:layout-master-set, not "
-                    + parent.GetName());
+                    + parent.ElementName);
             }
             _regions = new Hashtable();
         }
+        public override string ElementName { get { return "fo:simple-page-master"; } }
 
         protected internal override void End()
         {

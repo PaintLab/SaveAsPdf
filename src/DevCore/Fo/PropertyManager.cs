@@ -283,7 +283,7 @@ namespace Fonet.Fo
 
             do
             {
-                string fname = parent.GetName();
+                string fname = parent.ElementName;
                 if (fname.Equals("fo:flow") || fname.Equals("fo:static-content"))
                 {
                     found = true;

@@ -4,15 +4,15 @@ namespace Fonet.Fo
 {
     internal class ColorProfile : ToBeImplementedElement
     {
-        new internal class Maker : FObj.Maker
+        class Maker : FObj.Maker<ColorProfile>
         {
-            public override FObj Make(FObj parent, PropertyList propertyList)
+            public override ColorProfile Make(FObj parent, PropertyList propertyList)
             {
                 return new ColorProfile(parent, propertyList);
             }
         }
 
-        new public static FObj.Maker GetMaker()
+        public static FObj.Maker<ColorProfile> GetMaker()
         {
             return new ColorProfile.Maker();
         }
@@ -20,8 +20,9 @@ namespace Fonet.Fo
         protected ColorProfile(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-            this.name = "fo:color-profile";
+ 
         }
+        public override string ElementName { get { return "fo:color-profile"; } }
 
     }
 }

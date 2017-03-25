@@ -16,20 +16,20 @@ namespace Fonet.Pdf
         public PdfObject()
         {
 #if DEBUG
-            if (dbugId == 142 || dbugId == 153)
-            {
+            //if (dbugId == 142 || dbugId == 153)
+            //{
 
-            }
+            //}
 #endif
         }
 
         public PdfObject(PdfObjectId objectId)
         {
 #if DEBUG
-            if (dbugId == 142 || dbugId == 153)
-            {
+            //if (dbugId == 142 || dbugId == 153)
+            //{
 
-            }
+            //}
 #endif
             this.objectId = objectId;
         }

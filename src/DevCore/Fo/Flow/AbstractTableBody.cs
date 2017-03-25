@@ -22,7 +22,7 @@ namespace Fonet.Fo.Flow
             if (!(parent is Table))
             {
                 FonetDriver.ActiveDriver.FireFonetError(
-                    "A table body must be child of fo:table, not " + parent.GetName());
+                    "A table body must be child of fo:table, not " + parent.ElementName);
             }
         }
 
