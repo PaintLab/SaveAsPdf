@@ -99,7 +99,7 @@ namespace Fonet.Pdf
             }
             else
             {
-                bytes = ToPdfHexadecimal(encoding.GetPreamble(), bytes);
+                bytes = ToPdfHexadecimal(encoding.GetPreamble(), bytes, writer.TempMemStream);
             }
 
             // Finally, write out the bytes.
@@ -178,16 +178,19 @@ namespace Fonet.Pdf
         ///     is written as a sequence of hexadecimal digits (0�9 and either A�F 
         ///     or a�f) enclosed within angle brackets (&lt; and &gt;).
         /// </remarks>
-        internal static byte[] ToPdfHexadecimal(byte[] preamble, byte[] data)
+        internal static byte[] ToPdfHexadecimal(byte[] preamble, byte[] data, MemoryStream tempMS)
         {
             // Each input byte expands to two output bytes.
-            MemoryStream ms = new MemoryStream(data.Length * 2 + 2);
-
+            MemoryStream ms = tempMS;
+            ms.SetLength(0);
             // 0x3c == '<'
             // 0x3e == '>'
 
             ms.WriteByte(0x3c);
-            ms.Write(preamble, 0, preamble.Length);
+            if (preamble != null)
+            {
+                ms.Write(preamble, 0, preamble.Length);
+            }
             for (int x = 0; x < data.Length; x++)
             {
                 byte b = data[x];
@@ -196,7 +199,9 @@ namespace Fonet.Pdf
             }
             ms.WriteByte(0x3e);
 
-            return ms.ToArray();
+            byte[] result = ms.ToArray();
+            ms.SetLength(0);
+            return result;
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿//Apache2, 2017, WinterDev
 //Apache2, 2009, griffm, FO.NET
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
@@ -9,7 +10,7 @@ using Fonet.Pdf.Security;
 
 namespace Fonet.Pdf
 {
-    public class PdfWriter
+    public class PdfWriter : IDisposable
     {
         public static readonly byte[] DefaultNewLine = { 0x0d, 0x0a };
 
@@ -31,11 +32,14 @@ namespace Fonet.Pdf
 
         private byte[] binaryComment = DefaultBinaryComment;
 
+        MemoryStream _tempMs;
+
         public PdfWriter(Stream stream)
         {
             Debug.Assert(stream != null);
             Debug.Assert(stream.CanWrite);
             this.stream = stream;
+            _tempMs = new MemoryStream();
         }
 
         public SecurityManager SecurityManager
@@ -53,6 +57,22 @@ namespace Fonet.Pdf
             }
         }
 
+        public void Dispose()
+        {
+            if (_tempMs != null)
+            {
+                _tempMs.Close();
+                _tempMs.Dispose();
+                _tempMs = null;
+            }
+        }
+        internal MemoryStream TempMemStream
+        {
+            get
+            {
+                return _tempMs;
+            }
+        }
         public void Close()
         {
             stream.Close();
@@ -147,7 +167,7 @@ namespace Fonet.Pdf
 
 #if DEBUG
         int dbugWriteLineCount;
-        
+
         void dbugLineCheck()
         {
             //if (dbugWriteLineCount == 4)

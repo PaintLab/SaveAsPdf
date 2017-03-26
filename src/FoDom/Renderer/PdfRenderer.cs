@@ -19,7 +19,7 @@ namespace Fonet.Render.Pdf
     internal sealed class PdfRenderer
     {
 
-        public CorePdfRenderer _coreRenderer;
+
         /// <summary>
         ///     The current vertical position in millipoints from bottom.
         /// </summary>
@@ -38,7 +38,7 @@ namespace Fonet.Render.Pdf
         /// <summary>
         ///     The PDF Document being created.
         /// </summary>
-        private PdfCreator pdfDoc;
+        private PdfCreator pdfCreator;
 
         /// <summary>
         ///     The /Resources object of the PDF document being created.
@@ -111,7 +111,7 @@ namespace Fonet.Render.Pdf
         /// <summary>
         ///     The current color/gradient to fill shapes with.
         /// </summary>
-        private PdfColor currentFill = null;
+        private PdfColor? currentFill = null;
 
         /// <summary>
         ///     Previous values used for text-decoration drawing.
@@ -131,7 +131,7 @@ namespace Fonet.Render.Pdf
         /// <summary>
         ///     Previous values used for text-decoration drawing.
         /// </summary>
-        private PdfColor prevUnderlineColor;
+        private PdfColor? prevUnderlineColor;
 
         /// <summary>
         ///     Previous values used for text-decoration drawing.
@@ -151,7 +151,7 @@ namespace Fonet.Render.Pdf
         /// <summary>
         ///     Previous values used for text-decoration drawing.
         /// </summary>
-        private PdfColor prevOverlineColor;
+        private PdfColor? prevOverlineColor;
 
         /// <summary>
         ///     Previous values used for text-decoration drawing.
@@ -171,7 +171,7 @@ namespace Fonet.Render.Pdf
         /// <summary>
         ///     Previous values used for text-decoration drawing.
         /// </summary>
-        private PdfColor prevLineThroughColor;
+        private PdfColor? prevLineThroughColor;
 
         /// <summary>
         ///     Provides triplet to font resolution.
@@ -193,8 +193,7 @@ namespace Fonet.Render.Pdf
         /// </summary>
         internal PdfRenderer(Stream stream)
         {
-            this.pdfDoc = new PdfCreator(stream);
-            this._coreRenderer = new CorePdfRenderer(pdfDoc);
+            this.pdfCreator = new PdfCreator(stream);
         }
 
         /// <summary>
@@ -229,17 +228,17 @@ namespace Fonet.Render.Pdf
         {
             if (options != null)
             {
-                pdfDoc.SetOptions(options);
+                pdfCreator.SetOptions(options);
             }
-            pdfDoc.outputHeader();
+            pdfCreator.OutputHeader();
         }
 
         public void StopRenderer()
         {
-            fontSetup.AddToResources(new PdfFontCreator(pdfDoc), pdfDoc.getResources());
-            pdfDoc.outputTrailer();
+            fontSetup.AddToResources(new PdfFontCreator(pdfCreator), pdfCreator.GetResources());
+            pdfCreator.OutputTrailer();
 
-            pdfDoc = null;
+            pdfCreator = null;
             pdfResources = null;
             currentStream = null;
             currentAnnotList = null;
@@ -517,7 +516,7 @@ namespace Fonet.Render.Pdf
 
             FonetImage img = area.getImage();
 
-            PdfXObject xobj = this.pdfDoc.AddImage(img);
+            PdfXObject xobj = this.pdfCreator.AddImage(img);
             CloseText();
             currentStream.FillImage(x, y, w, h, xobj);
 
@@ -609,11 +608,11 @@ namespace Fonet.Render.Pdf
         {
 
 
-            FontState fontState = area.GetFontState(); 
+            FontState fontState = area.GetFontState();
             String name = fontState.FontName;
-            int size = fontState.FontSize; 
+            int size = fontState.FontSize;
             // This assumes that *all* CIDFonts use a /ToUnicode mapping
-            Font font = (Font)fontState.FontInfo.GetFontByName(name); 
+            Font font = (Font)fontState.FontInfo.GetFontByName(name);
             if ((!name.Equals(this.currentFontName)) ||
                 (size != this.currentFontSize))
             {
@@ -635,20 +634,17 @@ namespace Fonet.Render.Pdf
             }
 
             //--------------------------------------------
-            PdfColor areaColor = this.currentFill;
+            PdfColor? a_color = this.currentFill;
+            PdfColor areaObj_color = area.GetColor();
 
-            if (areaColor == null || areaColor.getRed() != (double)area.getRed()
-                || areaColor.getGreen() != (double)area.getGreen()
-                || areaColor.getBlue() != (double)area.getBlue())
+            if (a_color == null || !areaObj_color.IsEq(a_color.Value))
             {
                 //change area color
-                areaColor = new PdfColor((double)area.getRed(),
-                                         (double)area.getGreen(),
-                                         (double)area.getBlue());
+                a_color = areaObj_color;
 
                 CloseText(); //?
-                this.currentFill = areaColor;
-                currentStream.SetFontColor(areaColor);
+                this.currentFill = a_color;
+                currentStream.SetFontColor(a_color.Value);
             }
             //--------------------------------------------
 
@@ -657,15 +653,15 @@ namespace Fonet.Render.Pdf
             int areaContentW = area.getContentWidth();
             if (area.getUnderlined())
             {
-                AddUnderLine(rx, bl, areaContentW, size, areaColor);
+                AddUnderLine(rx, bl, areaContentW, size, a_color.Value);
             }
             if (area.getOverlined())
             {
-                AddOverLine(rx, bl, areaContentW, size, fontState.Ascender, areaColor);
+                AddOverLine(rx, bl, areaContentW, size, fontState.Ascender, a_color.Value);
             }
             if (area.getLineThrough())
             {
-                AddLineThrough(rx, bl, areaContentW, size, fontState.Ascender, areaColor);
+                AddLineThrough(rx, bl, areaContentW, size, fontState.Ascender, a_color.Value);
             }
             //--------------------------------------------
 
@@ -724,7 +720,7 @@ namespace Fonet.Render.Pdf
 
         }
 
-   
+
 
         /**
         * Checks to see if we have some text rendering commands open
@@ -743,18 +739,18 @@ namespace Fonet.Render.Pdf
             }
         }
 
-       
+
 
 
         public void Render(Page page)
         {
-            this.pdfResources = this.pdfDoc.getResources();
+            this.pdfResources = this.pdfCreator.GetResources();
             //
             this.idReferences = page.getIDReferences();
-            this.pdfDoc.setIDReferences(idReferences);
+            this.pdfCreator.SetIDReferences(idReferences);
             //
             this.RenderPage(page);
-            this.pdfDoc.output();
+            this.pdfCreator.FlushOutput();
         }
 
 
@@ -769,7 +765,7 @@ namespace Fonet.Render.Pdf
             BodyAreaContainer body;
             AreaContainer before, after, start, end;
 
-            currentStream = this.pdfDoc.makeContentStream();
+            currentStream = this.pdfCreator.MakeContentStream();
             body = page.getBody();
             before = page.getBefore();
             after = page.getAfter();
@@ -818,7 +814,7 @@ namespace Fonet.Render.Pdf
                 idList.Add(id);
             }
 
-            currentPage = this.pdfDoc.makePage(
+            currentPage = this.pdfCreator.MakePage(
                 this.pdfResources, currentStream,
                 Convert.ToInt32(Math.Round(w / 1000)),
                 Convert.ToInt32(Math.Round(h / 1000)), idList.ToArray());
@@ -827,7 +823,7 @@ namespace Fonet.Render.Pdf
             {
                 if (currentAnnotList == null)
                 {
-                    currentAnnotList = this.pdfDoc.makeAnnotList();
+                    currentAnnotList = this.pdfCreator.MakeAnnotList();
                 }
                 currentPage.SetAnnotList(currentAnnotList);
 
@@ -841,7 +837,7 @@ namespace Fonet.Render.Pdf
                     foreach (LinkedRectangle lrect in rsets)
                     {
                         currentAnnotList.Add(
-                            this.pdfDoc.makeLink(lrect.getRectangle(),
+                            this.pdfCreator.MakeLink(lrect.getRectangle(),
                             dest, linkType).GetReference());
                     }
                 }
@@ -889,22 +885,22 @@ namespace Fonet.Render.Pdf
             if (top != 0)
             {
                 AddFilledRect(rx, ry, w, top,
-                              new PdfColor(bp.getBorderColor(BorderAndPadding.TOP)));
+                              bp.getBorderColor(BorderAndPadding.TOP).ToPdfColor());
             }
             if (left != 0)
             {
                 AddFilledRect(rx - left, ry - h - bottom, left, h + top + bottom,
-                              new PdfColor(bp.getBorderColor(BorderAndPadding.LEFT)));
+                              bp.getBorderColor(BorderAndPadding.LEFT).ToPdfColor());
             }
             if (right != 0)
             {
                 AddFilledRect(rx + w, ry - h - bottom, right, h + top + bottom,
-                              new PdfColor(bp.getBorderColor(BorderAndPadding.RIGHT)));
+                              bp.getBorderColor(BorderAndPadding.RIGHT).ToPdfColor());
             }
             if (bottom != 0)
             {
                 AddFilledRect(rx, ry - h - bottom, w, bottom,
-                              new PdfColor(bp.getBorderColor(BorderAndPadding.BOTTOM)));
+                              bp.getBorderColor(BorderAndPadding.BOTTOM).ToPdfColor());
             }
         }
 
@@ -931,7 +927,7 @@ namespace Fonet.Render.Pdf
 
             if (props.backColor.Alpha == 0)
             {
-                AddFilledRect(x, y, w, -h, new PdfColor(props.backColor));
+                AddFilledRect(x, y, w, -h, props.backColor.ToPdfColor());
             }
 
             if (props.backImage != null)
@@ -1055,7 +1051,7 @@ namespace Fonet.Render.Pdf
         private void DrawImageScaled(
             int x, int y, int w, int h, FonetImage image)
         {
-            PdfXObject xobj = this.pdfDoc.AddImage(image);
+            PdfXObject xobj = this.pdfCreator.AddImage(image);
             CloseText();
             currentStream.FillImage(x, y, w, h, xobj);
         }
@@ -1086,7 +1082,7 @@ namespace Fonet.Render.Pdf
             int imgW = image.Width * 1000;
             int imgH = image.Height * 1000;
 
-            PdfXObject xobj = this.pdfDoc.AddImage(image);
+            PdfXObject xobj = this.pdfCreator.AddImage(image);
             CloseText();
 
             currentStream.ClipImage(
@@ -1161,7 +1157,7 @@ namespace Fonet.Render.Pdf
                     AddLine(prevUnderlineXEndPos, prevUnderlineYEndPos,
                             prevUnderlineXEndPos + space.getSize(),
                             prevUnderlineYEndPos, prevUnderlineSize,
-                            prevUnderlineColor);
+                            prevUnderlineColor.Value);
                     // save position for a following InlineSpace
                     prevUnderlineXEndPos = prevUnderlineXEndPos + space.getSize();
                 }
@@ -1173,7 +1169,7 @@ namespace Fonet.Render.Pdf
                     AddLine(prevOverlineXEndPos, prevOverlineYEndPos,
                             prevOverlineXEndPos + space.getSize(),
                             prevOverlineYEndPos, prevOverlineSize,
-                            prevOverlineColor);
+                            prevOverlineColor.Value);
                     prevOverlineXEndPos = prevOverlineXEndPos + space.getSize();
                 }
             }
@@ -1184,7 +1180,7 @@ namespace Fonet.Render.Pdf
                     AddLine(prevLineThroughXEndPos, prevLineThroughYEndPos,
                             prevLineThroughXEndPos + space.getSize(),
                             prevLineThroughYEndPos, prevLineThroughSize,
-                            prevLineThroughColor);
+                            prevLineThroughColor.Value);
                     prevLineThroughXEndPos = prevLineThroughXEndPos + space.getSize();
                 }
             }

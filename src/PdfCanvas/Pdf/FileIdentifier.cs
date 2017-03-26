@@ -67,9 +67,9 @@ namespace Fonet.Pdf
         protected internal override void Write(PdfWriter writer)
         {
             writer.WriteKeyword(Keyword.ArrayBegin);
-            writer.Write(PdfString.ToPdfHexadecimal(new byte[] { }, CreatedPart));
+            writer.Write(PdfString.ToPdfHexadecimal(null, CreatedPart, writer.TempMemStream));
             writer.WriteSpace();
-            writer.Write(PdfString.ToPdfHexadecimal(new byte[] { }, ModifiedPart));
+            writer.Write(PdfString.ToPdfHexadecimal(null, ModifiedPart, writer.TempMemStream));
             writer.WriteKeyword(Keyword.ArrayEnd);
         }
     }

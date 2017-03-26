@@ -12,7 +12,7 @@ namespace Fonet.Pdf
     ///     The format of the PDF date is defined in section 3.8.2 of the 
     ///     PDF specification.
     /// </remarks>
-    public class PdfDate
+    public static class PdfDate
     {
         public static string Format(DateTime dt)
         {
