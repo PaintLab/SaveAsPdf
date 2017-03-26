@@ -28,11 +28,11 @@ namespace TestHelloCanvas
                 //----------------
                 pdfCreator.OutputHeader();
                 //----------------
+
                 //simple page
                 contentStream.BeginTextObject();
-                contentStream.SetFont("F1", 18000);
+                contentStream.SetFont("F1", 18 * 1000);
                 contentStream.SetFontColor(new Fonet.PdfColor(0, 0, 0));
-
                 //----------------
                 Fonet.Layout.TextPrinter textPrinter = new Fonet.Layout.TextPrinter();
                 textPrinter.Reset(fontState, false);
@@ -40,7 +40,6 @@ namespace TestHelloCanvas
                 textPrinter.WriteText("ABCD12345");
                 textPrinter.PrintContentTo(contentStream);
                 contentStream.CloseText();
-
                 //----------------
                 contentStream.EndTextObject();
                 //---------------- 

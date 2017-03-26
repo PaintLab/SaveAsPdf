@@ -193,7 +193,7 @@ namespace Fonet.Render.Pdf
         /// </summary>
         internal PdfRenderer(Stream stream)
         {
-            this.pdfCreator = new PdfCreator(stream); 
+            this.pdfCreator = new PdfCreator(stream);
         }
 
         /// <summary>
@@ -888,22 +888,22 @@ namespace Fonet.Render.Pdf
             if (top != 0)
             {
                 AddFilledRect(rx, ry, w, top,
-                              new PdfColor(bp.getBorderColor(BorderAndPadding.TOP)));
+                              bp.getBorderColor(BorderAndPadding.TOP).ToPdfColor());
             }
             if (left != 0)
             {
                 AddFilledRect(rx - left, ry - h - bottom, left, h + top + bottom,
-                              new PdfColor(bp.getBorderColor(BorderAndPadding.LEFT)));
+                              bp.getBorderColor(BorderAndPadding.LEFT).ToPdfColor());
             }
             if (right != 0)
             {
                 AddFilledRect(rx + w, ry - h - bottom, right, h + top + bottom,
-                              new PdfColor(bp.getBorderColor(BorderAndPadding.RIGHT)));
+                              bp.getBorderColor(BorderAndPadding.RIGHT).ToPdfColor());
             }
             if (bottom != 0)
             {
                 AddFilledRect(rx, ry - h - bottom, w, bottom,
-                              new PdfColor(bp.getBorderColor(BorderAndPadding.BOTTOM)));
+                              bp.getBorderColor(BorderAndPadding.BOTTOM).ToPdfColor());
             }
         }
 
@@ -930,7 +930,7 @@ namespace Fonet.Render.Pdf
 
             if (props.backColor.Alpha == 0)
             {
-                AddFilledRect(x, y, w, -h, new PdfColor(props.backColor));
+                AddFilledRect(x, y, w, -h, props.backColor.ToPdfColor());
             }
 
             if (props.backImage != null)

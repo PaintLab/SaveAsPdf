@@ -8,17 +8,11 @@ namespace Fonet
 {
     public sealed class PdfColor
     {
+        //1. should be struct ?
+        //2. convert to float?
         private double red = -1.0;
         private double green = -1.0;
         private double blue = -1.0;
-
-        public PdfColor(ColorType color)
-        {
-            this.red = (double)color.Red;
-            this.green = (double)color.Green;
-            this.blue = (double)color.Blue;
-        }
-
         public PdfColor(double red, double green, double blue)
         {
             this.red = red;
