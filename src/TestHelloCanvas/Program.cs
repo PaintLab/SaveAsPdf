@@ -35,12 +35,12 @@ namespace TestHelloCanvas
 
                 //----------------
                 Fonet.Layout.TextPrinter textPrinter = new Fonet.Layout.TextPrinter();
-
                 textPrinter.Reset(fontState, false);
-                 
+                textPrinter.SetTextPos(100 * 1000, 100 * 1000);
                 textPrinter.WriteText("ABCD12345");
                 textPrinter.PrintContentTo(contentStream);
                 contentStream.CloseText();
+
                 //----------------
                 contentStream.EndTextObject();
                 //---------------- 
