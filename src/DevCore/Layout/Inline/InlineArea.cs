@@ -8,15 +8,17 @@ namespace Fonet.Layout.Inline
         private int xOffset = 0;
         protected int height = 0;
         private int verticalAlign = 0;
-        protected string pageNumberId = null;
+      
         private float red, green, blue;
         protected bool underlined = false;
         protected bool overlined = false;
         protected bool lineThrough = false;
 
         public InlineArea(
-            FontState fontState, int width, float red,
-            float green, float blue)
+            FontState fontState, int width, 
+            float red,
+            float green, 
+            float blue)
             : base(fontState)
         {
             this.contentRectangleWidth = width;
@@ -80,10 +82,6 @@ namespace Fonet.Layout.Inline
             return this.xOffset;
         }
 
-        public string getPageNumberID()
-        {
-            return pageNumberId;
-        }
 
         public void setUnderlined(bool ul)
         {

@@ -4,7 +4,7 @@ namespace Fonet.DataTypes
 {
     using Fonet.Fo.Expr;
 
-    internal class Length
+    public class Length
     {
         protected int millipoints = 0;
         protected bool bIsComputed = false;

@@ -129,7 +129,7 @@ namespace Fonet.Fo.Flow
 
                 if (marker == 0)
                 {
-                    area.getIDReferences().ConfigureID(id, area);
+                    area.GetMyRefs().ConfigureID(id, area);
                 }
 
                 imageArea.start();

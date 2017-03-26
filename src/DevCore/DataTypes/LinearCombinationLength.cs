@@ -4,7 +4,7 @@ namespace Fonet.DataTypes
 {
     using System.Collections;
 
-    internal class LinearCombinationLength : Length
+    public class LinearCombinationLength : Length
     {
         protected ArrayList factors;
         protected ArrayList lengths;

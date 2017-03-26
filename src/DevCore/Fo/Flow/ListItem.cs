@@ -94,7 +94,7 @@ namespace Fonet.Fo.Flow
 
             if (this.marker == 0)
             {
-                area.getIDReferences().ConfigureID(id, area);
+                area.GetMyRefs().ConfigureID(id, area);
 
                 status = label.Layout(blockArea);
                 if (status.isIncomplete())

@@ -40,7 +40,7 @@ namespace Fonet.Fo.Flow
                 return new Status(Status.OK);
             }
 
-            IDReferences idReferences = area.getIDReferences();
+            MyIDRefs idReferences = area.GetMyRefs();
             this.area = area;
             if (this.marker == MarkerStart)
             {

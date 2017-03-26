@@ -9,4 +9,8 @@
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PdfCanvas\PdfCanvas.csproj" />
+  </ItemGroup>
+
 </Project>

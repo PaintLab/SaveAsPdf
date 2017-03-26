@@ -133,7 +133,7 @@ namespace Fonet.Fo.Flow
 
             if (marker == 0)
             {
-                area.getIDReferences().ConfigureID(id, area);
+                area.GetMyRefs().ConfigureID(id, area);
             }
 
             int spaceLeft = area.spaceLeft() - m_borderSeparation;

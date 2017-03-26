@@ -25,7 +25,7 @@ namespace Fonet.Fo.Flow
                 AccessibilityProps mAccProps = propMgr.GetAccessibilityProps();
                 this.marker = 0;
                 string id = this.properties.GetProperty("id").GetString();
-                area.getIDReferences().InitializeID(id, area);
+                area.GetMyRefs().InitializeID(id, area);
             }
 
             int numChildren = this.children.Count;

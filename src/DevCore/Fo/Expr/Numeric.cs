@@ -6,7 +6,7 @@ using Fonet.DataTypes;
 
 namespace Fonet.Fo.Expr
 {
-    internal class Numeric
+    public class Numeric
     {
         public const int ABS_LENGTH = 1;
         public const int PC_LENGTH = 2;

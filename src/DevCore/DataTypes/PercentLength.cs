@@ -5,7 +5,7 @@ using Fonet.Fo.Expr;
 namespace Fonet.DataTypes
 {
 
-    internal class PercentLength : Length
+    public class PercentLength : Length
     {
 
         private double factor;

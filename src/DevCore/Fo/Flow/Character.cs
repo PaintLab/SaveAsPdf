@@ -66,7 +66,7 @@ namespace Fonet.Fo.Flow
 
             char characterValue = this.properties.GetProperty("character").GetCharacter();
             string id = this.properties.GetProperty("id").GetString();
-            blockArea.getIDReferences().InitializeID(id, blockArea);
+            blockArea.GetMyRefs().InitializeID(id, blockArea);
 
             LineArea la = blockArea.getCurrentLineArea();
             if (la == null)
