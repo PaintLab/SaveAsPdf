@@ -35,18 +35,23 @@ namespace TestHelloCanvas
                 contentStream.SetFontColor(new Fonet.PdfColor(0, 0, 0));
                 //----------------
                 Fonet.Layout.TextPrinter textPrinter = new Fonet.Layout.TextPrinter();
-                textPrinter.Reset(fontState, false);
-                textPrinter.SetTextPos(100 * 1000, 100 * 1000);
-                textPrinter.WriteText("Hello World!");
-                textPrinter.PrintContentTo(contentStream); 
-                contentStream.CloseText();
-                //----------------
-               
+
+                for (int i = 0; i < 5; ++i)
+                {
+                    textPrinter.Reset(fontState, false);
+                    textPrinter.SetTextPos((i * 100) * 1000, (i * 100) * 1000);
+                    textPrinter.WriteText("Hello World! " + i);
+                    textPrinter.PrintContentTo(contentStream);
+                    contentStream.CloseText();
+                }
+                //------------
+
+
                 contentStream.DrawLine(0 * 1000, 0 * 1000, 70 * 1000, 50 * 1000,
                     1 * 1000,
                     new Fonet.PdfColor(255, 0, 0));
 
-               
+
                 contentStream.EndTextObject();
                 //---------------- 
                 int w = 800;
