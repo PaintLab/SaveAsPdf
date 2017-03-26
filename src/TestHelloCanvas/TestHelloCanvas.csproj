@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PdfCanvas\PdfCanvas.csproj" />
+    <ProjectReference Include="..\PixelFarm.MiniAgg.One.NetCore\PixelFarm.MiniAgg.One.NetCore.csproj" />
   </ItemGroup>
 
 </Project>
