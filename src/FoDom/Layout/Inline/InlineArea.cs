@@ -43,6 +43,11 @@ namespace Fonet.Layout.Inline
             return this.red;
         }
 
+        internal PdfColor GetColor()
+        {
+            //What about alpha?
+            return new PdfColor(this.red, this.green, this.blue);
+        }
         public override void SetHeight(int height)
         {
             this.height = height;

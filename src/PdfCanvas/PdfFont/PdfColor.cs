@@ -2,18 +2,17 @@
 //Apache2, 2009, griffm, FO.NET
 using System.Globalization;
 using System.Text;
-using Fonet.DataTypes;
 
 namespace Fonet
 {
-    public sealed class PdfColor
+    public struct PdfColor
     {
         //1. should be struct ?
         //2. convert to float?
-        private double red = -1.0;
-        private double green = -1.0;
-        private double blue = -1.0;
-        public PdfColor(double red, double green, double blue)
+        private float red;
+        private float green;
+        private float blue;
+        public PdfColor(float red, float green, float blue)
         {
             this.red = red;
             this.green = green;
@@ -22,27 +21,32 @@ namespace Fonet
 
         // components from 0 to 255
         public PdfColor(int red, int green, int blue) : this(
-            ((double)red) / 255d,
-            ((double)green) / 255d,
-            ((double)blue) / 255d
+            ((float)red) / 255f,
+            ((float)green) / 255f,
+            ((float)blue) / 255f
             )
         { }
 
-        public double getRed()
+        public float getRed()
         {
             return (this.red);
         }
 
-        public double getGreen()
+        public float getGreen()
         {
             return (this.green);
         }
 
-        public double getBlue()
+        public float getBlue()
         {
             return (this.blue);
         }
-
+        public bool IsEq(PdfColor another)
+        {
+            return this.red == another.red
+                && this.green == another.green
+                && this.blue == another.blue;
+        }
         public string getColorSpaceOut(bool fillNotStroke)
         {
             StringBuilder p = new StringBuilder();
