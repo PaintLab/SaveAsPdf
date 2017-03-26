@@ -3,7 +3,7 @@
 using System;
 using System.Collections;
 using Fonet.Fo.Properties;
-
+using Fonet.DataTypes;
 namespace Fonet.Fo
 {
     internal class PropertyList : Hashtable
@@ -379,6 +379,35 @@ namespace Fonet.Fo
         public void SetWritingMode(int writingMode)
         {
             this.wmtable = (byte[])wmtables[writingMode];
+        }
+    }
+
+
+    static class PropertyListExtensions
+    {
+        public static char GetChar(this PropertyList p)
+        {
+            return p.GetProperty("character").GetCharacter();
+        }
+        public static string GetId(this PropertyList p)
+        {
+            return p.GetProperty("id").GetString();
+        }
+        public static TextDecoration GetTextDecoration(this PropertyList p)
+        {
+            return (TextDecoration)p.GetProperty("text-decoration").GetEnum();
+        }
+        public static int GetWhiteSpaceCollapse(this PropertyList p)
+        {
+            return p.GetProperty("white-space-collapse").GetEnum();
+        }
+        public static ColorType GetColorType(this PropertyList p)
+        {
+            return p.GetProperty("color").GetColorType();
+        }
+        public static WrapOption GetWrapOption(this PropertyList p)
+        {
+            return (WrapOption)p.GetProperty("wrap-option").GetEnum();
         }
     }
 }
