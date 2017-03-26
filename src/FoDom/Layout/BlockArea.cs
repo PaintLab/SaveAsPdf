@@ -3,6 +3,7 @@
 using System.Collections;
 using Fonet.Fo.Flow;
 using Fonet.Render.Pdf;
+using Fonet.Fo.Properties;
 
 namespace Fonet.Layout
 {
@@ -13,8 +14,8 @@ namespace Fonet.Layout
         protected int textIndent;
         protected int lineHeight;
         protected int halfLeading;
-        protected int align;
-        protected int alignLastLine;
+        protected TextAlign align;
+        protected TextAlign alignLastLine;
         protected LineArea currentLineArea;
         protected LinkSet currentLinkSet;
         protected bool hasLines = false;
@@ -23,7 +24,7 @@ namespace Fonet.Layout
 
         public BlockArea(FontState fontState, int allocationWidth, int maxHeight,
                          int startIndent, int endIndent, int textIndent,
-                         int align, int alignLastLine, int lineHeight)
+                         TextAlign align, TextAlign alignLastLine, int lineHeight)
             : base(fontState, allocationWidth, maxHeight)
         {
             this.startIndent = startIndent;

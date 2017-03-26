@@ -19,7 +19,7 @@ namespace Fonet.Fo
         private float blue;
         private WrapOption wrapOption;
         private int whiteSpaceCollapse;
-        private int verticalAlign;
+        private VerticalAlign verticalAlign;
 
         protected bool underlined = false;
         protected bool overlined = false;
@@ -122,7 +122,7 @@ namespace Fonet.Fo
                 this.blue = c.Blue;
 
                 this.verticalAlign =
-                    this.parent.properties.GetProperty("vertical-align").GetEnum();
+                    this.parent.properties.GetVerticalAlign();
 
                 this.wrapOption =
                     (WrapOption)this.parent.properties.GetProperty("wrap-option").GetEnum();
@@ -158,7 +158,7 @@ namespace Fonet.Fo
                                   float green, float blue, WrapOption wrapOption,
                                   LinkSet ls, int whiteSpaceCollapse,
                                   char[] data, int start, int end,
-                                  TextState textState, int vAlign)
+                                  TextState textState, VerticalAlign vAlign)
         {
             if (fontState.FontVariant == FontVariant.SMALL_CAPS)
             {
@@ -185,7 +185,7 @@ namespace Fonet.Fo
                 bool isLowerCase;
                 int caseStart;
                 FontState fontStateToUse;
-                for (int i = start; i < end; )
+                for (int i = start; i < end;)
                 {
                     caseStart = i;
                     c = data[i];
@@ -234,7 +234,7 @@ namespace Fonet.Fo
                                          WrapOption wrapOption, LinkSet ls,
                                          int whiteSpaceCollapse, char[] data,
                                          int start, int end, TextState textState,
-                                         int vAlign)
+                                         VerticalAlign vAlign)
         {
             int ts, te;
             char[] ca;

@@ -2,22 +2,23 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Layout.Inline
 {
+    using Fonet.Fo.Properties;
     internal abstract class InlineArea : Area
     {
         private int yOffset = 0;
         private int xOffset = 0;
         protected int height = 0;
-        private int verticalAlign = 0;
-      
+        private VerticalAlign verticalAlign = 0;
+
         private float red, green, blue;
         protected bool underlined = false;
         protected bool overlined = false;
         protected bool lineThrough = false;
 
         public InlineArea(
-            FontState fontState, int width, 
+            FontState fontState, int width,
             float red,
-            float green, 
+            float green,
             float blue)
             : base(fontState)
         {
@@ -52,12 +53,12 @@ namespace Fonet.Layout.Inline
             return this.height;
         }
 
-        public virtual void setVerticalAlign(int align)
+        public virtual void setVerticalAlign(VerticalAlign align)
         {
             this.verticalAlign = align;
         }
 
-        public virtual int getVerticalAlign()
+        public virtual VerticalAlign getVerticalAlign()
         {
             return this.verticalAlign;
         }

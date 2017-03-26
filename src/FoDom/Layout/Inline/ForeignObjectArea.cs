@@ -7,8 +7,8 @@ namespace Fonet.Layout.Inline
     internal class ForeignObjectArea : InlineArea
     {
         protected int xOffset = 0;
-        protected int align;
-        protected int valign;
+        protected TextAlign align;
+        protected VerticalAlign valign;
         protected int scaling;
         protected Area foreignObject;
         protected int cheight;
@@ -92,22 +92,22 @@ namespace Fonet.Layout.Inline
             return chauto;
         }
 
-        public void setAlign(int align)
+        public void setAlign(TextAlign align)
         {
             this.align = align;
         }
 
-        public int getAlign()
+        public TextAlign getAlign()
         {
             return this.align;
         }
 
-        public override void setVerticalAlign(int align)
+        public override void setVerticalAlign(VerticalAlign align)
         {
             this.valign = align;
         }
 
-        public override int getVerticalAlign()
+        public override VerticalAlign getVerticalAlign()
         {
             return this.valign;
         }

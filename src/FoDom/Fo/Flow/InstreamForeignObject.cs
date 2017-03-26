@@ -52,10 +52,10 @@ namespace Fonet.Fo.Flow
                 MarginInlineProps mProps = propMgr.GetMarginInlineProps();
                 RelativePositionProps mRelProps = propMgr.GetRelativePositionProps();
 
-                string id = this.properties.GetProperty("id").GetString();
-                int align = this.properties.GetProperty("text-align").GetEnum();
-                int valign = this.properties.GetProperty("vertical-align").GetEnum();
-                Overflow overflow = (Overflow)this.properties.GetProperty("overflow").GetEnum();
+                string id = this.properties.GetId();
+                TextAlign align = this.properties.GetTextAlign();
+                VerticalAlign valign = properties.GetVerticalAlign();
+                Overflow overflow = properties.GetOverflow();
 
                 this.breakBefore = this.properties.GetProperty("break-before").GetEnum();
                 this.breakAfter = this.properties.GetProperty("break-after").GetEnum();
