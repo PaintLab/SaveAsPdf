@@ -283,17 +283,19 @@ namespace Fonet.Fo
 
             do
             {
-                string fname = parent.ElementName;
-                if (fname.Equals("fo:flow") || fname.Equals("fo:static-content"))
+                switch (parent.ElementName)
                 {
-                    found = true;
-                }
-                else if (fname.Equals("fo:block") || fname.Equals("fo:inline"))
-                {
-                    FObjMixed fom = (FObjMixed)parent;
-                    tsp = fom.getTextState();
-                    found = true;
-                }
+                    case "fo:flow":
+                    case "fo:static-content":
+                        found = true;
+                        break;
+                    case "fo:block":
+                    case "fo:inline":
+                        FObjMixed fom = (FObjMixed)parent;
+                        tsp = fom.getTextState();
+                        found = true;
+                        break;
+                } 
                 parent = parent.getParent();
             } while (!found);
 
@@ -306,33 +308,28 @@ namespace Fonet.Fo
                 ts.setLineThrough(tsp.getLineThrough());
             }
 
-            int textDecoration = this.properties.GetProperty("text-decoration").GetEnum();
-
-            if (textDecoration == TextDecoration.UNDERLINE)
+            TextDecoration textDecoration = this.properties.GetTextDecoration();
+            switch (this.properties.GetTextDecoration())
             {
-                ts.setUnderlined(true);
+                case TextDecoration.UNDERLINE:
+                    ts.setUnderlined(true);
+                    break;
+                case TextDecoration.OVERLINE:
+                    ts.setOverlined(true);
+                    break;
+                case TextDecoration.LINE_THROUGH:
+                    ts.setLineThrough(true);
+                    break;
+                case TextDecoration.NO_UNDERLINE:
+                    ts.setUnderlined(false);
+                    break;
+                case TextDecoration.NO_OVERLINE:
+                    ts.setOverlined(false);
+                    break;
+                case TextDecoration.NO_LINE_THROUGH:
+                    ts.setLineThrough(false);
+                    break;
             }
-            if (textDecoration == TextDecoration.OVERLINE)
-            {
-                ts.setOverlined(true);
-            }
-            if (textDecoration == TextDecoration.LINE_THROUGH)
-            {
-                ts.setLineThrough(true);
-            }
-            if (textDecoration == TextDecoration.NO_UNDERLINE)
-            {
-                ts.setUnderlined(false);
-            }
-            if (textDecoration == TextDecoration.NO_OVERLINE)
-            {
-                ts.setOverlined(false);
-            }
-            if (textDecoration == TextDecoration.NO_LINE_THROUGH)
-            {
-                ts.setLineThrough(false);
-            }
-
             return ts;
         }
     }

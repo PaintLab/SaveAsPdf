@@ -385,6 +385,15 @@ namespace Fonet.Fo
 
     static class PropertyListExtensions
     {
+      
+        public static TextDecoration GetTextDecoration(this PropertyList p)
+        {
+            return (TextDecoration)p.GetProperty("text-decoration").GetEnum();
+        }
+        public static BlankOrNotBlank GetBlankOrNotBlank(this PropertyList p)
+        {
+            return (BlankOrNotBlank)p.GetProperty("blank-or-not-blank").GetEnum();
+        }
         public static char GetChar(this PropertyList p)
         {
             return p.GetProperty("character").GetCharacter();
@@ -393,10 +402,7 @@ namespace Fonet.Fo
         {
             return p.GetProperty("id").GetString();
         }
-        public static TextDecoration GetTextDecoration(this PropertyList p)
-        {
-            return (TextDecoration)p.GetProperty("text-decoration").GetEnum();
-        }
+        
         public static int GetWhiteSpaceCollapse(this PropertyList p)
         {
             return p.GetProperty("white-space-collapse").GetEnum();
