@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DevCore\SaveAsPdf.csproj" />
+    <ProjectReference Include="..\FoDom\FoDom.csproj" />
     <ProjectReference Include="..\PdfCanvas\PdfCanvas.csproj" />
   </ItemGroup>
 
