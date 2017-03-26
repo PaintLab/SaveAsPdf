@@ -239,7 +239,14 @@ namespace PixelFarm.Drawing.Playback
         //    gx.SetClip(intersectResult);
         //    currentClipRect = intersectResult;
         //    return true;
-        //}
+        //} 
+        void RecordCommand(Command cmd)
+        {
+            _commmands.Add(cmd);
+        }
+
+        List<Command> _commmands = new List<Command>();
+
     }
 
 

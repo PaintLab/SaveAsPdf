@@ -17,6 +17,10 @@ namespace PixelFarm.Drawing.Playback
         //--------------------------------------------------------------------
         public override void SetCanvasOrigin(int x, int y)
         {
+
+            RecordCommand(new CmdSetCanvasOrigin() { X = x, Y = y }); 
+            //--------
+
             int total_dx = x - canvasOriginX;
             int total_dy = y - canvasOriginY;
 
@@ -24,7 +28,7 @@ namespace PixelFarm.Drawing.Playback
             //clip rect move to another direction***
             this.currentClipRect.Offset(-total_dx, -total_dy);
             this.canvasOriginX = x;
-            this.canvasOriginY = y;
+            this.canvasOriginY = y; 
         }
 
         public override int CanvasOriginX
@@ -34,9 +38,7 @@ namespace PixelFarm.Drawing.Playback
         public override int CanvasOriginY
         {
             get { return this.canvasOriginY; }
-        }
-
-
+        } 
         /// <summary>
         /// Sets the clipping region of this <see cref="T:System.Drawing.Graphics"/> to the result of the specified operation combining the current clip region and the rectangle specified by a <see cref="T:System.Drawing.RectangleF"/> structure.
         /// </summary>

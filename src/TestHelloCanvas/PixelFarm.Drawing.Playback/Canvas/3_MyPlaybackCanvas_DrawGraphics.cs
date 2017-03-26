@@ -22,6 +22,8 @@ namespace PixelFarm.Drawing.Playback
             set
             {
                 _strokColor = value;
+                //set stroke color
+
             }
         }
         public override float StrokeWidth
@@ -447,8 +449,8 @@ namespace PixelFarm.Drawing.Playback
             //gx.FillPolygon(brush.InnerBrush as System.Drawing.Brush, pps);
         }
         public override void FillPolygon(Color color, PointF[] points)
-        {   
-            
+        {
+
             //----------------
             //using (SKPath path = CreatePolygon(points))
             //{
