@@ -2,21 +2,21 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet
 {
-    public class RuleStyle
+    public enum RuleStyle
     {
-        public const int NONE = Constants.NONE;
+        NONE = Constants.NONE,
 
-        public const int DOTTED = Constants.DOTTED;
+        DOTTED = Constants.DOTTED,
 
-        public const int DASHED = Constants.DASHED;
+        DASHED = Constants.DASHED,
 
-        public const int SOLID = Constants.SOLID;
+        SOLID = Constants.SOLID,
 
-        public const int DOUBLE = Constants.DOUBLE;
+        DOUBLE = Constants.DOUBLE,
 
-        public const int GROOVE = Constants.GROOVE;
+        GROOVE = Constants.GROOVE,
 
-        public const int RIDGE = Constants.RIDGE;
+        RIDGE = Constants.RIDGE
 
     }
 }

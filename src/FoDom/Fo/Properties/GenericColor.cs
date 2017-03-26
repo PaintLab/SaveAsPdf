@@ -4,6 +4,8 @@ using System.Collections;
 
 namespace Fonet.Fo.Properties
 {
+    //TODO: merge with PixelFarm.Drawing 
+
     internal class GenericColor : ColorTypeProperty.Maker
     {
         private static Hashtable s_htKeywords;

@@ -2,15 +2,17 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Fo.Properties
 {
-    internal class TextAlign
+    enum TextAlign : byte
     {
-        public const int CENTER = Constants.CENTER;
+        None,
 
-        public const int END = Constants.END;
+        CENTER = Constants.CENTER,
 
-        public const int START = Constants.START;
+        END = Constants.END,
 
-        public const int JUSTIFY = Constants.JUSTIFY;
+        START = Constants.START,
+
+        JUSTIFY = Constants.JUSTIFY
 
     }
 }

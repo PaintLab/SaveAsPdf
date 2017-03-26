@@ -28,29 +28,26 @@ namespace Fonet.Fo.Properties
         public override Property Compute(PropertyList propertyList)
         {
             Property computedProperty = null;
-            Property correspondingProperty = propertyList.GetProperty("text-align");
-            if (correspondingProperty != null)
+            TextAlign textAlign;
+            if (propertyList.TryGetTextAlign(out textAlign))
             {
-                int correspondingValue = correspondingProperty.GetEnum();
-
-                if (correspondingValue == TextAlign.JUSTIFY)
+                switch (textAlign)
                 {
-                    computedProperty = new EnumProperty(Constants.START);
+                    case TextAlign.JUSTIFY:
+                        computedProperty = new EnumProperty(Constants.START);
+                        break;
+                    case TextAlign.END:
+                        computedProperty = new EnumProperty(Constants.END);
+                        break;
+                    case TextAlign.START:
+                        computedProperty = new EnumProperty(Constants.START);
+                        break;
+                    case TextAlign.CENTER:
+                        computedProperty = new EnumProperty(Constants.CENTER);
+                        break;
                 }
-                else if (correspondingValue == TextAlign.END)
-                {
-                    computedProperty = new EnumProperty(Constants.END);
-                }
-                else if (correspondingValue == TextAlign.START)
-                {
-                    computedProperty = new EnumProperty(Constants.START);
-                }
-                else if (correspondingValue == TextAlign.CENTER)
-                {
-                    computedProperty = new EnumProperty(Constants.CENTER);
-                }
-
             }
+
             return computedProperty;
         }
 

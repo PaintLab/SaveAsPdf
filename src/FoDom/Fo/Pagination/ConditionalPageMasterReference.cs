@@ -19,7 +19,7 @@ namespace Fonet.Fo.Pagination
 
         private int pagePosition;
         private int oddOrEven;
-        private int blankOrNotBlank;
+        private BlankOrNotBlank blankOrNotBlank;
 
         public ConditionalPageMasterReference(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
@@ -34,7 +34,7 @@ namespace Fonet.Fo.Pagination
 
             setPagePosition(this.properties.GetProperty("page-position").GetEnum());
             setOddOrEven(this.properties.GetProperty("odd-or-even").GetEnum());
-            setBlankOrNotBlank(this.properties.GetProperty("blank-or-not-blank").GetEnum());
+            setBlankOrNotBlank(this.properties.GetBlankOrNotBlank());
         }
 
         protected internal void SetMasterName(string masterName)
@@ -88,7 +88,7 @@ namespace Fonet.Fo.Pagination
 
             bool okOnBlankOrNotBlank = true;
 
-            int bnb = getBlankOrNotBlank();
+            BlankOrNotBlank bnb = getBlankOrNotBlank();
 
             if ((BlankOrNotBlank.BLANK == bnb) && !isEmptyPage)
             {
@@ -123,12 +123,12 @@ namespace Fonet.Fo.Pagination
             return this.oddOrEven;
         }
 
-        protected internal void setBlankOrNotBlank(int blankOrNotBlank)
+        protected internal void setBlankOrNotBlank(BlankOrNotBlank blankOrNotBlank)
         {
             this.blankOrNotBlank = blankOrNotBlank;
         }
 
-        protected internal int getBlankOrNotBlank()
+        protected internal BlankOrNotBlank getBlankOrNotBlank()
         {
             return this.blankOrNotBlank;
         }

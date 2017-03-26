@@ -12,7 +12,7 @@ namespace Fonet.Fo.Pagination
         {
             return new FObjMaker<RegionBody>((parent, propertyList) => new RegionBody(parent, propertyList));
         }
-         
+
 
         public const string REGION_CLASS = "body";
 
@@ -40,7 +40,7 @@ namespace Fonet.Fo.Pagination
 
             body.setBackground(propMgr.GetBackgroundProps());
 
-            int overflow = this.properties.GetProperty("overflow").GetEnum();
+            Overflow overflow = (Overflow)this.properties.GetProperty("overflow").GetEnum();
             string columnCountAsString =
                 this.properties.GetProperty("column-count").GetString();
             int columnCount = 1;
@@ -73,7 +73,7 @@ namespace Fonet.Fo.Pagination
         {
             return "xsl-region-body";
         }
-         
+
         public override string ElementName { get { return "fo:region-body"; } }
         public override string GetRegionClass()
         {

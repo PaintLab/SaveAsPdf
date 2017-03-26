@@ -7,25 +7,21 @@ namespace Fonet.Fo.Flow
     using Fonet.Layout;
 
     internal class Character : FObj
-    {   
+    {
         public static FObjMaker<Character> GetMaker()
         {
             return new FObjMaker<Character>((parent, propertyList) => new Character(parent, propertyList));
-        }
+        } 
 
-
-        public const int OK = 0;
-
+        public const int OK = 0; 
         public const int DOESNOT_FIT = 1;
 
         public Character(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-           
+
         }
-        public override string ElementName { get { return "fo:character"; } }
-
-
+        public override string ElementName { get { return "fo:character"; } } 
 
         public override Status Layout(Area area)
         {
@@ -45,16 +41,15 @@ namespace Fonet.Fo.Flow
             HyphenationProps mHyphProps = propMgr.GetHyphenationProps();
             MarginInlineProps mProps = propMgr.GetMarginInlineProps();
             RelativePositionProps mRelProps = propMgr.GetRelativePositionProps();
-            ColorType c = this.properties.GetProperty("color").GetColorType();
+            ColorType c = properties.GetColorType();
             float red = c.Red;
             float green = c.Green;
             float blue = c.Blue;
 
-            int whiteSpaceCollapse =
-                this.properties.GetProperty("white-space-collapse").GetEnum();
-            int wrapOption = this.parent.properties.GetProperty("wrap-option").GetEnum();
+            int whiteSpaceCollapse = properties.GetWhiteSpaceCollapse();
+            WrapOption wrapOption = this.parent.properties.GetWrapOption();
 
-            int tmp = this.properties.GetProperty("text-decoration").GetEnum();
+            TextDecoration tmp = properties.GetTextDecoration();
             if (tmp == TextDecoration.UNDERLINE)
             {
                 textDecoration = true;
@@ -64,8 +59,8 @@ namespace Fonet.Fo.Flow
                 textDecoration = false;
             }
 
-            char characterValue = this.properties.GetProperty("character").GetCharacter();
-            string id = this.properties.GetProperty("id").GetString();
+            char characterValue = this.properties.GetChar();
+            string id = this.properties.GetId();
             blockArea.GetMyRefs().InitializeID(id, blockArea);
 
             LineArea la = blockArea.getCurrentLineArea();

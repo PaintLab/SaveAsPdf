@@ -2,9 +2,9 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Fo.Properties
 {
-    enum WrapOption : byte
+    enum SpanKind : byte
     {
-        WRAP = Constants.WRAP,
-        NO_WRAP = Constants.NO_WRAP
+        NONE = Constants.NONE, 
+        ALL = Constants.ALL 
     }
 }

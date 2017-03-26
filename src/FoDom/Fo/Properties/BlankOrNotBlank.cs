@@ -2,13 +2,13 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Fo.Properties
 {
-    internal class BlankOrNotBlank
+    enum BlankOrNotBlank
     {
-        public const int BLANK = Constants.BLANK;
+        BLANK = Constants.BLANK,
 
-        public const int NOT_BLANK = Constants.NOT_BLANK;
+        NOT_BLANK = Constants.NOT_BLANK,
 
-        public const int ANY = Constants.ANY;
+        ANY = Constants.ANY
 
     }
 }

@@ -5,12 +5,13 @@ namespace Fonet.Image
     using Fonet.Layout;
     using Fonet.Layout.Inline;
     using Fonet.Render.Pdf;
+    using Fonet.Fo.Properties;
 
     internal class ImageArea : InlineArea
     {
         protected int xOffset = 0;
         protected int align;
-        protected int valign;
+        protected VerticalAlign valign;
         protected FonetImage image;
 
         public ImageArea(FontState fontState, FonetImage img, int AllocationWidth,
@@ -55,12 +56,12 @@ namespace Fonet.Image
             return this.align;
         }
 
-        public override void setVerticalAlign(int align)
+        public override void setVerticalAlign(VerticalAlign align)
         {
             this.valign = align;
         }
 
-        public override int getVerticalAlign()
+        public override VerticalAlign getVerticalAlign()
         {
             return this.valign;
         }

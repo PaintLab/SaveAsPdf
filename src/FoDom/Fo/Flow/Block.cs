@@ -3,7 +3,7 @@
 namespace Fonet.Fo.Flow
 {
     using Fonet.Layout;
-
+    using Fonet.Fo.Properties;
     internal class Block : FObjMixed
     {
         public static FObjMaker<Block> GetMaker()
@@ -12,8 +12,8 @@ namespace Fonet.Fo.Flow
         }
 
 
-        private int align;
-        private int alignLast;
+        private TextAlign align;
+        private TextAlign alignLast;
         private int breakAfter;
         private int lineHeight;
         private int startIndent;
@@ -27,7 +27,7 @@ namespace Fonet.Fo.Flow
         private int areaHeight = 0;
         private int contentWidth = 0;
         private string id;
-        private int span;
+        private SpanKind span;
         private bool anythingLaidOut = false;
         public override string ElementName { get { return "fo:block"; } }
         //
@@ -60,7 +60,7 @@ namespace Fonet.Fo.Flow
                             "fo:basic-link, fo:block, fo:block-container, fo:float, fo:flow, fo:footnote-body, fo:inline, fo:inline-container, fo:list-item-body, fo:list-item-label, fo:marker, fo:multi-case, fo:static-content, fo:table-caption, fo:table-cell or fo:wrapper " +
                             "not " + parent.ElementName);
             }
-            this.span = this.properties.GetProperty("span").GetEnum();
+            this.span = this.properties.GetSpanKind();
             ts = propMgr.getTextDecoration(parent);
         }
 
@@ -83,8 +83,8 @@ namespace Fonet.Fo.Flow
                 MarginProps mProps = propMgr.GetMarginProps();
                 RelativePositionProps mRelProps = propMgr.GetRelativePositionProps();
 
-                this.align = this.properties.GetProperty("text-align").GetEnum();
-                this.alignLast = this.properties.GetProperty("text-align-last").GetEnum();
+                this.align = this.properties.GetTextAlign();
+                this.alignLast = this.properties.GetTextAlignLast();
                 this.breakAfter = this.properties.GetProperty("break-after").GetEnum();
                 this.lineHeight =
                     this.properties.GetProperty("line-height").GetLength().MValue();
@@ -296,7 +296,7 @@ namespace Fonet.Fo.Flow
             return contentWidth;
         }
 
-        public int GetSpan()
+        public SpanKind GetSpan()
         {
             return this.span;
         }

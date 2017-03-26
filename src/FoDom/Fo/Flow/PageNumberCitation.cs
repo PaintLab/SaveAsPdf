@@ -12,12 +12,12 @@ namespace Fonet.Fo.Flow
         {
             return new FObjMaker<PageNumberCitation>((parent, propertyList) => new PageNumberCitation(parent, propertyList));
         }
-         
+
 
         private float red;
         private float green;
         private float blue;
-        private int wrapOption;
+        private WrapOption wrapOption;
         private int whiteSpaceCollapse;
         private Area area;
         private string pageNumber;
@@ -28,7 +28,7 @@ namespace Fonet.Fo.Flow
         public PageNumberCitation(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-          
+
         }
         public override string ElementName { get { return "fo:page-number-citation"; } }
         public override Status Layout(Area area)
@@ -56,7 +56,7 @@ namespace Fonet.Fo.Flow
                 this.green = c.Green;
                 this.blue = c.Blue;
 
-                this.wrapOption = this.properties.GetProperty("wrap-option").GetEnum();
+                this.wrapOption = (WrapOption)this.properties.GetProperty("wrap-option").GetEnum();
                 this.whiteSpaceCollapse =
                     this.properties.GetProperty("white-space-collapse").GetEnum();
 

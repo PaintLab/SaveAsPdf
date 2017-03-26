@@ -30,18 +30,25 @@ namespace Fonet.Pdf
             streamData.WriteLine(obj);
         }
 
-        /// <summary>
-        ///     TODO: This method is temporary.  I'm assuming that all string should 
-        ///     be represented as a PdfString object?
-        /// </summary>
-        /// <param name="s"></param>
-        public void Write(string s)
+
+
+        internal void InnerWrite(string s)
         {
             streamData.Write(s_defaultEnc.GetBytes(s));
         }
-        void InnerWrite(string s)
+        public void SetFont(string fontname, int size)
         {
-            streamData.Write(s_defaultEnc.GetBytes(s));
+            InnerWrite("/" + fontname + " " +
+                   PdfNumber.doubleOut(size / 1000f) + " Tf\n");
+        }
+        public void SetLetterSpacing(float letterspacing)
+        {
+            InnerWrite(PdfNumber.doubleOut(letterspacing) + " Tc\n");
+        }
+
+        public void SetFontColor(PdfColor c)
+        {
+            InnerWrite(c.getColorSpaceOut(true));
         }
         public void CloseText()
         {
@@ -70,7 +77,7 @@ namespace Fonet.Pdf
             + PdfNumber.doubleOut(x2 / 1000f) + " " + PdfNumber.doubleOut(y2 / 1000f) + " l "
             + PdfNumber.doubleOut(th / 1000f) + " w S\n" + "Q\nBT\n");
         }
-        public void DrawLine(float x1, float y1, float x2, float y2, float th, int rs, PdfColor stroke)
+        public void DrawLine(float x1, float y1, float x2, float y2, float th, RuleStyle rs, PdfColor stroke)
         {
             InnerWrite("ET\nq\n" + stroke.getColorSpaceOut(false)
                + SetRuleStylePattern(rs) + PdfNumber.doubleOut(x1 / 1000f) + " "
@@ -78,7 +85,7 @@ namespace Fonet.Pdf
                + PdfNumber.doubleOut(y2 / 1000f) + " l " + PdfNumber.doubleOut(th / 1000f) + " w S\n"
                + "Q\nBT\n");
         }
-        static String SetRuleStylePattern(int style)
+        static String SetRuleStylePattern(RuleStyle style)
         {
             string rs = "";
             switch (style)

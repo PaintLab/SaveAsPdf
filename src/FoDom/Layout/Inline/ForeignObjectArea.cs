@@ -3,12 +3,12 @@
 namespace Fonet.Layout.Inline
 {
     using Fonet.Render.Pdf;
-
+    using Fonet.Fo.Properties;
     internal class ForeignObjectArea : InlineArea
     {
         protected int xOffset = 0;
-        protected int align;
-        protected int valign;
+        protected TextAlign align;
+        protected VerticalAlign valign;
         protected int scaling;
         protected Area foreignObject;
         protected int cheight;
@@ -20,7 +20,7 @@ namespace Fonet.Layout.Inline
         private bool hauto;
         private bool cwauto;
         private bool chauto;
-        private int overflow;
+        private Overflow overflow;
 
         public ForeignObjectArea(FontState fontState, int width)
             : base(fontState, width, 0, 0, 0)
@@ -92,32 +92,32 @@ namespace Fonet.Layout.Inline
             return chauto;
         }
 
-        public void setAlign(int align)
+        public void setAlign(TextAlign align)
         {
             this.align = align;
         }
 
-        public int getAlign()
+        public TextAlign getAlign()
         {
             return this.align;
         }
 
-        public override void setVerticalAlign(int align)
+        public override void setVerticalAlign(VerticalAlign align)
         {
             this.valign = align;
         }
 
-        public override int getVerticalAlign()
+        public override VerticalAlign getVerticalAlign()
         {
             return this.valign;
         }
 
-        public void setOverflow(int o)
+        public void setOverflow(Overflow o)
         {
             this.overflow = o;
         }
 
-        public int getOverflow()
+        public Overflow getOverflow()
         {
             return this.overflow;
         }
