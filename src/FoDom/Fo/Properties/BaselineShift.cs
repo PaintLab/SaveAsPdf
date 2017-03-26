@@ -2,13 +2,10 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Fo.Properties
 {
-    internal class BaselineShift
+    enum BaselineShift : byte
     {
-        public const int BASELINE = Constants.BASELINE;
-
-        public const int SUB = Constants.SUB;
-
-        public const int SUPER = Constants.SUPER;
-
+        BASELINE = Constants.BASELINE,
+        SUB = Constants.SUB,
+        SUPER = Constants.SUPER
     }
 }

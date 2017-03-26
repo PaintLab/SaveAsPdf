@@ -3,7 +3,7 @@
 namespace Fonet.Fo.Flow
 {
     using Fonet.Layout;
-
+    using Fonet.Fo.Properties;
     internal class ListBlock : FObj
     {
         public static FObjMaker<ListBlock> GetMaker()
@@ -13,8 +13,8 @@ namespace Fonet.Fo.Flow
 
 
 
-        private int align;
-        private int alignLast;
+        private TextAlign align;
+        private TextAlign alignLast;
         private int lineHeight;
         private int startIndent;
         private int endIndent;
@@ -24,7 +24,7 @@ namespace Fonet.Fo.Flow
         public ListBlock(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-             
+
         }
         public override string ElementName { get { return "fo:list-block"; } }
         public override Status Layout(Area area)
@@ -38,8 +38,8 @@ namespace Fonet.Fo.Flow
                 MarginProps mProps = propMgr.GetMarginProps();
                 RelativePositionProps mRelProps = propMgr.GetRelativePositionProps();
 
-                this.align = this.properties.GetProperty("text-align").GetEnum();
-                this.alignLast = this.properties.GetProperty("text-align-last").GetEnum();
+                this.align = this.properties.GetTextAlign();
+                this.alignLast = this.properties.GetTextAlignLast();
                 this.lineHeight =
                     this.properties.GetProperty("line-height").GetLength().MValue();
                 this.startIndent =

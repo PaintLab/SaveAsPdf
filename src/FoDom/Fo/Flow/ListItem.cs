@@ -3,7 +3,7 @@
 namespace Fonet.Fo.Flow
 {
     using Fonet.Layout;
-
+    using Fonet.Fo.Properties;
     internal class ListItem : FObj
     {
         public static FObjMaker<ListItem> GetMaker()
@@ -12,8 +12,8 @@ namespace Fonet.Fo.Flow
         }
          
 
-        private int align;
-        private int alignLast;
+        private TextAlign align;
+        private TextAlign alignLast;
         private int lineHeight;
         private int spaceBefore;
         private int spaceAfter;
@@ -37,8 +37,8 @@ namespace Fonet.Fo.Flow
                 MarginProps mProps = propMgr.GetMarginProps();
                 RelativePositionProps mRelProps = propMgr.GetRelativePositionProps();
 
-                this.align = this.properties.GetProperty("text-align").GetEnum();
-                this.alignLast = this.properties.GetProperty("text-align-last").GetEnum();
+                this.align = this.properties.GetTextAlign();
+                this.alignLast = this.properties.GetTextAlignLast();
                 this.lineHeight =
                     this.properties.GetProperty("line-height").GetLength().MValue();
                 this.spaceBefore =

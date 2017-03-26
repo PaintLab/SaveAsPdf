@@ -90,7 +90,7 @@ namespace Fonet.Pdf
             WriteLine("endcmap");
             WriteLine("CMapName currentdict /CMap defineresource pop");
             WriteLine("end");
-            Write("end");
+            InnerWrite("end");
 
             base.Write(writer);
         }

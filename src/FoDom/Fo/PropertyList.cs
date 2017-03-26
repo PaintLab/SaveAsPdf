@@ -3,7 +3,7 @@
 using System;
 using System.Collections;
 using Fonet.Fo.Properties;
-
+using Fonet.DataTypes;
 namespace Fonet.Fo
 {
     internal class PropertyList : Hashtable
@@ -379,6 +379,73 @@ namespace Fonet.Fo
         public void SetWritingMode(int writingMode)
         {
             this.wmtable = (byte[])wmtables[writingMode];
+        }
+    }
+
+
+    static class PropertyListExtensions
+    {
+
+        public static SpanKind GetSpanKind(this PropertyList p)
+        {
+            return (SpanKind)p.GetProperty("span").GetEnum();
+        }
+        public static bool TryGetTextAlign(this PropertyList p, out TextAlign textAlign)
+        {
+            Property prop = p.GetProperty("text-align");
+            if (prop == null)
+            {
+                textAlign = TextAlign.None;
+                return false;
+            }
+            //
+            textAlign = (TextAlign)prop.GetEnum();
+            return true;
+        }
+        public static TextAlign GetTextAlign(this PropertyList p)
+        {
+            return (TextAlign)p.GetProperty("text-align").GetEnum();
+        }
+        public static TextAlign GetTextAlignLast(this PropertyList p)
+        {
+            return (TextAlign)p.GetProperty("text-align-last").GetEnum();
+        }
+        public static Overflow GetOverflow(this PropertyList p)
+        {
+            return (Overflow)p.GetProperty("overflow").GetEnum();
+        }
+        public static VerticalAlign GetVerticalAlign(this PropertyList p)
+        {
+            return (VerticalAlign)p.GetProperty("vertical-align").GetEnum();
+        }
+        public static TextDecoration GetTextDecoration(this PropertyList p)
+        {
+            return (TextDecoration)p.GetProperty("text-decoration").GetEnum();
+        }
+        public static BlankOrNotBlank GetBlankOrNotBlank(this PropertyList p)
+        {
+            return (BlankOrNotBlank)p.GetProperty("blank-or-not-blank").GetEnum();
+        }
+        public static char GetChar(this PropertyList p)
+        {
+            return p.GetProperty("character").GetCharacter();
+        }
+        public static string GetId(this PropertyList p)
+        {
+            return p.GetProperty("id").GetString();
+        }
+
+        public static int GetWhiteSpaceCollapse(this PropertyList p)
+        {
+            return p.GetProperty("white-space-collapse").GetEnum();
+        }
+        public static ColorType GetColorType(this PropertyList p)
+        {
+            return p.GetProperty("color").GetColorType();
+        }
+        public static WrapOption GetWrapOption(this PropertyList p)
+        {
+            return (WrapOption)p.GetProperty("wrap-option").GetEnum();
         }
     }
 }

@@ -125,7 +125,7 @@ namespace Fonet.Layout
         {
             _isNewSpanArea = false;
 
-            int span = Span.NONE;
+            SpanKind span = SpanKind.NONE;
             if (fo is Block)
             {
                 span = ((Block)fo).GetSpan();
@@ -137,7 +137,7 @@ namespace Fonet.Layout
 
             if (this.mainReferenceArea.getChildren().Count == 0)
             {
-                if (span == Span.ALL)
+                if (span == SpanKind.ALL)
                 {
                     return addSpanArea(1);
                 }
@@ -150,20 +150,20 @@ namespace Fonet.Layout
             ArrayList spanAreas = this.mainReferenceArea.getChildren();
             SpanArea spanArea = (SpanArea)spanAreas[spanAreas.Count - 1];
 
-            if ((span == Span.ALL) && (spanArea.getColumnCount() == 1))
+            if ((span == SpanKind.ALL) && (spanArea.getColumnCount() == 1))
             {
                 return spanArea.getCurrentColumnArea();
             }
-            else if ((span == Span.NONE)
+            else if ((span == SpanKind.NONE)
                 && (spanArea.getColumnCount() == columnCount))
             {
                 return spanArea.getCurrentColumnArea();
             }
-            else if (span == Span.ALL)
+            else if (span == SpanKind.ALL)
             {
                 return addSpanArea(1);
             }
-            else if (span == Span.NONE)
+            else if (span == SpanKind.NONE)
             {
                 return addSpanArea(columnCount);
             }
@@ -204,7 +204,7 @@ namespace Fonet.Layout
                 return false;
             }
 
-            int span = Span.NONE;
+            SpanKind span = SpanKind.NONE;
             if (fo is Block)
             {
                 span = ((Block)fo).GetSpan();
@@ -214,20 +214,20 @@ namespace Fonet.Layout
                 span = ((BlockContainer)fo).GetSpan();
             }
 
-            if ((span == Span.ALL) && (spanArea.getColumnCount() == 1))
+            if ((span == SpanKind.ALL) && (spanArea.getColumnCount() == 1))
             {
                 return false;
             }
-            else if ((span == Span.NONE)
+            else if ((span == SpanKind.NONE)
                 && (spanArea.getColumnCount() == columnCount))
             {
                 return false;
             }
-            else if (span == Span.ALL)
+            else if (span == SpanKind.ALL)
             {
                 return true;
             }
-            else if (span == Span.NONE)
+            else if (span == SpanKind.NONE)
             {
                 return false;
             }

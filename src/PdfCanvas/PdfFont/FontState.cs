@@ -4,9 +4,10 @@ namespace Fonet.Layout
 {
     using Fonet.Render.Pdf;
     using Fonet.Render.Pdf.Fonts;
-    using Fonet.Pdf.Gdi;
+    using Fonet.Pdf.Gdi;//TODO review here => Gdi, 
 
-    internal class FontState
+
+    public class FontState
     {
         private FontInfo fontInfo;
 

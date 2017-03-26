@@ -5,7 +5,7 @@ namespace Fonet.Layout
     using PixelFarm.Drawing;
     using System;
     using System.Collections;
-     
+
     using System.Text;
     using Fonet.Fo.Flow;
     using Fonet.Fo.Properties;
@@ -25,9 +25,9 @@ namespace Fonet.Layout
         private int placementOffset;
         private FontState currentFontState;
         private float red, green, blue;
-        private int wrapOption;
+        private WrapOption wrapOption;
         private int whiteSpaceCollapse;
-        private int vAlign;
+        private VerticalAlign vAlign;
         private HyphenationProps hyphProps;
         protected int finalWidth = 0;
         protected int embeddedLinkStart = 0;
@@ -495,7 +495,7 @@ namespace Fonet.Layout
 
         public void AddLeader(int leaderPattern, int leaderLengthMinimum,
                               int leaderLengthOptimum, int leaderLengthMaximum,
-                              int ruleStyle, int ruleThickness,
+                              RuleStyle ruleStyle, int ruleThickness,
                               int leaderPatternWidth, int leaderAlignment)
         {
             WordArea leaderPatternArea;
@@ -620,7 +620,7 @@ namespace Fonet.Layout
             pendingAreas = new ArrayList();
         }
 
-        public void align(int type)
+        public void align(TextAlign type)
         {
             int padding = 0;
 
@@ -699,17 +699,22 @@ namespace Fonet.Layout
                     {
                         maxHeight = ia.GetHeight();
                     }
-                    int vert = ia.getVerticalAlign();
-                    if (vert == VerticalAlign.SUPER)
+                    switch (ia.getVerticalAlign())
                     {
-                        int fh = fontState.Ascender;
-                        ia.setYOffset((int)(placementOffset - (2 * fh / 3.0)));
-                    }
-                    else if (vert == VerticalAlign.SUB)
-                    {
-                        int fh = fontState.Ascender;
-                        ia.setYOffset((int)(placementOffset + (2 * fh / 3.0)));
-                    }
+                        default: break;
+                        case VerticalAlign.SUPER:
+                            {
+                                int fh = fontState.Ascender;
+                                ia.setYOffset((int)(placementOffset - (2 * fh / 3.0)));
+                            }
+                            break;
+                        case VerticalAlign.SUB:
+                            {
+                                int fh = fontState.Ascender;
+                                ia.setYOffset((int)(placementOffset + (2 * fh / 3.0)));
+                            }
+                            break;
+                    } 
                 }
                 else
                 {
@@ -735,12 +740,12 @@ namespace Fonet.Layout
             this.whiteSpaceCollapse = whiteSpaceCollapse;
         }
 
-        public void changeWrapOption(int wrapOption)
+        public void changeWrapOption(WrapOption wrapOption)
         {
             this.wrapOption = wrapOption;
         }
 
-        public void changeVerticalAlign(int vAlign)
+        public void changeVerticalAlign(VerticalAlign vAlign)
         {
             this.vAlign = vAlign;
         }

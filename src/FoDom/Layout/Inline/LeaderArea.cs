@@ -10,12 +10,12 @@ namespace Fonet.Layout.Inline
         private int ruleThickness;
         private int leaderLengthOptimum;
         private int leaderPattern;
-        private int ruleStyle;
+        private RuleStyle ruleStyle;
 
         public LeaderArea(
             FontState fontState, float red, float green,
             float blue, string text, int leaderLengthOptimum,
-            int leaderPattern, int ruleThickness, int ruleStyle)
+            int leaderPattern, int ruleThickness, RuleStyle ruleStyle)
             : base(fontState, leaderLengthOptimum, red, green, blue)
         {
             this.leaderPattern = leaderPattern;
@@ -38,7 +38,7 @@ namespace Fonet.Layout.Inline
             return this.ruleThickness;
         }
 
-        public int getRuleStyle()
+        public RuleStyle getRuleStyle()
         {
             return this.ruleStyle;
         }

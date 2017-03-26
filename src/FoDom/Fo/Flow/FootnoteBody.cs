@@ -3,7 +3,7 @@
 namespace Fonet.Fo.Flow
 {
     using Fonet.Layout;
-
+    using Fonet.Fo.Properties;
     internal class FootnoteBody : FObj
     {
         public static FObjMaker<FootnoteBody> GetMaker()
@@ -11,9 +11,9 @@ namespace Fonet.Fo.Flow
             return new FObjMaker<FootnoteBody>((parent, propertyList) => new FootnoteBody(parent, propertyList));
         }
 
-        private int align = 0;
+        private TextAlign align;
 
-        private int alignLast = 0;
+        private TextAlign alignLast;
 
         private int lineHeight = 0;
 

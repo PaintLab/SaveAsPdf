@@ -20,7 +20,7 @@ namespace Fonet.Fo.Flow
         private int right;
         private int width;
         private int height;
-        private int span;
+        private SpanKind span;
         private AreaContainer areaContainer;
 
 
@@ -28,8 +28,7 @@ namespace Fonet.Fo.Flow
         protected BlockContainer(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-
-            this.span = this.properties.GetProperty("span").GetEnum();
+            this.span = this.properties.GetSpanKind();
         }
         public override string ElementName { get { return "fo:block-container"; } }
         public override Status Layout(Area area)
@@ -49,10 +48,8 @@ namespace Fonet.Fo.Flow
                 this.right = this.properties.GetProperty("right").GetLength().MValue();
                 this.width = this.properties.GetProperty("width").GetLength().MValue();
                 this.height = this.properties.GetProperty("height").GetLength().MValue();
-                span = this.properties.GetProperty("span").GetEnum();
-
-                string id = this.properties.GetProperty("id").GetString();
-                area.GetMyRefs().InitializeID(id, area);
+                span = this.properties.GetSpanKind(); 
+                area.GetMyRefs().InitializeID(this.properties.GetId(), area);
             }
 
             AreaContainer container = (AreaContainer)area;
@@ -110,7 +107,7 @@ namespace Fonet.Fo.Flow
             return true;
         }
 
-        public int GetSpan()
+        public SpanKind GetSpan()
         {
             return this.span;
         }
