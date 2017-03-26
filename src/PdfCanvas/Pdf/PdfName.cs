@@ -21,15 +21,7 @@ namespace Fonet.Pdf
             this.name = name;
         }
 
-        public PdfName(string name, PdfObjectId objectId)
-            : base(objectId)
-        {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-            this.name = name;
-        }
+
 
         public string Name
         {
@@ -38,7 +30,41 @@ namespace Fonet.Pdf
 
         protected internal override void Write(PdfWriter writer)
         {
-            writer.Write(NameBytes);
+            //write name bytes
+            if (bytes == null)
+            {
+                // Create a memory stream to hold the results.
+                // We guess the size, based on the most likely outcome
+                // (i.e. all ASCII characters with no escapes.
+                
+                MemoryStream ms = writer.TempMemStream;
+                ms.SetLength(0);//clear
+                // The forward slash introduces a name.
+                ms.WriteByte((byte)'/'); 
+                // The PDF specification recommends encoding name objects using UTF8.
+                byte[] data = Encoding.UTF8.GetBytes(name);
+                for (int x = 0; x < data.Length; x++)
+                {
+                    byte b = data[x];
+
+                    // The PDF specification recommends using a special #hh syntax 
+                    // for any bytes that are outside the range 33 to 126 and for
+                    // the # character itself (35).
+                    if (b < 34 || b > 125 || b == 35)
+                    {
+                        ms.WriteByte((byte)'#');
+                        ms.WriteByte(HexDigits[b >> 4]);
+                        ms.WriteByte(HexDigits[b & 0x0f]);
+                    }
+                    else
+                    {
+                        ms.WriteByte(b);
+                    }
+                }                
+                bytes = ms.ToArray();
+                ms.SetLength(0);//clear
+            }
+            writer.Write(bytes);
         }
 
         private static readonly byte[] HexDigits = {
@@ -46,46 +72,7 @@ namespace Fonet.Pdf
             0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66
         };
 
-        private byte[] NameBytes
-        {
-            get
-            {
-                if (bytes == null)
-                {
-                    // Create a memory stream to hold the results.
-                    // We guess the size, based on the most likely outcome
-                    // (i.e. all ASCII characters with no escapes.
-                    MemoryStream ms = new MemoryStream(name.Length + 1);
-
-                    // The forward slash introduces a name.
-                    ms.WriteByte((byte)'/');
-
-                    // The PDF specification recommends encoding name objects using UTF8.
-                    byte[] data = Encoding.UTF8.GetBytes(name);
-                    for (int x = 0; x < data.Length; x++)
-                    {
-                        byte b = data[x];
-
-                        // The PDF specification recommends using a special #hh syntax 
-                        // for any bytes that are outside the range 33 to 126 and for
-                        // the # character itself (35).
-                        if (b < 34 || b > 125 || b == 35)
-                        {
-                            ms.WriteByte((byte)'#');
-                            ms.WriteByte(HexDigits[b >> 4]);
-                            ms.WriteByte(HexDigits[b & 0x0f]);
-                        }
-                        else
-                        {
-                            ms.WriteByte(b);
-                        }
-                    }
-                    ms.Close();
-                    bytes = ms.ToArray();
-                }
-                return bytes;
-            }
-        }
+       
 
         public override int GetHashCode()
         {
@@ -102,13 +89,12 @@ namespace Fonet.Pdf
             return name.Equals(pobj.Name);
         }
 
-        //        public static bool operator ==(PdfName o1, PdfName o2) {
-        //            return o1.Equals(o2);
-        //        }
-        //
-        //        public static bool operator !=(PdfName o1, PdfName o2) {
-        //            return !(o1 == o2);
-        //        }
+#if DEBUG
+        public override string ToString()
+        {
+            return this.name;
+        }
+#endif
 
         /// <summary>
         ///     Well-known PDF name objects.

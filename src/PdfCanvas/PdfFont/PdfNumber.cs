@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Fonet
 {
-    public sealed class PdfNumber
+    sealed class PdfNumber
     {
         private PdfNumber() { }
 
