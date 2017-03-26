@@ -19,7 +19,7 @@ namespace Fonet.Render.Pdf
     internal sealed class PdfRenderer
     {
 
-        public CorePdfRenderer _coreRenderer;
+
         /// <summary>
         ///     The current vertical position in millipoints from bottom.
         /// </summary>
@@ -38,7 +38,7 @@ namespace Fonet.Render.Pdf
         /// <summary>
         ///     The PDF Document being created.
         /// </summary>
-        private PdfCreator pdfDoc;
+        private PdfCreator pdfCreator;
 
         /// <summary>
         ///     The /Resources object of the PDF document being created.
@@ -193,8 +193,7 @@ namespace Fonet.Render.Pdf
         /// </summary>
         internal PdfRenderer(Stream stream)
         {
-            this.pdfDoc = new PdfCreator(stream);
-            this._coreRenderer = new CorePdfRenderer(pdfDoc);
+            this.pdfCreator = new PdfCreator(stream); 
         }
 
         /// <summary>
@@ -229,17 +228,17 @@ namespace Fonet.Render.Pdf
         {
             if (options != null)
             {
-                pdfDoc.SetOptions(options);
+                pdfCreator.SetOptions(options);
             }
-            pdfDoc.outputHeader();
+            pdfCreator.OutputHeader();
         }
 
         public void StopRenderer()
         {
-            fontSetup.AddToResources(new PdfFontCreator(pdfDoc), pdfDoc.getResources());
-            pdfDoc.outputTrailer();
+            fontSetup.AddToResources(new PdfFontCreator(pdfCreator), pdfCreator.GetResources());
+            pdfCreator.OutputTrailer();
 
-            pdfDoc = null;
+            pdfCreator = null;
             pdfResources = null;
             currentStream = null;
             currentAnnotList = null;
@@ -517,7 +516,7 @@ namespace Fonet.Render.Pdf
 
             FonetImage img = area.getImage();
 
-            PdfXObject xobj = this.pdfDoc.AddImage(img);
+            PdfXObject xobj = this.pdfCreator.AddImage(img);
             CloseText();
             currentStream.FillImage(x, y, w, h, xobj);
 
@@ -609,11 +608,11 @@ namespace Fonet.Render.Pdf
         {
 
 
-            FontState fontState = area.GetFontState(); 
+            FontState fontState = area.GetFontState();
             String name = fontState.FontName;
-            int size = fontState.FontSize; 
+            int size = fontState.FontSize;
             // This assumes that *all* CIDFonts use a /ToUnicode mapping
-            Font font = (Font)fontState.FontInfo.GetFontByName(name); 
+            Font font = (Font)fontState.FontInfo.GetFontByName(name);
             if ((!name.Equals(this.currentFontName)) ||
                 (size != this.currentFontSize))
             {
@@ -724,7 +723,7 @@ namespace Fonet.Render.Pdf
 
         }
 
-   
+
 
         /**
         * Checks to see if we have some text rendering commands open
@@ -743,18 +742,18 @@ namespace Fonet.Render.Pdf
             }
         }
 
-       
+
 
 
         public void Render(Page page)
         {
-            this.pdfResources = this.pdfDoc.getResources();
+            this.pdfResources = this.pdfCreator.GetResources();
             //
             this.idReferences = page.getIDReferences();
-            this.pdfDoc.setIDReferences(idReferences);
+            this.pdfCreator.SetIDReferences(idReferences);
             //
             this.RenderPage(page);
-            this.pdfDoc.output();
+            this.pdfCreator.FlushOutput();
         }
 
 
@@ -769,7 +768,7 @@ namespace Fonet.Render.Pdf
             BodyAreaContainer body;
             AreaContainer before, after, start, end;
 
-            currentStream = this.pdfDoc.makeContentStream();
+            currentStream = this.pdfCreator.MakeContentStream();
             body = page.getBody();
             before = page.getBefore();
             after = page.getAfter();
@@ -818,7 +817,7 @@ namespace Fonet.Render.Pdf
                 idList.Add(id);
             }
 
-            currentPage = this.pdfDoc.makePage(
+            currentPage = this.pdfCreator.MakePage(
                 this.pdfResources, currentStream,
                 Convert.ToInt32(Math.Round(w / 1000)),
                 Convert.ToInt32(Math.Round(h / 1000)), idList.ToArray());
@@ -827,7 +826,7 @@ namespace Fonet.Render.Pdf
             {
                 if (currentAnnotList == null)
                 {
-                    currentAnnotList = this.pdfDoc.makeAnnotList();
+                    currentAnnotList = this.pdfCreator.MakeAnnotList();
                 }
                 currentPage.SetAnnotList(currentAnnotList);
 
@@ -841,7 +840,7 @@ namespace Fonet.Render.Pdf
                     foreach (LinkedRectangle lrect in rsets)
                     {
                         currentAnnotList.Add(
-                            this.pdfDoc.makeLink(lrect.getRectangle(),
+                            this.pdfCreator.MakeLink(lrect.getRectangle(),
                             dest, linkType).GetReference());
                     }
                 }
@@ -1055,7 +1054,7 @@ namespace Fonet.Render.Pdf
         private void DrawImageScaled(
             int x, int y, int w, int h, FonetImage image)
         {
-            PdfXObject xobj = this.pdfDoc.AddImage(image);
+            PdfXObject xobj = this.pdfCreator.AddImage(image);
             CloseText();
             currentStream.FillImage(x, y, w, h, xobj);
         }
@@ -1086,7 +1085,7 @@ namespace Fonet.Render.Pdf
             int imgW = image.Width * 1000;
             int imgH = image.Height * 1000;
 
-            PdfXObject xobj = this.pdfDoc.AddImage(image);
+            PdfXObject xobj = this.pdfCreator.AddImage(image);
             CloseText();
 
             currentStream.ClipImage(

@@ -12,7 +12,8 @@ namespace Fonet.Pdf
         protected MemoryStream stream;
         protected PdfWriter streamData;
 
-        static Encoding s_defaultEnc = Encoding.UTF8;
+        static Encoding s_defaultEnc = Encoding.ASCII; //default should be?
+
         public PdfContentStream(PdfObjectId objectId)
             : base(objectId)
         {
@@ -20,7 +21,7 @@ namespace Fonet.Pdf
             this.streamData = new PdfWriter(stream);
         }
 
-        public void WriteLine(PdfObject obj)
+        internal void WriteLine(PdfObject obj)
         {
             Debug.Assert(obj != null);
             if (obj.IsIndirect || obj is PdfObjectReference)

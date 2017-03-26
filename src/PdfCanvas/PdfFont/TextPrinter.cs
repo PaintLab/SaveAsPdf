@@ -174,6 +174,8 @@ namespace Fonet.Layout
             contentStream.InnerWrite(_tmpstBuilder.ToString());
             contentStream.InnerWrite(endText.ToString());
             //-------------------------------
+            //close text object ?
+
         }
 
     }

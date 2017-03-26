@@ -2,7 +2,7 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Pdf
 {
-  
+
     using System;
     using System.Collections;
 
@@ -68,15 +68,14 @@ namespace Fonet.Pdf
             doc.Version = PdfVersion.V13;
 
             resources = new PdfResources(doc.NextObjectId());
-            addTrailerObject(resources);
+            AddTrailerObject(resources);
             this.xrefTable = new XRefTable();
         }
 
-        public void setIDReferences(IDReferences idReferences)
+        public void SetIDReferences(IDReferences idReferences)
         {
             this.idReferences = idReferences;
         }
-
         public PdfDocument Doc
         {
             get
@@ -138,8 +137,8 @@ namespace Fonet.Pdf
             return xObject;
         }
 
-
-        public PdfPage makePage(PdfResources resources, PdfContentStream contents,
+         
+        public PdfPage MakePage(PdfResources resources, PdfContentStream contents,
                                 int pagewidth, int pageheight, string[] currentPageIdList)
         {
             PdfPage page = new PdfPage(
@@ -164,7 +163,7 @@ namespace Fonet.Pdf
             return page;
         }
 
-        public PdfLink makeLink(Rectangle rect, string destination, LinkKind linkType)
+        public PdfLink MakeLink(Rectangle rect, string destination, LinkKind linkType)
         {
             PdfLink link = new PdfLink(doc.NextObjectId(), rect);
             this.objects.Add(link);
@@ -187,13 +186,13 @@ namespace Fonet.Pdf
             }
             else
             {
-                PdfObjectReference goToReference = getGoToReference(destination);
+                PdfObjectReference goToReference = GetGoToReference(destination);
                 PdfInternalLink internalLink = new PdfInternalLink(goToReference);
                 link.SetAction(internalLink);
             }
             return link;
         }
-        private PdfObjectReference getGoToReference(string destination)
+        private PdfObjectReference GetGoToReference(string destination)
         {
             PdfGoTo goTo;
             // Have we seen this 'id' in the document yet?
@@ -206,7 +205,7 @@ namespace Fonet.Pdf
                 else
                 {
                     goTo = idReferences.createInternalLinkGoTo(destination, doc.NextObjectId());
-                    addTrailerObject(goTo);
+                    AddTrailerObject(goTo);
                 }
             }
             else
@@ -215,29 +214,29 @@ namespace Fonet.Pdf
                 idReferences.CreateUnvalidatedID(destination);
                 idReferences.AddToIdValidationList(destination);
                 goTo = idReferences.createInternalLinkGoTo(destination, doc.NextObjectId());
-                addTrailerObject(goTo);
+                AddTrailerObject(goTo);
             }
             return goTo.GetReference();
         }
 
-        private void addTrailerObject(PdfObject obj)
+        private void AddTrailerObject(PdfObject obj)
         {
             this.trailerObjects.Add(obj);
         }
 
-        public PdfContentStream makeContentStream()
+        public PdfContentStream MakeContentStream()
         {
-            PdfContentStream obj = new PdfContentStream(doc.NextObjectId());
-            obj.AddFilter(new FlateFilter());
-            this.objects.Add(obj);
-            return obj;
+            var content_stream = new PdfContentStream(doc.NextObjectId());
+            //content_stream.AddFilter(new FlateFilter());
+            this.objects.Add(content_stream);
+            return content_stream;
         }
 
-        public PdfAnnotList makeAnnotList()
+        public PdfAnnotList MakeAnnotList()
         {
-            PdfAnnotList obj = new PdfAnnotList(doc.NextObjectId());
-            this.objects.Add(obj);
-            return obj;
+            var annotList = new PdfAnnotList(doc.NextObjectId());
+            this.objects.Add(annotList);
+            return annotList;
         }
 
         public void SetOptions(PdfRendererOptions options)
@@ -291,7 +290,7 @@ namespace Fonet.Pdf
 
         }
 
-        public PdfOutline getOutlineRoot()
+        public PdfOutline GetOutlineRoot()
         {
             if (outlineRoot != null)
             {
@@ -299,15 +298,15 @@ namespace Fonet.Pdf
             }
 
             outlineRoot = new PdfOutline(doc.NextObjectId(), null, null);
-            addTrailerObject(outlineRoot);
+            AddTrailerObject(outlineRoot);
             doc.Catalog.Outlines = outlineRoot;
             return outlineRoot;
         }
 
-        public PdfOutline makeOutline(PdfOutline parent, string label,
+        public PdfOutline MakeOutline(PdfOutline parent, string label,
                                       string destination)
         {
-            PdfObjectReference goToRef = getGoToReference(destination);
+            PdfObjectReference goToRef = GetGoToReference(destination);
 
             PdfOutline obj = new PdfOutline(doc.NextObjectId(), label, goToRef);
 
@@ -320,7 +319,7 @@ namespace Fonet.Pdf
 
         }
 
-        public PdfResources getResources()
+        public PdfResources GetResources()
         {
             return this.resources;
         }
@@ -331,7 +330,7 @@ namespace Fonet.Pdf
             doc.Writer.WriteLine(obj);
         }
 
-        public void output()
+        public void FlushOutput()
         {
             foreach (PdfObject obj in this.objects)
             {
@@ -340,14 +339,14 @@ namespace Fonet.Pdf
             objects.Clear();
         }
 
-        public void outputHeader()
+        public void OutputHeader()
         {
             doc.WriteHeader();
         }
 
-        public void outputTrailer()
+        public void OutputTrailer()
         {
-            output();
+            FlushOutput();
 
             foreach (PdfXObject xobj in xObjectsMap.Values)
             {
