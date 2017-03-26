@@ -7,6 +7,11 @@ namespace Fonet.Pdf
 {
     public class PdfVersion
     {
+
+        //TODO: implement version 1.7
+        //www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
+        //-----------------
+
         public static readonly PdfVersion V14 = new PdfVersion(1, 4);
         public static readonly PdfVersion V13 = new PdfVersion(1, 3);
         public static readonly PdfVersion V12 = new PdfVersion(1, 2);
@@ -25,7 +30,7 @@ namespace Fonet.Pdf
             this.minor = minor;
         }
 
-        public byte[] Header
+        internal byte[] Header
         {
             get
             {
