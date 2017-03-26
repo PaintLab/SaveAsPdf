@@ -6,6 +6,8 @@ namespace Fonet.DataTypes
     using System.Globalization;
     using Fonet.Util;
 
+
+
     public class ColorType : ICloneable
     {
         private float red;
@@ -171,7 +173,12 @@ namespace Fonet.DataTypes
                 }
             }
         }
-
+        public PdfColor ToPdfColor()
+        {
+            //TODO: make this an extension method
+            //what about alpha?
+            return new PdfColor(this.red, this.green, this.blue);
+        }
         public float Blue
         {
             get

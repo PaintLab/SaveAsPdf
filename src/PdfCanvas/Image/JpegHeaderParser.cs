@@ -7,11 +7,13 @@ namespace Fonet.Image
     using System.Text;
     using Fonet.DataTypes;
 
+    //TODO: review here, update jpeg code
+
     /// <summary>
     /// Parses the contents of a JPEG image header to infer the colour 
     /// space and bits per pixel.
     /// </summary>
-    internal sealed class JpegParser
+    internal sealed class JpegParser : IDisposable
     {
         public const int M_SOF0 = 0xC0; /* Start Of Frame N */
         public const int M_SOF1 = 0xC1; /* N indicates which compression process */
@@ -64,7 +66,15 @@ namespace Fonet.Image
             this.ms = new MemoryStream(data);
             this.headerInfo = new JpegInfo();
         }
-
+        public void Dispose()
+        {
+            if (ms != null)
+            {
+                ms.Close();
+                ms.Dispose();
+                ms = null;
+            }
+        }
         public JpegInfo Parse()
         {
             // File must begin with SOI marker

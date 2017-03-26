@@ -30,7 +30,6 @@ namespace System.IO
     {
         public static void Close(this System.IO.Stream strm)
         {
-
             strm.Flush();
         }
         public static void Close(this System.IO.Compression.DeflateStream strm)

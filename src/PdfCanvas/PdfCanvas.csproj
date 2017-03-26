@@ -8,4 +8,8 @@
     <StartupObject />
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Util\" />
+  </ItemGroup>
+
 </Project>

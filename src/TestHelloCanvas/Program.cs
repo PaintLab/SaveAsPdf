@@ -28,20 +28,25 @@ namespace TestHelloCanvas
                 //----------------
                 pdfCreator.OutputHeader();
                 //----------------
+
                 //simple page
                 contentStream.BeginTextObject();
-                contentStream.SetFont("F1", 18000);
+                contentStream.SetFont("F1", 18 * 1000);
                 contentStream.SetFontColor(new Fonet.PdfColor(0, 0, 0));
-
                 //----------------
                 Fonet.Layout.TextPrinter textPrinter = new Fonet.Layout.TextPrinter();
                 textPrinter.Reset(fontState, false);
                 textPrinter.SetTextPos(100 * 1000, 100 * 1000);
-                textPrinter.WriteText("ABCD12345");
-                textPrinter.PrintContentTo(contentStream);
+                textPrinter.WriteText("Hello World!");
+                textPrinter.PrintContentTo(contentStream); 
                 contentStream.CloseText();
-
                 //----------------
+               
+                contentStream.DrawLine(0 * 1000, 0 * 1000, 70 * 1000, 50 * 1000,
+                    1 * 1000,
+                    new Fonet.PdfColor(255, 0, 0));
+
+               
                 contentStream.EndTextObject();
                 //---------------- 
                 int w = 800;
