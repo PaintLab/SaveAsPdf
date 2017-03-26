@@ -4,9 +4,9 @@ namespace Fonet.Fo.Properties
 {
     internal class WrapOptionMaker : EnumProperty.Maker
     {
-        protected static readonly EnumProperty s_propWRAP = new EnumProperty(Constants.WRAP);
+        protected static readonly EnumProperty s_propWRAP = new EnumProperty((int)WrapOption.WRAP);
 
-        protected static readonly EnumProperty s_propNO_WRAP = new EnumProperty(Constants.NO_WRAP);
+        protected static readonly EnumProperty s_propNO_WRAP = new EnumProperty((int)WrapOption.NO_WRAP);
 
         new public static PropertyMaker Maker(string propName)
         {

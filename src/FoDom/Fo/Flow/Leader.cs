@@ -10,12 +10,12 @@ namespace Fonet.Fo.Flow
         public static FObjMaker<Leader> GetMaker()
         {
             return new FObjMaker<Leader>((parent, propertyList) => new Leader(parent, propertyList));
-        } 
+        }
 
         public Leader(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-           
+
         }
         public override string ElementName { get { return "fo:leader"; } }
         public override Status Layout(Area area)
@@ -61,7 +61,7 @@ namespace Fonet.Fo.Flow
             }
             int ruleThickness =
                 this.properties.GetProperty("rule-thickness").GetLength().MValue();
-            int ruleStyle = this.properties.GetProperty("rule-style").GetEnum();
+            RuleStyle ruleStyle = (RuleStyle)this.properties.GetProperty("rule-style").GetEnum();
             int leaderPatternWidth =
                 this.properties.GetProperty("leader-pattern-width").GetLength().MValue();
             int leaderAlignment =
@@ -91,7 +91,7 @@ namespace Fonet.Fo.Flow
                              float green, float blue, int leaderPattern,
                              int leaderLengthMinimum, int leaderLengthOptimum,
                              int leaderLengthMaximum, int ruleThickness,
-                             int ruleStyle, int leaderPatternWidth,
+                             RuleStyle ruleStyle, int leaderPatternWidth,
                              int leaderAlignment)
         {
             LineArea la = ba.getCurrentLineArea();

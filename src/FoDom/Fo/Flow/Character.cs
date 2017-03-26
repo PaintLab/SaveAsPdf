@@ -7,7 +7,7 @@ namespace Fonet.Fo.Flow
     using Fonet.Layout;
 
     internal class Character : FObj
-    {   
+    {
         public static FObjMaker<Character> GetMaker()
         {
             return new FObjMaker<Character>((parent, propertyList) => new Character(parent, propertyList));
@@ -21,7 +21,7 @@ namespace Fonet.Fo.Flow
         public Character(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-           
+
         }
         public override string ElementName { get { return "fo:character"; } }
 
@@ -52,7 +52,7 @@ namespace Fonet.Fo.Flow
 
             int whiteSpaceCollapse =
                 this.properties.GetProperty("white-space-collapse").GetEnum();
-            int wrapOption = this.parent.properties.GetProperty("wrap-option").GetEnum();
+            WrapOption wrapOption = (WrapOption)this.parent.properties.GetProperty("wrap-option").GetEnum();
 
             int tmp = this.properties.GetProperty("text-decoration").GetEnum();
             if (tmp == TextDecoration.UNDERLINE)

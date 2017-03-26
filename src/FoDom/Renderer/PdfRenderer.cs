@@ -446,7 +446,7 @@ namespace Fonet.Render.Pdf
         * @param b the blue component
         */
 
-        private void AddLine(int x1, int y1, int x2, int y2, int th, int rs,
+        private void AddLine(int x1, int y1, int x2, int y2, int th, RuleStyle rs,
                              PdfColor stroke)
         {
             CloseText();
@@ -1295,7 +1295,7 @@ namespace Fonet.Render.Pdf
             int w = area.getContentWidth();
             int h = area.GetHeight();
             int th = area.getRuleThickness();
-            int st = area.getRuleStyle();
+            RuleStyle st = area.getRuleStyle();
 
             // checks whether thickness is = 0, because of bug in pdf (or where?),
             // a line with thickness 0 is still displayed

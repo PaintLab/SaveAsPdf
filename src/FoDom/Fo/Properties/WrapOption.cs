@@ -2,11 +2,9 @@
 //Apache2, 2009, griffm, FO.NET
 namespace Fonet.Fo.Properties
 {
-    internal class WrapOption
+    enum WrapOption:byte
     {
-        public const int WRAP = Constants.WRAP;
-
-        public const int NO_WRAP = Constants.NO_WRAP;
-
+        WRAP = Constants.WRAP,
+        NO_WRAP = Constants.NO_WRAP
     }
 }

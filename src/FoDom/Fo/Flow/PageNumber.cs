@@ -12,19 +12,19 @@ namespace Fonet.Fo.Flow
         {
             return new FObjMaker<PageNumber>((parent, propertyList) => new PageNumber(parent, propertyList));
         }
-         
+
 
         private float red;
         private float green;
         private float blue;
-        private int wrapOption;
+        private WrapOption wrapOption;
         private int whiteSpaceCollapse;
         private TextState ts;
 
         public PageNumber(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
         {
-           
+
         }
         public override string ElementName { get { return "fo:page-number"; } }
         public override Status Layout(Area area)
@@ -49,7 +49,7 @@ namespace Fonet.Fo.Flow
                 this.green = c.Green;
                 this.blue = c.Blue;
 
-                this.wrapOption = this.properties.GetProperty("wrap-option").GetEnum();
+                this.wrapOption = (WrapOption)this.properties.GetProperty("wrap-option").GetEnum();
                 this.whiteSpaceCollapse =
                     this.properties.GetProperty("white-space-collapse").GetEnum();
                 ts = new TextState();

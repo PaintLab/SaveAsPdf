@@ -25,7 +25,7 @@ namespace Fonet.Layout
         private int placementOffset;
         private FontState currentFontState;
         private float red, green, blue;
-        private int wrapOption;
+        private WrapOption wrapOption;
         private int whiteSpaceCollapse;
         private int vAlign;
         private HyphenationProps hyphProps;
@@ -495,7 +495,7 @@ namespace Fonet.Layout
 
         public void AddLeader(int leaderPattern, int leaderLengthMinimum,
                               int leaderLengthOptimum, int leaderLengthMaximum,
-                              int ruleStyle, int ruleThickness,
+                              RuleStyle ruleStyle, int ruleThickness,
                               int leaderPatternWidth, int leaderAlignment)
         {
             WordArea leaderPatternArea;
@@ -735,7 +735,7 @@ namespace Fonet.Layout
             this.whiteSpaceCollapse = whiteSpaceCollapse;
         }
 
-        public void changeWrapOption(int wrapOption)
+        public void changeWrapOption(WrapOption wrapOption)
         {
             this.wrapOption = wrapOption;
         }

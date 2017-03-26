@@ -70,7 +70,7 @@ namespace Fonet.Pdf
             + PdfNumber.doubleOut(x2 / 1000f) + " " + PdfNumber.doubleOut(y2 / 1000f) + " l "
             + PdfNumber.doubleOut(th / 1000f) + " w S\n" + "Q\nBT\n");
         }
-        public void DrawLine(float x1, float y1, float x2, float y2, float th, int rs, PdfColor stroke)
+        public void DrawLine(float x1, float y1, float x2, float y2, float th, RuleStyle rs, PdfColor stroke)
         {
             InnerWrite("ET\nq\n" + stroke.getColorSpaceOut(false)
                + SetRuleStylePattern(rs) + PdfNumber.doubleOut(x1 / 1000f) + " "
@@ -78,7 +78,7 @@ namespace Fonet.Pdf
                + PdfNumber.doubleOut(y2 / 1000f) + " l " + PdfNumber.doubleOut(th / 1000f) + " w S\n"
                + "Q\nBT\n");
         }
-        static String SetRuleStylePattern(int style)
+        static String SetRuleStylePattern(RuleStyle style)
         {
             string rs = "";
             switch (style)

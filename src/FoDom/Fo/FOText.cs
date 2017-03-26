@@ -17,7 +17,7 @@ namespace Fonet.Fo
         private float red;
         private float green;
         private float blue;
-        private int wrapOption;
+        private WrapOption wrapOption;
         private int whiteSpaceCollapse;
         private int verticalAlign;
 
@@ -125,7 +125,7 @@ namespace Fonet.Fo
                     this.parent.properties.GetProperty("vertical-align").GetEnum();
 
                 this.wrapOption =
-                    this.parent.properties.GetProperty("wrap-option").GetEnum();
+                    (WrapOption)this.parent.properties.GetProperty("wrap-option").GetEnum();
                 this.whiteSpaceCollapse =
                     this.parent.properties.GetProperty("white-space-collapse").GetEnum();
                 this.ts = new TextState();
@@ -155,7 +155,7 @@ namespace Fonet.Fo
         }
 
         public static int addText(BlockArea ba, FontState fontState, float red,
-                                  float green, float blue, int wrapOption,
+                                  float green, float blue, WrapOption wrapOption,
                                   LinkSet ls, int whiteSpaceCollapse,
                                   char[] data, int start, int end,
                                   TextState textState, int vAlign)
@@ -231,7 +231,7 @@ namespace Fonet.Fo
 
         protected static int addRealText(BlockArea ba, FontState fontState,
                                          float red, float green, float blue,
-                                         int wrapOption, LinkSet ls,
+                                         WrapOption wrapOption, LinkSet ls,
                                          int whiteSpaceCollapse, char[] data,
                                          int start, int end, TextState textState,
                                          int vAlign)

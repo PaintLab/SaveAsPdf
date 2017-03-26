@@ -12,7 +12,7 @@ namespace Fonet.Fo.Flow
         {
             return new FObjMaker<InstreamForeignObject>((parent, propertyList) => new InstreamForeignObject(parent, propertyList));
         }
-         
+
 
         private int breakBefore;
         private int breakAfter;
@@ -33,7 +33,7 @@ namespace Fonet.Fo.Flow
 
         public InstreamForeignObject(FObj parent, PropertyList propertyList)
             : base(parent, propertyList)
-        { 
+        {
         }
         public override string ElementName { get { return "fo:instream-foreign-object"; } }
         public override Status Layout(Area area)
@@ -55,7 +55,7 @@ namespace Fonet.Fo.Flow
                 string id = this.properties.GetProperty("id").GetString();
                 int align = this.properties.GetProperty("text-align").GetEnum();
                 int valign = this.properties.GetProperty("vertical-align").GetEnum();
-                int overflow = this.properties.GetProperty("overflow").GetEnum();
+                Overflow overflow = (Overflow)this.properties.GetProperty("overflow").GetEnum();
 
                 this.breakBefore = this.properties.GetProperty("break-before").GetEnum();
                 this.breakAfter = this.properties.GetProperty("break-after").GetEnum();
