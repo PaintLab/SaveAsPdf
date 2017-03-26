@@ -4,13 +4,13 @@ namespace Fonet.Layout
 {
     using System;
     using System.Collections;
-
+    
     public class FontInfo
     {
         private Hashtable usedFonts;
         private Hashtable triplets;
         private Hashtable fonts;
-
+          
         public FontInfo()
         {
             this.triplets = new Hashtable();

@@ -91,13 +91,7 @@ namespace Fonet.Render.Pdf
         /// </remarks>
         private int prevWordWidth = 0;
 
-        /// <summary>
-        ///     Reusable word area string buffer to reduce memory usage.
-        /// </summary>
-        /// <remarks>
-        ///     TODO: remove use of this.
-        /// </remarks>
-        private StringBuilder _wordAreaPDF = new StringBuilder();
+
 
         /// <summary>
         ///     User specified rendering options.
@@ -603,41 +597,23 @@ namespace Fonet.Render.Pdf
             // this.currentYPosition -= area.getEffectiveHeight();
         }
 
+
+        TextPrinter _textPrinter = new TextPrinter();
+
         /**
         * render inline area to PDF
         *
         * @param area inline area to render
         */
-
         public void RenderWordArea(WordArea area)
         {
 
-            StringBuilder pdf = _wordAreaPDF;
-            pdf.Length = 0; //clear
 
-            GdiKerningPairs kerning = null;
-            bool kerningAvailable = false;
-            FontState fontState = area.GetFontState();
-            // If no options are supplied, by default we do not enable kerning
-            if (options != null && options.Kerning)
-            {
-                kerning = fontState.Kerning;
-                if (kerning != null && (kerning.Count > 0))
-                {
-                    kerningAvailable = true;
-                }
-            }
-
+            FontState fontState = area.GetFontState(); 
             String name = fontState.FontName;
-            int size = fontState.FontSize;
-
+            int size = fontState.FontSize; 
             // This assumes that *all* CIDFonts use a /ToUnicode mapping
-            Font font = (Font)fontState.FontInfo.GetFontByName(name);
-            bool useMultiByte = font.MultiByteFont;
-
-            string startText = useMultiByte ? "<" : "(";
-            string endText = useMultiByte ? "> " : ") ";
-
+            Font font = (Font)fontState.FontInfo.GetFontByName(name); 
             if ((!name.Equals(this.currentFontName)) ||
                 (size != this.currentFontSize))
             {
@@ -645,8 +621,8 @@ namespace Fonet.Render.Pdf
 
                 this.currentFontName = name;
                 this.currentFontSize = size;
-                pdf = pdf.Append("/" + name + " " +
-                    PdfNumber.doubleOut(size / 1000f) + " Tf\n");
+
+                currentStream.SetFont(name, size);
             }
 
             // Do letter spacing (must be outside of [...] TJ]
@@ -655,8 +631,7 @@ namespace Fonet.Render.Pdf
             {
                 this.currentLetterSpacing = letterspacing;
                 CloseText(); //?
-                pdf.Append(PdfNumber.doubleOut(letterspacing));
-                pdf.Append(" Tc\n");
+                currentStream.SetLetterSpacing(letterspacing);
             }
 
             //--------------------------------------------
@@ -673,7 +648,7 @@ namespace Fonet.Render.Pdf
 
                 CloseText(); //?
                 this.currentFill = areaColor;
-                pdf.Append(this.currentFill.getColorSpaceOut(true));
+                currentStream.SetFontColor(areaColor);
             }
             //--------------------------------------------
 
@@ -694,15 +669,19 @@ namespace Fonet.Render.Pdf
             }
             //--------------------------------------------
 
+
+            _textPrinter.Reset(fontState, options != null && options.Kerning);
             if (!textOpen || bl != prevWordY)
             {
                 CloseText();
-
                 //set text matrix
-                pdf.Append("1 0 0 1 " + PdfNumber.doubleOut(rx / 1000f) +
-                    " " + PdfNumber.doubleOut(bl / 1000f) + " Tm [" + startText);
+
+
+                _textPrinter.SetTextPos(rx, bl);
+                //pdf.Append("1 0 0 1 " + PdfNumber.doubleOut(rx / 1000f) +
+                //    " " + PdfNumber.doubleOut(bl / 1000f) + " Tm [" + startText);
                 prevWordY = bl;
-                textOpen = true;
+                textOpen = true; //***
             }
             else
             {
@@ -714,18 +693,20 @@ namespace Fonet.Render.Pdf
                 if (emDiff < -33000)
                 {
                     CloseText();
-
-                    pdf.Append("1 0 0 1 " + PdfNumber.doubleOut(rx / 1000f) +
-                        " " + PdfNumber.doubleOut(bl / 1000f) + " Tm [" + startText);
-                    textOpen = true;
+                    _textPrinter.SetTextPos(rx, bl);
+                    //pdf.Append("1 0 0 1 " + PdfNumber.doubleOut(rx / 1000f) +
+                    //    " " + PdfNumber.doubleOut(bl / 1000f) + " Tm [" + startText);
+                    textOpen = true;//***
                 }
                 else
                 {
-                    pdf.Append(PdfNumber.doubleOut(emDiff));
-                    pdf.Append(" ");
-                    pdf.Append(startText);
+                    _textPrinter.SetEmDiff(emDiff);
+                    //pdf.Append(PdfNumber.doubleOut(emDiff));
+                    //pdf.Append(" ");
+                    //pdf.Append(startText);
                 }
             }
+
             prevWordWidth = areaContentW;
             prevWordX = rx;
 
@@ -735,80 +716,15 @@ namespace Fonet.Render.Pdf
                 //need to resolve to page number 
                 s = idReferences.getPageNumber(s);
             }
-
-
-            int wordLength = s.Length;
-
-            for (int index = 0; index < wordLength; index++)
-            {
-                //get glyph index from current font?
-                ushort ch = area.GetFontState().MapCharacter(s[index]);
-
-                if (!useMultiByte)
-                {
-                    if (ch > 127)
-                    {
-                        pdf.Append("\\");
-                        pdf.Append(Convert.ToString((int)ch, 8));
-
-                    }
-                    else
-                    {
-                        switch (ch)
-                        {
-                            case '(':
-                            case ')':
-                            case '\\':
-                                pdf.Append("\\");
-                                break;
-                        }
-                        pdf.Append((char)ch);
-                    }
-                }
-                else
-                {
-                    pdf.Append(GetUnicodeString(ch));
-                }
-
-                if (kerningAvailable && (index + 1) < wordLength)
-                {
-                    ushort ch2 = area.GetFontState().MapCharacter(s[index + 1]);
-                    AddKerning(pdf, ch, ch2, kerning, startText, endText);
-                }
-
-            }
-            pdf.Append(endText);
-
-            currentStream.Write(pdf.ToString());
-
+            _textPrinter.WriteText(s);
+            //-------
+            _textPrinter.PrintContentTo(currentStream);
+            //-------
             this.currentXPosition += area.getContentWidth();
 
-
         }
 
-        /**
-        * Convert a char to a multibyte hex representation
-        */
-
-        private String GetUnicodeString(ushort c)
-        {
-            StringBuilder sb = new StringBuilder(4);
-
-            byte[] uniBytes = Encoding.BigEndianUnicode.GetBytes(new char[] { (char)c });
-
-            foreach (byte b in uniBytes)
-            {
-                string hexString = Convert.ToString(b, 16);
-                if (hexString.Length == 1)
-                {
-                    sb.Append("0");
-                }
-                sb.Append(hexString);
-            }
-
-            return sb.ToString();
-
-        }
+   
 
         /**
         * Checks to see if we have some text rendering commands open
@@ -827,15 +743,7 @@ namespace Fonet.Render.Pdf
             }
         }
 
-        private void AddKerning(StringBuilder buf, ushort leftIndex, ushort rightIndex,
-                                GdiKerningPairs kerning, string startText, string endText)
-        {
-            if (kerning.HasPair(leftIndex, rightIndex))
-            {
-                int width = kerning[leftIndex, rightIndex];
-                buf.Append(endText).Append(-width).Append(' ').Append(startText);
-            }
-        }
+       
 
 
         public void Render(Page page)

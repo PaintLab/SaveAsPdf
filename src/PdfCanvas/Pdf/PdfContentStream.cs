@@ -30,18 +30,25 @@ namespace Fonet.Pdf
             streamData.WriteLine(obj);
         }
 
-        /// <summary>
-        ///     TODO: This method is temporary.  I'm assuming that all string should 
-        ///     be represented as a PdfString object?
-        /// </summary>
-        /// <param name="s"></param>
-        public void Write(string s)
+
+
+        internal void InnerWrite(string s)
         {
             streamData.Write(s_defaultEnc.GetBytes(s));
         }
-        void InnerWrite(string s)
+        public void SetFont(string fontname, int size)
         {
-            streamData.Write(s_defaultEnc.GetBytes(s));
+            InnerWrite("/" + fontname + " " +
+                   PdfNumber.doubleOut(size / 1000f) + " Tf\n");
+        }
+        public void SetLetterSpacing(float letterspacing)
+        {
+            InnerWrite(PdfNumber.doubleOut(letterspacing) + " Tc\n");
+        }
+
+        public void SetFontColor(PdfColor c)
+        {
+            InnerWrite(c.getColorSpaceOut(true));
         }
         public void CloseText()
         {
