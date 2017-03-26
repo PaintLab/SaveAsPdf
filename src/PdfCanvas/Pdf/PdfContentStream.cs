@@ -12,7 +12,7 @@ namespace Fonet.Pdf
         protected MemoryStream stream;
         protected PdfWriter streamData;
 
-        static Encoding s_defaultEnc = Encoding.UTF8;
+        static Encoding s_defaultEnc = Encoding.ASCII;
         public PdfContentStream(PdfObjectId objectId)
             : base(objectId)
         {
